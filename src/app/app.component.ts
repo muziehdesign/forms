@@ -7,8 +7,10 @@ import { CheckoutModel } from './checkout.model';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'forms';
-  model = new CheckoutModel();
+  model:CheckoutModel;
+  constructor() {
+    this.model = new CheckoutModel();
+  }
 
   checkout() {
     console.log('checking out', this.model);
