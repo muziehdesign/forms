@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CheckoutModel } from './checkout.model';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'forms';
+  model = new CheckoutModel();
+
+  checkout() {
+    console.log('checking out', this.model);
+  }
 }
