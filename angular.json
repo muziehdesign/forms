@@ -102,6 +102,37 @@
           }
         }
       }
+    },
+    "model-validation": {
+      "projectType": "library",
+      "root": "projects/model-validation",
+      "sourceRoot": "projects/model-validation/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/model-validation/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/model-validation/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/model-validation/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/model-validation/src/test.ts",
+            "tsConfig": "projects/model-validation/tsconfig.spec.json",
+            "karmaConfig": "projects/model-validation/karma.conf.js"
+          }
+        }
+      }
     }
   },
   "cli": {
