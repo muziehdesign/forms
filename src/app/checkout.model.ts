@@ -1,4 +1,4 @@
-import { StringSchema, BooleanSchema } from '@muziehdesign/modelvalidation';
+import { StringSchema, BooleanSchema } from '@muziehdesign/forms';
 
 export class CheckoutModel {
   @StringSchema({ required: true })

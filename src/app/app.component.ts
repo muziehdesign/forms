@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ModelSchemaFactory, ModelValidator } from '@muziehdesign/modelvalidation';
+import { ModelSchemaFactory, ModelValidator } from '@muziehdesign/forms';
 import { CheckoutModel } from './checkout.model';
 
 @Component({

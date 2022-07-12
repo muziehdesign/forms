@@ -8,8 +8,8 @@
     "strict": true,
     "noImplicitOverride": true,
     "paths": {
-      "@muziehdesign/modelvalidation": [
-        "dist/model-validation"
+      "@muziehdesign/forms": [
+        "dist/muziehdesign/forms"
       ]
     },
     "noPropertyAccessFromIndexSignature": true,
