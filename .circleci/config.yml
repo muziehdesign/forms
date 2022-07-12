@@ -37,7 +37,7 @@ jobs:
       - checkout
       - browser-tools/install-browser-tools
       - run: npm ci
-      - run: npm run ng -- test muziehdesign/forms
+      - run: npm run ng -- test @muziehdesign/forms
   build:
     <<: *defaults
     steps:
@@ -53,7 +53,7 @@ jobs:
             sh ./../../../version.sh ${CIRCLE_BUILD_NUM} ${CIRCLE_BRANCH}
           working_directory: ./projects/muziehdesign/forms
       - run: npm ci
-      - run: npm run ng -- build muziehdesign/forms
+      - run: npm run ng -- build @muziehdesign/forms
       - run: npm run build
       - store_artifacts:
           path: /dist/muziehdesign/forms
