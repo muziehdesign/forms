@@ -1,5 +1,6 @@
 export enum PropertyType {
   string,
   number,
-  array
+  array,
+  boolean
 }

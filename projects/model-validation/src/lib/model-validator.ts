@@ -1,5 +1,4 @@
-import { object, ObjectSchema, SchemaOf } from 'yup';
-import { AssertsShape } from 'yup/lib/object';
+import { SchemaOf, ValidationError } from 'yup';
 import { FieldError } from './field-error';
 
 export class ModelValidator<T> {
@@ -14,9 +13,8 @@ export class ModelValidator<T> {
       .then(() => {
         return [];
       })
-      .catch((e: any) => {
-        console.log('error: ', e);
-        return [];
+      .catch((e: ValidationError) => {
+        return e.inner.map((error) => <FieldError>{ path: error.path, type: error.type, message: error.message });
       });
   }
 }

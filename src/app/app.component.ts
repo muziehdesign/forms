@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ModelSchemaFactory, ModelValidator } from '@muziehdesign/modelvalidation';
 import { CheckoutModel } from './checkout.model';
 
 @Component({
@@ -8,11 +9,16 @@ import { CheckoutModel } from './checkout.model';
 })
 export class AppComponent {
   model:CheckoutModel;
-  constructor() {
+  private validator: ModelValidator<CheckoutModel>;
+  constructor(private factory: ModelSchemaFactory) {
     this.model = new CheckoutModel();
+    this.validator = factory.build(this.model);
   }
 
   checkout() {
     console.log('checking out', this.model);
+    this.validator.validate(this.model).then(e=>{
+      console.log('errors', e);
+    });
   }
 }

@@ -1,5 +1,5 @@
 export interface FieldError {
   path: string;
-  key: string;
+  type: string;
   message: string;
 }
