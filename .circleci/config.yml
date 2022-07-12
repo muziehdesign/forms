@@ -87,7 +87,7 @@ jobs:
             - deploy:
                 name: "npm publish"
                 command: |
-                  npm publish ./dist/muziehdesign/forms --tag alpha
+                  npm publish ./dist/muziehdesign/forms --tag alpha --access public
       - when:
           condition:
             or:
