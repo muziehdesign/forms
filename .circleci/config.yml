@@ -6,7 +6,7 @@ general:
   branches:
     ignore:
       - gh-pages
-      
+
 orbs: 
   browser-tools: circleci/browser-tools@1.2.4
 
@@ -37,7 +37,7 @@ jobs:
       - checkout
       - browser-tools/install-browser-tools
       - run: npm ci
-      - run: npm run ng -- test @muziehdesign/forms
+      - run: npm run ng -- test @muziehdesign/forms --watch=false
   build:
     <<: *defaults
     steps:
