@@ -50,7 +50,7 @@ jobs:
       - run:
           name: "version muziehdesign/forms"
           command: |
-            sh ./../../version.sh ${CIRCLE_BUILD_NUM} ${CIRCLE_BRANCH}
+            sh ./../../../version.sh ${CIRCLE_BUILD_NUM} ${CIRCLE_BRANCH}
           working_directory: ./projects/muziehdesign/forms
       - run: npm ci
       - run: npm run ng -- build muziehdesign/forms
