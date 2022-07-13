@@ -16,6 +16,7 @@ export class AppComponent {
   }
 
   checkout() {
+    this.model.consented = true;
     console.log('checking out', this.model);
     this.validator.validate(this.model).then(e=>{
       console.log('errors', e);
