@@ -1,9 +1,10 @@
-import { StringSchema, BooleanSchema } from '@muziehdesign/forms';
+import { StringSchema, BooleanSchema, Required, Equals } from '@muziehdesign/forms';
 
 export class CheckoutModel {
-  @StringSchema({ required: true })
+  //@StringSchema({ required: true })
+  @Required({errorMessage: 'alala'})
   instructions?: string;
 
-  @BooleanSchema({ equals: true })
-  consented: boolean = false;
+  @Equals(true)
+  consented?: boolean;
 }
