@@ -83,3 +83,13 @@ export function Equals<T>(value: T, options?: AnnotationOptions) {
     Reflect.defineMetadata(METADATA_KEY, metadata, target);
   };
 }
+
+export function Email(options?: AnnotationOptions) {
+  return function (target: Object, propertyKey: string) {
+    const metadata: Map<string, PropertyAnnotations[]> = Reflect.getMetadata(METADATA_KEY, target) || new Map<string, PropertyAnnotation<any>[]>();
+    const annotations = metadata.get(propertyKey) || [];
+    annotations.push(<PropertyAnnotation<void>>{ type: Email.name, errorMessage: options?.errorMessage });
+    metadata.set(propertyKey, annotations);
+    Reflect.defineMetadata(METADATA_KEY, metadata, target);
+  };
+}
