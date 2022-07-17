@@ -1,95 +1,60 @@
 import 'reflect-metadata';
+import { BooleanSchema, SchemaOf, StringSchema } from 'yup';
 import { PropertySchemaMetadata } from './property-schema-metadata';
 import { PropertyType } from './property-type.enum';
 
 const METADATA_KEY = 'custom:muziehdesign:annotations';
 
-export interface StringSchemaOptions extends SchemaOptions {
-  length?: number;
-  minimum?: number;
-  maximum?: number;
-  pattern?: RegExp;
-}
-export interface SchemaOptions {
-  required?: boolean;
+export interface ConstraintAnnotations {
+  constraintType: string;
 }
 
-export function StringSchema(options?: StringSchemaOptions) {
-  return function (target: Object, propertyKey: string | Symbol) {
-    const metadata = Reflect.getMetadata('custom:muziehdesign:schema', target) || [];
-    metadata.push(<PropertySchemaMetadata<StringSchemaOptions>>{
-      name: propertyKey,
-      type: PropertyType.string,
-      options: options,
-    });
-    // TODO: define on property
-    Reflect.defineMetadata('custom:muziehdesign:schema', metadata, target);
-  };
+export interface OneOfAnnotations extends ConstraintAnnotations {
+  values: [];
+  message?: string;
 }
 
-export interface BooleanSchemaOptions extends SchemaOptions {
-  equals?: boolean;
+export interface StringTypeAnnotations extends ConstraintAnnotations {
+  required?: RequiredAnnotation;
+  length: LengthAnnotation;
 }
 
-export function BooleanSchema(options?: BooleanSchemaOptions) {
-  return function (target: Object, propertyKey: string | Symbol) {
-    const metadata = Reflect.getMetadata('custom:muziehdesign:schema', target) || [];
-    metadata.push(<PropertySchemaMetadata<StringSchemaOptions>>{
-      name: propertyKey,
-      type: PropertyType.boolean,
-      options: options,
-    });
-    // TODO: define on property
-    Reflect.defineMetadata('custom:muziehdesign:schema', metadata, target);
-  };
+export interface ValidationAnnotation {
+  message?: string;
 }
 
-export interface AnnotationOptions {
-  errorMessage?: string;
+export interface RequiredAnnotation extends ValidationAnnotation {
+  required: boolean;
 }
 
-export interface PropertyAnnotation<T> {
-  type: string;
-  errorMessage?: string;
-  specification: T;
+export interface LengthAnnotation extends ValidationAnnotation {
+  length: number;
 }
 
-export interface RequiredAnnotation {}
-
-export interface EqualsValueAnnotation {
-  value?: any;
-}
-
-export interface PropertyAnnotations extends AnnotationOptions {
-  type: string;
-}
-
-export function Required(options?: AnnotationOptions) {
+export function OneOf<T>(values: T[]) {
   return function (target: Object, propertyKey: string) {
-    const metadata: Map<string, PropertyAnnotations[]> = Reflect.getMetadata(METADATA_KEY, target) || new Map<string, PropertyAnnotation<any>[]>();
-    const annotations = metadata.get(propertyKey) || [];
-    annotations.push({ type: Required.name, errorMessage: options?.errorMessage });
-    metadata.set(propertyKey, annotations);
+    const metadata: Map<string, any> = Reflect.getMetadata(METADATA_KEY, target) || new Map<string, any>();
+    /*const o = Object.assign({}, ...annotations) as StringTypeAnnotations;
+    o.constraintType = StringType.name;
+    metadata.set(propertyKey, o);*/
     Reflect.defineMetadata(METADATA_KEY, metadata, target);
   };
 }
 
-export function Equals<T>(value: T, options?: AnnotationOptions) {
+export function StringType(...annotations: { [key:string]: ValidationAnnotation}[]) {
   return function (target: Object, propertyKey: string) {
-    const metadata: Map<string, PropertyAnnotations[]> = Reflect.getMetadata(METADATA_KEY, target) || new Map<string, PropertyAnnotation<any>[]>();
-    const annotations = metadata.get(propertyKey) || [];
-    annotations.push(<PropertyAnnotation<EqualsValueAnnotation>>{ type: Equals.name, errorMessage: options?.errorMessage, specification: { value: value } });
-    metadata.set(propertyKey, annotations);
+    const metadata: Map<string, any> = Reflect.getMetadata(METADATA_KEY, target) || new Map<string, any>();
+    const o = Object.assign({}, ...annotations) as StringTypeAnnotations;
+    o.constraintType = StringType.name;
+    metadata.set(propertyKey, o);
     Reflect.defineMetadata(METADATA_KEY, metadata, target);
   };
 }
 
-export function Email(options?: AnnotationOptions) {
-  return function (target: Object, propertyKey: string) {
-    const metadata: Map<string, PropertyAnnotations[]> = Reflect.getMetadata(METADATA_KEY, target) || new Map<string, PropertyAnnotation<any>[]>();
-    const annotations = metadata.get(propertyKey) || [];
-    annotations.push(<PropertyAnnotation<void>>{ type: Email.name, errorMessage: options?.errorMessage });
-    metadata.set(propertyKey, annotations);
-    Reflect.defineMetadata(METADATA_KEY, metadata, target);
-  };
+export function required(message?: string): { [key: string]: RequiredAnnotation } {
+  return { required: { required: true, message: message } };
+}
+
+export function length(length: number, message?: string): { [key: string]: LengthAnnotation } {
+  return { length: { length: length, message: message } };
 }

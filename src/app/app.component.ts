@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ModelSchemaFactory, ModelValidator, NgFormModelState, NgFormModelStateFactory } from '@muziehdesign/forms';
-import { CheckoutModel } from './checkout.model';
+import { CheckoutModel } from './models';
 
 @Component({
   selector: 'app-root',
