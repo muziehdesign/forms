@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { mixed, object, SchemaOf, string, StringSchema } from 'yup';
+import { object, SchemaOf } from 'yup';
 import { ModelValidator } from './model-validator';
 import { SCHEMA_METADATA_NAMESPACE } from './constants';
 import { ObjectShape } from 'yup/lib/object';
-import { ConstraintAnnotations, StringType, StringTypeAnnotations } from './string-schema';
+import { BooleanType, BooleanTypeAnnotations, ConstraintAnnotations, StringType, StringTypeAnnotations } from './type-annotations';
+import * as Yup from 'yup';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,8 @@ export class ModelSchemaFactory {
     metadata.forEach((value, key) => {
       if (value.constraintType == StringType.name) {
         shape[key] = this.buildStringSchema(value as StringTypeAnnotations);
+      } else if (value.constraintType == BooleanType.name) {
+        shape[key] = this.buildBooleanSchema(value as BooleanTypeAnnotations);
       }
     });
     const schema = object(shape) as SchemaOf<T>;
@@ -24,14 +27,30 @@ export class ModelSchemaFactory {
   }
 
   private buildStringSchema(options: StringTypeAnnotations) {
-    let stringSchema = string();
+    let schema = Yup.string();
     if (options.required) {
-      stringSchema = stringSchema.required(options.required.message);
+      schema = schema.required(options.required.message);
     }
     if (options.length) {
-      stringSchema = stringSchema.length(options.length.length, options.length.message);
+      schema = schema.length(options.length.length, options.length.message);
     }
 
-    return stringSchema;
+    return schema;
+  }
+
+  private buildBooleanSchema(options: BooleanTypeAnnotations) {
+    let schema = Yup.boolean();
+    if (options.required) {
+      schema = schema.required(options.required.message);
+    }
+    if (options.equals) {
+      if (options.equals.equals) {
+        schema = schema.isTrue(options.equals.message);
+      } else {
+        schema = schema.isFalse(options.equals.message);
+      }
+    }
+
+    return schema;
   }
 }

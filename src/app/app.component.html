@@ -1,6 +1,9 @@
 <h1>Forms</h1>
 
 <form #checkoutForm="ngForm" (ngSubmit)="checkout()">
+  <div>
+    {{checkoutForm.errors | json}}
+  </div>
   <label>
     <span>Instructions</span>
     <input type="text" [(ngModel)]="model.instructions" name="instructions" #instructionsField="ngModel" />

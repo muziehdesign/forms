@@ -31,12 +31,14 @@ export class NgFormModelState<T> {
       .subscribe();
 
     this.errors$.subscribe((list) => {
-      console.log('errored', list);
-      Object.keys(this.form.form.controls).forEach((key) => {
-        let validationErrors = <ValidationErrors>{ };
-        list.filter((e) => e.path == key).forEach((v)=>validationErrors[v.type] = v.message);
-        this.form.form.controls[key].setErrors(validationErrors);
-        console.log('validation errors: ', validationErrors);
+      console.log('all errors', list);
+
+      const grouped = list.reduce((grouped, v) => grouped.set(v.path, [...(grouped.get(v.path) || []), v]), new Map<string, FieldError[]>());
+
+      grouped.forEach((value, key) => {
+        let validationErrors = <ValidationErrors>{};
+        value.forEach((v) => (validationErrors[v.type] = v.message));
+        this.form.controls[key].setErrors(validationErrors);
       });
     });
   }
