@@ -37,6 +37,14 @@ export class ModelSchemaFactory {
       schema = schema.length(options.length.length, options.length.message);
     }
 
+    if (options.maxLength) {
+      schema = schema.max(options.maxLength.maxLength, options.maxLength.message);
+    }
+
+    if (options.minLength) {
+      schema = schema.min(options.minLength.minLength, options.minLength.message);
+    }
+
     return schema;
   }
 
