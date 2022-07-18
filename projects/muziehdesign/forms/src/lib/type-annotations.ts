@@ -5,8 +5,13 @@ import { PropertyType } from './property-type.enum';
 
 const METADATA_KEY = 'custom:muziehdesign:annotations';
 
+export enum ConstraintType {
+  string,
+  boolean
+}
+
 export interface ConstraintAnnotations {
-  constraintType: string;
+  constraintType: ConstraintType;
 }
 
 /*
@@ -17,7 +22,8 @@ export interface OfValuesAnnotations extends ConstraintAnnotations {
 
 export interface StringTypeAnnotations extends ConstraintAnnotations {
   required?: RequiredAnnotation;
-  length: LengthAnnotation;
+  length?: LengthAnnotation;
+  pattern?: PatternAnnotation;
 }
 
 export interface BooleanTypeAnnotations extends ConstraintAnnotations {
@@ -35,6 +41,10 @@ export interface RequiredAnnotation extends ValidationAnnotation {
 
 export interface LengthAnnotation extends ValidationAnnotation {
   length: number;
+}
+
+export interface PatternAnnotation extends ValidationAnnotation {
+  pattern: RegExp;
 }
 
 export interface OfValuesAnnotation extends ValidationAnnotation {
@@ -60,10 +70,17 @@ export function OfValues<T>(values: T[], message?: string) {
   };
 }*/
 
+export function Annotate<T extends ConstraintAnnotations>(a: AnnotationType<T>) {
+  return function (target: Object, propertyKey: string) {
+    console.log('annotations', a.annotations);
+    registerMetadata(target, propertyKey, a.annotations as ConstraintAnnotations);
+  };
+}
+
 export function StringType(...annotations: { [key: string]: ValidationAnnotation }[]) {
   return function (target: Object, propertyKey: string) {
     const o = Object.assign({}, ...annotations) as StringTypeAnnotations;
-    o.constraintType = StringType.name;
+    o.constraintType = ConstraintType.string;
     registerMetadata(target, propertyKey, o);
   };
 }
@@ -71,13 +88,17 @@ export function StringType(...annotations: { [key: string]: ValidationAnnotation
 export function BooleanType(...annotations: { [key: string]: ValidationAnnotation }[]) {
   return function (target: Object, propertyKey: string) {
     const o = Object.assign({}, ...annotations) as BooleanTypeAnnotations;
-    o.constraintType = BooleanType.name;
+    o.constraintType = ConstraintType.boolean;
     registerMetadata(target, propertyKey, o);
   };
 }
 
 export function required(message?: string): { [key: string]: RequiredAnnotation } {
   return { required: { required: true, message: message } };
+}
+
+export function pattern(regex: RegExp, message?: string): { [key: string]: PatternAnnotation } {
+  return { pattern: { pattern: regex, message: message } };
 }
 
 export function length(length: number, message?: string): { [key: string]: LengthAnnotation } {
@@ -88,6 +109,53 @@ export function ofValues(values: [], message?: string): { [key: string]: OfValue
   return { ofValues: { values: values, message: message } };
 }
 
-export function equals<T>(value: T, message?: string) : { [key: string]: EqualsAnnotation<T> } {
+export function equals<T>(value: T, message?: string): { [key: string]: EqualsAnnotation<T> } {
   return { equals: { equals: value, message: message } };
+}
+
+export abstract class AnnotationType<T> {
+  public abstract readonly name: string;
+  public abstract annotations?: T;
+}
+
+export class StringType2 extends AnnotationType<StringTypeAnnotations> {
+  public readonly name: string = 'StringType';
+  public annotations: StringTypeAnnotations = {
+    constraintType: ConstraintType.string, // TODO
+  };
+
+  public required(message?: string) {
+    this.annotations.required = { required: true, message: message };
+    return this;
+  }
+
+  public pattern(pattern: RegExp, message?: string) {
+    this.annotations.pattern = { pattern: pattern, message: message };
+    return this;
+  }
+}
+
+export class BooleanType2 extends AnnotationType<BooleanTypeAnnotations> {
+  public readonly name: string = 'BooleanType';
+  public annotations: BooleanTypeAnnotations = {
+    constraintType: ConstraintType.boolean, // TODO
+  };
+
+  public required(message?: string) {
+    this.annotations.required = { required: true, message: message };
+    return this;
+  }
+
+  public equals(v: boolean, message?: string) {
+    this.annotations.equals = { equals: v, message: message };
+    return this;
+  }
+}
+
+export function string() {
+  return new StringType2();
+}
+
+export function boolean() {
+  return new BooleanType2();
 }

@@ -3,7 +3,7 @@ import { object, SchemaOf } from 'yup';
 import { ModelValidator } from './model-validator';
 import { SCHEMA_METADATA_NAMESPACE } from './constants';
 import { ObjectShape } from 'yup/lib/object';
-import { BooleanType, BooleanTypeAnnotations, ConstraintAnnotations, StringType, StringTypeAnnotations } from './type-annotations';
+import { BooleanType, BooleanTypeAnnotations, ConstraintAnnotations, ConstraintType, StringType2, StringTypeAnnotations } from './type-annotations';
 import * as Yup from 'yup';
 
 @Injectable({
@@ -16,13 +16,15 @@ export class ModelSchemaFactory {
     const metadata: Map<string, ConstraintAnnotations> = Reflect.getMetadata(SCHEMA_METADATA_NAMESPACE, model);
     let shape: ObjectShape = {};
     metadata.forEach((value, key) => {
-      if (value.constraintType == StringType.name) {
+      if (value.constraintType == ConstraintType.string) {
         shape[key] = this.buildStringSchema(value as StringTypeAnnotations);
-      } else if (value.constraintType == BooleanType.name) {
+      } else if (value.constraintType == ConstraintType.boolean) {
         shape[key] = this.buildBooleanSchema(value as BooleanTypeAnnotations);
       }
     });
     const schema = object(shape) as SchemaOf<T>;
+    console.log(schema);
+    console.log(schema.isValidSync({instructions: null}));
     return new ModelValidator(schema);
   }
 
