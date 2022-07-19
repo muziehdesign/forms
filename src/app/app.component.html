@@ -9,6 +9,11 @@
     <input type="text" [(ngModel)]="model.instructions" name="instructions" #instructionsField="ngModel" />
     <span>{{instructionsField.errors | json}}</span>
   </label>
+  <label>
+    <span>Date of birth</span>
+    <input type="text" [(ngModel)]="model.date" name="date" #dateField="ngModel" />
+    <span>{{dateField.errors | json}}</span>
+  </label>
 
   <button type="submit">Check out</button>
 </form>

@@ -3,7 +3,7 @@ import { object, SchemaOf } from 'yup';
 import { ModelValidator } from './model-validator';
 import { SCHEMA_METADATA_NAMESPACE } from './constants';
 import { ObjectShape } from 'yup/lib/object';
-import { BooleanType, BooleanTypeAnnotations, ConstraintAnnotations, ConstraintType, StringType2, StringTypeAnnotations } from './type-annotations';
+import { BooleanType, BooleanTypeAnnotations, ConstraintAnnotations, ConstraintType, DateTypeAnnotations, StringType2, StringTypeAnnotations } from './type-annotations';
 import * as Yup from 'yup';
 
 @Injectable({
@@ -20,6 +20,8 @@ export class ModelSchemaFactory {
         shape[key] = this.buildStringSchema(value as StringTypeAnnotations);
       } else if (value.constraintType == ConstraintType.boolean) {
         shape[key] = this.buildBooleanSchema(value as BooleanTypeAnnotations);
+      } else if (value.constraintType == ConstraintType.date) {
+        shape[key] = this.buildDateSchema(value as DateTypeAnnotations);
       }
     });
     const schema = object(shape) as SchemaOf<T>;
@@ -51,6 +53,24 @@ export class ModelSchemaFactory {
       } else {
         schema = schema.isFalse(options.equals.message);
       }
+    }
+
+    return schema;
+  }
+
+  private buildDateSchema(options: DateTypeAnnotations) {
+    let schema = Yup.date();
+    if (options.required) {
+      schema = schema.required(options.required.message);
+    }
+    if (options.min) {
+      schema = schema.min(options.min.min, options.min.message);
+    }
+    if (options.max) {
+      schema = schema.max(options.max.max, options.max.message);
+    }
+    if (options.test) {
+      schema = schema.test(options.test.name, options.test.message || '', options.test.test);
     }
 
     return schema;
