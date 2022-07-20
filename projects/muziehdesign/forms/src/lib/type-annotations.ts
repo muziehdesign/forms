@@ -16,6 +16,8 @@ export interface StringTypeAnnotations extends ConstraintAnnotations {
   required?: RequiredAnnotation;
   length?: LengthAnnotation;
   pattern?: PatternAnnotation;
+  maxLength?: MaxLengthAnnotation;
+  minLength?: MinLengthAnnotation;
 }
 
 export interface BooleanTypeAnnotations extends ConstraintAnnotations {
@@ -67,6 +69,14 @@ export interface TestAnnotation extends ValidationAnnotation {
   name: string;
 }
 
+export interface MaxLengthAnnotation extends ValidationAnnotation {
+  maxLength: number;
+}
+
+export interface MinLengthAnnotation extends ValidationAnnotation {
+  minLength: number;
+}
+
 const registerMetadata = (target: Object, propertyKey: string, constraint: ConstraintAnnotations) => {
   const metadata: Map<string, any> = Reflect.getMetadata(METADATA_KEY, target) || new Map<string, any>();
   metadata.set(propertyKey, constraint);
@@ -115,6 +125,14 @@ export function pattern(regex: RegExp, message?: string): { [key: string]: Patte
 
 export function length(length: number, message?: string): { [key: string]: LengthAnnotation } {
   return { length: { length: length, message: message } };
+}
+
+export function maxLength(maxLength: number, message?: string): { [key: string]: MaxLengthAnnotation } {
+  return { maxLength: { maxLength: maxLength, message: message } };
+}
+
+export function minLength(minLength: number, message?: string): { [key: string]: MinLengthAnnotation } {
+  return { minLength: { minLength: minLength, message: message } };
 }
 
 export function ofValues(values: [], message?: string): { [key: string]: OfValuesAnnotation } {
