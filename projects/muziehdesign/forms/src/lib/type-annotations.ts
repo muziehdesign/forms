@@ -1,25 +1,16 @@
 import 'reflect-metadata';
-import { BooleanSchema, SchemaOf, StringSchema, TestFunction } from 'yup';
-import { PropertySchemaMetadata } from './property-schema-metadata';
-import { PropertyType } from './property-type.enum';
 
 const METADATA_KEY = 'custom:muziehdesign:annotations';
 
 export enum ConstraintType {
   string,
   boolean,
-  date
+  date,
 }
 
 export interface ConstraintAnnotations {
   constraintType: ConstraintType;
 }
-
-/*
-export interface OfValuesAnnotations extends ConstraintAnnotations {
-  values: [];
-  message?: string;
-}*/
 
 export interface StringTypeAnnotations extends ConstraintAnnotations {
   required?: RequiredAnnotation;
@@ -72,7 +63,7 @@ export interface MaximumAnnotation<T> extends ValidationAnnotation {
 }
 
 export interface TestAnnotation extends ValidationAnnotation {
-  test: TestFunction;
+  test: (d:Date) => boolean;
   name: string;
 }
 
@@ -202,7 +193,7 @@ export class DateType extends AnnotationType<DateTypeAnnotations> {
     return this;
   }
 
-  public test(name: string, v: TestFunction, message?: string) {
+  public test(name: string, v: (d: Date) => boolean, message?: string) {
     this.annotations.test = { name: name, test: v, message: message };
     return this;
   }

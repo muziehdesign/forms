@@ -26,7 +26,7 @@ export class ModelSchemaFactory {
     });
     const schema = object(shape) as SchemaOf<T>;
     console.log(schema);
-    console.log(schema.isValidSync({instructions: null}));
+    console.log(schema.isValidSync({ instructions: null }));
     return new ModelValidator(schema);
   }
 
@@ -70,7 +70,12 @@ export class ModelSchemaFactory {
       schema = schema.max(options.max.max, options.max.message);
     }
     if (options.test) {
-      schema = schema.test(options.test.name, options.test.message || '', options.test.test);
+      schema = schema.test({
+        name: options.test.name,
+        message: options.test.message,
+        test: (d?: Date, context?: any) => {
+        return options.test!.test(d!);
+      }});
     }
 
     return schema;
