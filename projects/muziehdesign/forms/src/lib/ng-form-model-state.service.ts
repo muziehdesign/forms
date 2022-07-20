@@ -25,6 +25,7 @@ export class NgFormModelState<T> {
     this.form.form.valueChanges
       .pipe(
         switchMap(async (x) => {
+          this.model = x;
           return from(this.runValidations());
         })
       )
