@@ -4,10 +4,15 @@
   <div>
     {{checkoutForm.errors | json}}
   </div>
-  <label>
+  <label class="block">
     <span>Instructions</span>
     <input type="text" [(ngModel)]="model.instructions" name="instructions" #instructionsField="ngModel" />
     <span>{{instructionsField.errors | json}}</span>
+  </label>
+  <label class="block">
+    <span>Date of birth</span>
+    <input type="text" [(ngModel)]="model.date" name="date" #dateField="ngModel" />
+    <span>{{dateField.errors | json}}</span>
   </label>
 
   <button type="submit">Check out</button>

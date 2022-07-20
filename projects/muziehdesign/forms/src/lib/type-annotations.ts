@@ -1,24 +1,16 @@
 import 'reflect-metadata';
-import { BooleanSchema, SchemaOf, StringSchema } from 'yup';
-import { PropertySchemaMetadata } from './property-schema-metadata';
-import { PropertyType } from './property-type.enum';
 
 const METADATA_KEY = 'custom:muziehdesign:annotations';
 
 export enum ConstraintType {
   string,
-  boolean
+  boolean,
+  date,
 }
 
 export interface ConstraintAnnotations {
   constraintType: ConstraintType;
 }
-
-/*
-export interface OfValuesAnnotations extends ConstraintAnnotations {
-  values: [];
-  message?: string;
-}*/
 
 export interface StringTypeAnnotations extends ConstraintAnnotations {
   required?: RequiredAnnotation;
@@ -31,6 +23,13 @@ export interface StringTypeAnnotations extends ConstraintAnnotations {
 export interface BooleanTypeAnnotations extends ConstraintAnnotations {
   required?: RequiredAnnotation;
   equals?: EqualsAnnotation<boolean>;
+}
+
+export interface DateTypeAnnotations extends ConstraintAnnotations {
+  required?: RequiredAnnotation;
+  min?: MinimumAnnotation<Date>;
+  max?: MaximumAnnotation<Date>;
+  test?: TestAnnotation;
 }
 
 export interface ValidationAnnotation {
@@ -55,6 +54,19 @@ export interface OfValuesAnnotation extends ValidationAnnotation {
 
 export interface EqualsAnnotation<T> extends ValidationAnnotation {
   equals: T;
+}
+
+export interface MinimumAnnotation<T> extends ValidationAnnotation {
+  min: T;
+}
+
+export interface MaximumAnnotation<T> extends ValidationAnnotation {
+  max: T;
+}
+
+export interface TestAnnotation extends ValidationAnnotation {
+  test: (d:Date) => boolean;
+  name: string;
 }
 
 export interface MaxLengthAnnotation extends ValidationAnnotation {
@@ -176,4 +188,35 @@ export function string() {
 
 export function boolean() {
   return new BooleanType2();
+}
+
+export class DateType extends AnnotationType<DateTypeAnnotations> {
+  public readonly name: string = 'DateType';
+  public annotations: DateTypeAnnotations = {
+    constraintType: ConstraintType.date, // TODO
+  };
+
+  public required(message?: string) {
+    this.annotations.required = { required: true, message: message };
+    return this;
+  }
+
+  public min(v: Date, message?: string) {
+    this.annotations.min = { min: v, message: message };
+    return this;
+  }
+
+  public max(v: Date, message?: string) {
+    this.annotations.max = { max: v, message: message };
+    return this;
+  }
+
+  public test(name: string, v: (d: Date) => boolean, message?: string) {
+    this.annotations.test = { name: name, test: v, message: message };
+    return this;
+  }
+}
+
+export function date() {
+  return new DateType();
 }
