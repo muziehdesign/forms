@@ -32,8 +32,6 @@ export class NgFormModelState<T> {
       .subscribe();
 
     this.errors$.subscribe((list) => {
-      console.log('all errors', list);
-
       const grouped = list.reduce((grouped, v) => grouped.set(v.path, [...(grouped.get(v.path) || []), v]), new Map<string, FieldError[]>());
 
       grouped.forEach((value, key) => {
@@ -62,7 +60,6 @@ export class NgFormModelState<T> {
   }
 
   private async runValidations(): Promise<void> {
-    console.log('validating', this.model);
     const errors = await this.modelValidator.validate(this.model);
     this.errors.next(errors);
   }

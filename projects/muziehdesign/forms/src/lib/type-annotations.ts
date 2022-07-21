@@ -83,18 +83,8 @@ const registerMetadata = (target: Object, propertyKey: string, constraint: Const
   Reflect.defineMetadata(METADATA_KEY, metadata, target);
 };
 
-/*
-export function OfValues<T>(values: T[], message?: string) {
-  return function (target: Object, propertyKey: string) {
-    const o = { values: values, message: message } as OfValuesAnnotations;
-    o.constraintType = OfValues.name;
-    registerMetadata(target, propertyKey, o);
-  };
-}*/
-
 export function Annotate<T extends ConstraintAnnotations>(a: AnnotationType<T>) {
   return function (target: Object, propertyKey: string) {
-    console.log('annotations', a.annotations);
     registerMetadata(target, propertyKey, a.annotations as ConstraintAnnotations);
   };
 }

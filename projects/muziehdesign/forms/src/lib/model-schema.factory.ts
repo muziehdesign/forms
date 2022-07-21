@@ -25,8 +25,6 @@ export class ModelSchemaFactory {
       }
     });
     const schema = object(shape) as SchemaOf<T>;
-    console.log(schema);
-    console.log(schema.isValidSync({ instructions: null }));
     return new ModelValidator(schema);
   }
 
