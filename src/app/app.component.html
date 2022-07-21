@@ -8,11 +8,14 @@
     <span>Instructions</span>
     <input type="text" [(ngModel)]="model.instructions" name="instructions" #instructionsField="ngModel" />
     <span>{{instructionsField.errors | json}}</span>
+    <mz-field-errors [field]="instructionsField" *ngIf="instructionsField.dirty && instructionsField.invalid"></mz-field-errors>
   </label>
+  <br/>
   <label class="block">
     <span>Date of birth</span>
     <input type="text" [(ngModel)]="model.date" name="date" #dateField="ngModel" />
     <span>{{dateField.errors | json}}</span>
+    <mz-field-errors [field]="dateField" *ngIf="dateField.dirty && dateField.invalid"></mz-field-errors>
   </label>
 
   <button type="submit">Check out</button>

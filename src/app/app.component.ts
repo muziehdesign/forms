@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ModelSchemaFactory, ModelValidator, NgFormModelState, NgFormModelStateFactory } from '@muziehdesign/forms';
+import { FieldError, ModelSchemaFactory, ModelValidator, NgFormModelState, NgFormModelStateFactory } from '@muziehdesign/forms';
 import { CheckoutModel } from './models';
 
 @Component({
@@ -11,18 +11,24 @@ import { CheckoutModel } from './models';
 export class AppComponent implements AfterViewInit {
   model:CheckoutModel;
   @ViewChild('checkoutForm', {static: true}) checkoutForm!: NgForm;
-  private validator: ModelValidator<CheckoutModel>;
   modelState!: NgFormModelState<CheckoutModel>;
   constructor(private factory: ModelSchemaFactory, private modelStateFactory: NgFormModelStateFactory) {
     this.model = new CheckoutModel();
-    this.validator = factory.build(this.model);
   }
   ngAfterViewInit(): void {
-    this.modelState = this.modelStateFactory.create(this.checkoutForm, this.model);
+    this.modelState = this.modelStateFactory.create(this.checkoutForm, this.model, { validateCallback: this.performAdditionalValidation });
   }
 
   checkout() {
     console.log('checking out');
     this.modelState.validate();
+  }
+
+  performAdditionalValidation():FieldError[] {
+    return [{
+      path: 'instructions',
+      type: 'custom',
+      message: 'my custom error'
+    }];
   }
 }

@@ -11,22 +11,26 @@ import { ModelValidator } from './model-validator';
 export class NgFormModelStateFactory {
   constructor(private factory: ModelSchemaFactory) {}
 
-  create<T>(form: NgForm, model: T) {
-    const modelState = new NgFormModelState<T>(form, this.factory.build(model), model);
+  create<T>(form: NgForm, model: T, options?: ModelStateOptions) {
+    const modelState = new NgFormModelState<T>(form, this.factory.build(model), model, options);
     return modelState;
   }
+}
+
+export interface ModelStateOptions {
+  validateCallback: () => FieldError[]
 }
 
 export class NgFormModelState<T> {
   private errors: BehaviorSubject<FieldError[]> = new BehaviorSubject<FieldError[]>([]);
   public errors$ = this.errors.asObservable();
 
-  constructor(private form: NgForm, private modelValidator: ModelValidator<T>, private model: T) {
+  constructor(private form: NgForm, private modelValidator: ModelValidator<T>, private model: T, options?: ModelStateOptions) {
     this.form.form.valueChanges
       .pipe(
         switchMap(async (x) => {
           this.model = x;
-          return from(this.runValidations());
+          return from(this.runValidations(options?.validateCallback))
         })
       )
       .subscribe();
@@ -59,8 +63,9 @@ export class NgFormModelState<T> {
     return this.runValidations().then((x) => true);
   }
 
-  private async runValidations(): Promise<void> {
+  private async runValidations(callback?: ()=>FieldError[]): Promise<void> {
     const errors = await this.modelValidator.validate(this.model);
-    this.errors.next(errors);
+    const additional = callback?.() || [];
+    this.errors.next(errors.concat(additional));
   }
 }
