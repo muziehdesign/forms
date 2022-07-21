@@ -18,7 +18,7 @@ export class NgFormModelStateFactory {
 }
 
 export interface ModelStateOptions {
-  validateCallback: () => FieldError[]
+  onValidate: (errors: FieldError[]) => FieldError[]
 }
 
 export class NgFormModelState<T> {
@@ -30,7 +30,7 @@ export class NgFormModelState<T> {
       .pipe(
         switchMap(async (x) => {
           this.model = x;
-          return from(this.runValidations(options?.validateCallback))
+          return from(this.runValidations(options?.onValidate))
         })
       )
       .subscribe();
@@ -63,9 +63,9 @@ export class NgFormModelState<T> {
     return this.runValidations().then((x) => true);
   }
 
-  private async runValidations(callback?: ()=>FieldError[]): Promise<void> {
-    const errors = await this.modelValidator.validate(this.model);
-    const additional = callback?.() || [];
-    this.errors.next(errors.concat(additional));
+  private async runValidations(callback?: (list:FieldError[])=>FieldError[]): Promise<void> {
+    const list = await this.modelValidator.validate(this.model);
+    const final = callback?.(list) || list;
+    this.errors.next(final);
   }
 }

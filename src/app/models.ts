@@ -1,7 +1,12 @@
-import { Annotate, boolean, BooleanType, date, equals, length, pattern, required, string, StringType, StringType2 } from '@muziehdesign/forms';
+import { Annotate, boolean, BooleanType, date, equals, length, maxLength, pattern, required, string, StringType, StringType2 } from '@muziehdesign/forms';
 
 export class CheckoutModel {
-  @Annotate(string().required().pattern(/d{9}$/i))
+  //@Annotate(string().required().pattern(/d{9}$/i))
+  @StringType(
+    required(),
+    pattern(/d{9}$/i),
+    maxLength(3)
+  )
   instructions?: string;
 
   items?: ItemModel[];
