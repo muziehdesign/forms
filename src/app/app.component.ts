@@ -16,7 +16,7 @@ export class AppComponent implements AfterViewInit {
     this.model = new CheckoutModel();
   }
   ngAfterViewInit(): void {
-    this.modelState = this.modelStateFactory.create(this.checkoutForm, this.model, { validateCallback: this.performAdditionalValidation });
+    this.modelState = this.modelStateFactory.create(this.checkoutForm, this.model, { onValidate: this.onValidate });
   }
 
   async checkout() {
@@ -24,8 +24,8 @@ export class AppComponent implements AfterViewInit {
     await this.modelState.validate();
   }
 
-  performAdditionalValidation():FieldError[] {
-    return [{
+  onValidate(errors: FieldError[]):FieldError[] {
+    return [...errors, {
       path: 'instructions',
       type: 'custom',
       message: 'my custom error'

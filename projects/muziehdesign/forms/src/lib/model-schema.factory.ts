@@ -6,6 +6,18 @@ import { ObjectShape } from 'yup/lib/object';
 import { BooleanType, BooleanTypeAnnotations, ConstraintAnnotations, ConstraintType, DateTypeAnnotations, StringType2, StringTypeAnnotations } from './type-annotations';
 import * as Yup from 'yup';
 
+/*
+Schema rules need to be built in the order they need to be evaluated in.
+For example,
+  ```
+    schema.required().max(...).matches(...);
+  ```
+evaluates the 3 rules in this order
+  - required
+  - max
+  - matches
+*/
+
 @Injectable({
   providedIn: 'root',
 })
