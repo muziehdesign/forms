@@ -1,16 +1,16 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AbstractControl, NgControl, NgModel } from '@angular/forms';
+import { NgControl, ValidationErrors } from '@angular/forms';
 
 @Component({
   selector: 'mz-field-errors',
   templateUrl: './field-errors.component.html',
-  styleUrls: ['./field-errors.component.css']
+  styleUrls: ['./field-errors.component.css'],
 })
-export class FieldErrorsComponent implements OnInit {
-
+export class FieldErrorsComponent {
   @Input() field?: NgControl;
-  constructor() {}
 
-  ngOnInit(): void { }
-
+  get errorMessage(): string {
+    const errorKeys = Object.keys(this.field?.errors || {});
+    return errorKeys.length > 0 ? (this.field?.errors as ValidationErrors)[errorKeys[0]] : '';
+  }
 }

@@ -1,4 +1,1 @@
-<div>
-  field errors:
-  {{ field?.errors | json }}
-</div>
+<div class="field-error" *ngIf="errorMessage">{{ errorMessage }}</div>
