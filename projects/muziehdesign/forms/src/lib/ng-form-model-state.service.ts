@@ -59,8 +59,8 @@ export class NgFormModelState<T> {
     this.errors.next(errors);
   }
 
-  validate(): Promise<boolean> {
-    return this.runValidations().then((x) => true);
+  async validate(): Promise<void> {
+    return await this.runValidations();
   }
 
   private async runValidations(callback?: ()=>FieldError[]): Promise<void> {

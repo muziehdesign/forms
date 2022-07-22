@@ -19,9 +19,9 @@ export class AppComponent implements AfterViewInit {
     this.modelState = this.modelStateFactory.create(this.checkoutForm, this.model, { validateCallback: this.performAdditionalValidation });
   }
 
-  checkout() {
+  async checkout() {
     console.log('checking out');
-    this.modelState.validate();
+    await this.modelState.validate();
   }
 
   performAdditionalValidation():FieldError[] {
