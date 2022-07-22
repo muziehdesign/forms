@@ -24,13 +24,16 @@ export interface ModelStateOptions {
 export class NgFormModelState<T> {
   private errors: BehaviorSubject<FieldError[]> = new BehaviorSubject<FieldError[]>([]);
   public errors$ = this.errors.asObservable();
+  private options?: ModelStateOptions;
 
   constructor(private form: NgForm, private modelValidator: ModelValidator<T>, private model: T, options?: ModelStateOptions) {
+    this.options = options;
+    
     this.form.form.valueChanges
       .pipe(
         switchMap(async (x) => {
           this.model = x;
-          return from(this.runValidations(options?.onValidate))
+          return from(this.runValidations(this.options?.onValidate))
         })
       )
       .subscribe();
@@ -60,7 +63,7 @@ export class NgFormModelState<T> {
   }
 
   async validate(): Promise<void> {
-    return await this.runValidations();
+    return await this.runValidations(this.options?.onValidate);
   }
 
   private async runValidations(callback?: (list:FieldError[])=>FieldError[]): Promise<void> {

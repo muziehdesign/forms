@@ -4,8 +4,8 @@ export class CheckoutModel {
   //@Annotate(string().required().pattern(/d{9}$/i))
   @StringType(
     required(),
-    pattern(/d{9}$/i),
-    maxLength(3)
+    pattern(/\d{9}$/i),
+    maxLength(9)
   )
   instructions?: string;
 

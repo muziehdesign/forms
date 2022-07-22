@@ -16,7 +16,7 @@ export class AppComponent implements AfterViewInit {
     this.model = new CheckoutModel();
   }
   ngAfterViewInit(): void {
-    this.modelState = this.modelStateFactory.create(this.checkoutForm, this.model, { onValidate: this.onValidate });
+    this.modelState = this.modelStateFactory.create(this.checkoutForm, this.model, { onValidate: (errors) => this.onValidate(errors, this.model) });
   }
 
   async checkout() {
@@ -24,11 +24,15 @@ export class AppComponent implements AfterViewInit {
     await this.modelState.validate();
   }
 
-  onValidate(errors: FieldError[]):FieldError[] {
+  onValidate(errors: FieldError[], model: CheckoutModel):FieldError[] {
+    if (errors.findIndex(e => e.path === 'instructions') !== -1 || model.instructions?.indexOf('7') === -1) {
+      return errors;
+    }
+    
     return [...errors, {
       path: 'instructions',
       type: 'custom',
-      message: 'my custom error'
+      message: 'cannot contain number 7'
     }];
   }
 }
