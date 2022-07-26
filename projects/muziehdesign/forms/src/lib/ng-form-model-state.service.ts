@@ -74,8 +74,6 @@ export class NgFormModelState<T> {
   }
 
   private removeCurrentErrors() {
-    for (let key in Object.keys(this.form.controls)) {
-      this.form.controls[key]?.setErrors(null);
-    }
+    Object.keys(this.form.controls).forEach(key => this.form.controls[key].setErrors(null));
   }
 }
