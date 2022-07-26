@@ -1,4 +1,4 @@
-import { Annotate, boolean, BooleanType, date, equals, length, maxLength, pattern, required, string, StringType, StringType2 } from '@muziehdesign/forms';
+import { Annotate, boolean, BooleanType, date, DateType, equals, length, maxLength, min, pattern, required, string, StringType, StringType2, test } from '@muziehdesign/forms';
 
 export class CheckoutModel {
   //@Annotate(string().required().pattern(/d{9}$/i))
@@ -11,17 +11,16 @@ export class CheckoutModel {
 
   items?: ItemModel[];
 
-  @Annotate(
-    date()
-      .required()
-      .test(
+  @DateType(
+    required(),
+    test(
         'minimumAge',
         (d: Date) => {
           return Number(+new Date().getFullYear() - +d?.getFullYear()) >= 18;
         },
         'You must be over 18'
-      )
-      .min(new Date(1900, 0, 1), 'Minimum date is 01/01/1900')
+    ),
+    min(new Date(1900, 0, 1), 'Minimum date is 01/01/1900')
   )
   date?: Date;
 }

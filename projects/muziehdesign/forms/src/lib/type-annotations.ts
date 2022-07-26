@@ -105,6 +105,14 @@ export function BooleanType(...annotations: { [key: string]: ValidationAnnotatio
   };
 }
 
+export function DateType(...annotations: { [key: string]: ValidationAnnotation }[]) {
+  return function (target: Object, propertyKey: string) {
+    const o = Object.assign({}, ...annotations) as DateTypeAnnotations;
+    o.constraintType = ConstraintType.date;
+    registerMetadata(target, propertyKey, o);
+  };
+}
+
 export function required(message?: string): { [key: string]: RequiredAnnotation } {
   return { required: { required: true, message: message } };
 }
@@ -131,6 +139,18 @@ export function ofValues(values: [], message?: string): { [key: string]: OfValue
 
 export function equals<T>(value: T, message?: string): { [key: string]: EqualsAnnotation<T> } {
   return { equals: { equals: value, message: message } };
+}
+
+export function min<T>(value: T, message?: string): { [key: string]: MinimumAnnotation<T> } {
+  return { min: { min: value, message: message } };
+}
+
+export function max<T>(value: T, message?: string): { [key: string]: MaximumAnnotation<T> } {
+  return { max: { max: value, message: message } };
+}
+
+export function test(name: string, test: (d:Date) => boolean, message?: string): { [key: string]: TestAnnotation } {
+  return { test: { name: name, test: test, message: message } };
 }
 
 export abstract class AnnotationType<T> {
@@ -180,7 +200,7 @@ export function boolean() {
   return new BooleanType2();
 }
 
-export class DateType extends AnnotationType<DateTypeAnnotations> {
+export class DateType2 extends AnnotationType<DateTypeAnnotations> {
   public readonly name: string = 'DateType';
   public annotations: DateTypeAnnotations = {
     constraintType: ConstraintType.date, // TODO
@@ -208,5 +228,5 @@ export class DateType extends AnnotationType<DateTypeAnnotations> {
 }
 
 export function date() {
-  return new DateType();
+  return new DateType2();
 }
