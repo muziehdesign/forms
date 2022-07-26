@@ -1,7 +1,6 @@
-import { Annotate, boolean, BooleanType, date, DateType, equals, length, maxLength, min, pattern, required, string, StringType, StringType2, test } from '@muziehdesign/forms';
+import { DateType, maxLength, min, pattern, required, StringType, test } from '@muziehdesign/forms';
 
 export class CheckoutModel {
-  //@Annotate(string().required().pattern(/d{9}$/i))
   @StringType(
     required(),
     pattern(/\d{9}$/i, 'Must have 9 numbers'),

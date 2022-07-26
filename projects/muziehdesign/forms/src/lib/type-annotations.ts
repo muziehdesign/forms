@@ -29,7 +29,7 @@ export interface DateTypeAnnotations extends ConstraintAnnotations {
   required?: RequiredAnnotation;
   min?: MinimumAnnotation<Date>;
   max?: MaximumAnnotation<Date>;
-  test?: TestAnnotation;
+  test?: TestAnnotation<Date>;
 }
 
 export interface ValidationAnnotation {
@@ -64,8 +64,8 @@ export interface MaximumAnnotation<T> extends ValidationAnnotation {
   max: T;
 }
 
-export interface TestAnnotation extends ValidationAnnotation {
-  test: (d:Date) => boolean;
+export interface TestAnnotation<T> extends ValidationAnnotation {
+  test: (d:T) => boolean;
   name: string;
 }
 
@@ -82,12 +82,6 @@ const registerMetadata = (target: Object, propertyKey: string, constraint: Const
   metadata.set(propertyKey, constraint);
   Reflect.defineMetadata(METADATA_KEY, metadata, target);
 };
-
-export function Annotate<T extends ConstraintAnnotations>(a: AnnotationType<T>) {
-  return function (target: Object, propertyKey: string) {
-    registerMetadata(target, propertyKey, a.annotations as ConstraintAnnotations);
-  };
-}
 
 export function StringType(...annotations: { [key: string]: ValidationAnnotation }[]) {
   return function (target: Object, propertyKey: string) {
@@ -149,84 +143,6 @@ export function max<T>(value: T, message?: string): { [key: string]: MaximumAnno
   return { max: { max: value, message: message } };
 }
 
-export function test(name: string, test: (d:Date) => boolean, message?: string): { [key: string]: TestAnnotation } {
+export function test<T>(name: string, test: (d:T) => boolean, message?: string): { [key: string]: TestAnnotation<T> } {
   return { test: { name: name, test: test, message: message } };
-}
-
-export abstract class AnnotationType<T> {
-  public abstract readonly name: string;
-  public abstract annotations?: T;
-}
-
-export class StringType2 extends AnnotationType<StringTypeAnnotations> {
-  public readonly name: string = 'StringType';
-  public annotations: StringTypeAnnotations = {
-    constraintType: ConstraintType.string, // TODO
-  };
-
-  public required(message?: string) {
-    this.annotations.required = { required: true, message: message };
-    return this;
-  }
-
-  public pattern(pattern: RegExp, message?: string) {
-    this.annotations.pattern = { pattern: pattern, message: message };
-    return this;
-  }
-}
-
-export class BooleanType2 extends AnnotationType<BooleanTypeAnnotations> {
-  public readonly name: string = 'BooleanType';
-  public annotations: BooleanTypeAnnotations = {
-    constraintType: ConstraintType.boolean, // TODO
-  };
-
-  public required(message?: string) {
-    this.annotations.required = { required: true, message: message };
-    return this;
-  }
-
-  public equals(v: boolean, message?: string) {
-    this.annotations.equals = { equals: v, message: message };
-    return this;
-  }
-}
-
-export function string() {
-  return new StringType2();
-}
-
-export function boolean() {
-  return new BooleanType2();
-}
-
-export class DateType2 extends AnnotationType<DateTypeAnnotations> {
-  public readonly name: string = 'DateType';
-  public annotations: DateTypeAnnotations = {
-    constraintType: ConstraintType.date, // TODO
-  };
-
-  public required(message?: string) {
-    this.annotations.required = { required: true, message: message };
-    return this;
-  }
-
-  public min(v: Date, message?: string) {
-    this.annotations.min = { min: v, message: message };
-    return this;
-  }
-
-  public max(v: Date, message?: string) {
-    this.annotations.max = { max: v, message: message };
-    return this;
-  }
-
-  public test(name: string, v: (d: Date) => boolean, message?: string) {
-    this.annotations.test = { name: name, test: v, message: message };
-    return this;
-  }
-}
-
-export function date() {
-  return new DateType2();
 }
