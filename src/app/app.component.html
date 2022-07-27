@@ -4,14 +4,14 @@
   <div>
     {{checkoutForm.errors | json}}
   </div>
-  <label class="block">
+  <label class="block p-8">
     <span>Instructions</span>
     <input type="text" [(ngModel)]="model.instructions" name="instructions" #instructionsField="ngModel" />
     <span>{{instructionsField.errors | json}}</span>
     <mz-field-errors [field]="instructionsField" *ngIf="instructionsField.dirty && instructionsField.invalid"></mz-field-errors>
   </label>
   <br/>
-  <label class="block">
+  <label class="block p-8">
     <span>Date of birth</span>
     <input type="text" [(ngModel)]="model.date" name="date" #dateField="ngModel" />
     <span>{{dateField.errors | json}}</span>

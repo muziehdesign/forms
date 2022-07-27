@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { FieldError, ModelSchemaFactory, ModelValidator, NgFormModelState, NgFormModelStateFactory } from '@muziehdesign/forms';
+import { FieldError, ModelSchemaFactory, NgFormModelState, NgFormModelStateFactory } from '@muziehdesign/forms';
 import { CheckoutModel } from './models';
 
 @Component({
@@ -25,10 +25,10 @@ export class AppComponent implements AfterViewInit {
   }
 
   onValidate(errors: FieldError[], model: CheckoutModel):FieldError[] {
-    if (errors.findIndex(e => e.path === 'instructions') !== -1 || model.instructions?.indexOf('7') === -1) {
+    if (errors.findIndex(e => e.path === 'instructions') !== -1) {
       return errors;
     }
-    
+
     return [...errors, {
       path: 'instructions',
       type: 'custom',

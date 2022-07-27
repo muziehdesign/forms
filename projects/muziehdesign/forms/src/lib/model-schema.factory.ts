@@ -3,7 +3,7 @@ import { object, SchemaOf } from 'yup';
 import { ModelValidator } from './model-validator';
 import { SCHEMA_METADATA_NAMESPACE } from './constants';
 import { ObjectShape } from 'yup/lib/object';
-import { BooleanType, BooleanTypeAnnotations, ConstraintAnnotations, ConstraintType, DateTypeAnnotations, StringType2, StringTypeAnnotations } from './type-annotations';
+import { BooleanTypeAnnotations, ConstraintAnnotations, ConstraintType, DateTypeAnnotations, StringTypeAnnotations } from './type-annotations';
 import * as Yup from 'yup';
 
 /*
