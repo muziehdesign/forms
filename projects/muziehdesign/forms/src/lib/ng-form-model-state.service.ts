@@ -44,12 +44,7 @@ export class NgFormModelState<T> {
       grouped.forEach((value, key) => {
         let validationErrors = <ValidationErrors>{};
         value.forEach((v) => (validationErrors[v.type] = v.message));
-        try {
-          this.form.controls[key].setErrors(validationErrors);
-        } catch (e) {
-          console.log('error setting form control', key);
-          throw e;
-        }
+        this.form.controls[key]?.setErrors(validationErrors);
       });
     });
   }
