@@ -17,6 +17,12 @@
     <span>{{dateField.errors | json}}</span>
     <mz-field-errors [field]="dateField" *ngIf="dateField.dirty && dateField.invalid"></mz-field-errors>
   </label>
+  <label class="block p-8">
+    <span>Total cost</span>
+    <input type="text" [(ngModel)]="model.totalCost" name="totalCost" #totalCost="ngModel" />
+    <span>{{totalCost.errors | json}}</span>
+    <mz-field-errors [field]="totalCost" *ngIf="totalCost.dirty && totalCost.invalid"></mz-field-errors>
+  </label>
 
   <button type="submit">Check out</button>
 </form>

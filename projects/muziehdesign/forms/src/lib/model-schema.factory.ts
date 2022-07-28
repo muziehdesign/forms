@@ -3,7 +3,7 @@ import { object, SchemaOf } from 'yup';
 import { ModelValidator } from './model-validator';
 import { SCHEMA_METADATA_NAMESPACE } from './constants';
 import { ObjectShape } from 'yup/lib/object';
-import { BooleanTypeAnnotations, ConstraintAnnotations, ConstraintType, DateTypeAnnotations, StringTypeAnnotations } from './type-annotations';
+import { BooleanTypeAnnotations, ConstraintAnnotations, ConstraintType, DateTypeAnnotations, NumberTypeAnnotations, StringTypeAnnotations } from './type-annotations';
 import * as Yup from 'yup';
 
 /*
@@ -34,6 +34,8 @@ export class ModelSchemaFactory {
         shape[key] = this.buildBooleanSchema(value as BooleanTypeAnnotations);
       } else if (value.constraintType == ConstraintType.date) {
         shape[key] = this.buildDateSchema(value as DateTypeAnnotations);
+      } else if (value.constraintType == ConstraintType.number) {
+        shape[key] = this.buildNumberSchema(value as NumberTypeAnnotations);
       }
     });
     const schema = object(shape) as SchemaOf<T>;
@@ -98,6 +100,15 @@ export class ModelSchemaFactory {
         test: (d?: Date, context?: any) => {
         return options.test!.test(d!);
       }});
+    }
+
+    return schema;
+  }
+
+  private buildNumberSchema(options: NumberTypeAnnotations) {
+    let schema = Yup.number();
+    if (options.required) {
+      schema = schema.required(options.required.message);
     }
 
     return schema;
