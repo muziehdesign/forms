@@ -6,6 +6,7 @@ export enum ConstraintType {
   string,
   boolean,
   date,
+  object,
 }
 
 export interface ConstraintAnnotations {
@@ -30,6 +31,11 @@ export interface DateTypeAnnotations extends ConstraintAnnotations {
   min?: MinimumAnnotation<Date>;
   max?: MaximumAnnotation<Date>;
   test?: TestAnnotation<Date>;
+}
+
+export interface ObjectTypeAnnotations extends ConstraintAnnotations {
+  required?: RequiredAnnotation;
+  getInstance: () => any;
 }
 
 export interface ValidationAnnotation {
@@ -65,7 +71,7 @@ export interface MaximumAnnotation<T> extends ValidationAnnotation {
 }
 
 export interface TestAnnotation<T> extends ValidationAnnotation {
-  test: (d:T) => boolean;
+  test: (d: T) => boolean;
   name: string;
 }
 
@@ -107,6 +113,14 @@ export function DateType(...annotations: { [key: string]: ValidationAnnotation }
   };
 }
 
+export function ObjectType<T>(type: { new (): T }, ...annotations: { [key: string]: ValidationAnnotation }[]) {
+  return function (target: Object, propertyKey: string) {
+    const o = Object.assign({}, ...annotations, { getInstance: () => new type() } as Partial<ObjectTypeAnnotations>) as ObjectTypeAnnotations;
+    o.constraintType = ConstraintType.object;
+    registerMetadata(target, propertyKey, o);
+  };
+}
+
 export function required(message?: string): { [key: string]: RequiredAnnotation } {
   return { required: { required: true, message: message } };
 }
@@ -143,6 +157,6 @@ export function max<T>(value: T, message?: string): { [key: string]: MaximumAnno
   return { max: { max: value, message: message } };
 }
 
-export function test<T>(name: string, test: (d:T) => boolean, message?: string): { [key: string]: TestAnnotation<T> } {
+export function test<T>(name: string, test: (d: T) => boolean, message?: string): { [key: string]: TestAnnotation<T> } {
   return { test: { name: name, test: test, message: message } };
 }

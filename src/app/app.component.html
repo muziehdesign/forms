@@ -4,19 +4,29 @@
   <div>
     {{checkoutForm.errors | json}}
   </div>
-  <label class="block p-8">
+  <label class="block p-8 my-2 bg-slate-100">
     <span>Instructions</span>
     <input type="text" [(ngModel)]="model.instructions" name="instructions" #instructionsField="ngModel" />
     <span>{{instructionsField.errors | json}}</span>
     <mz-field-errors [field]="instructionsField" *ngIf="instructionsField.dirty && instructionsField.invalid"></mz-field-errors>
   </label>
   <br/>
-  <label class="block p-8">
+  <label class="block p-8 my-2 bg-slate-100">
     <span>Date of birth</span>
     <input type="text" [(ngModel)]="model.date" name="date" #dateField="ngModel" />
     <span>{{dateField.errors | json}}</span>
     <mz-field-errors [field]="dateField" *ngIf="dateField.dirty && dateField.invalid"></mz-field-errors>
   </label>
+
+  <fieldset ngModelGroup="mailingAddress" *ngIf="model.address">
+    <legend>Mailing address</legend>
+    <label class="block p-8 my-2 bg-slate-100">
+      <span>Street 1</span>
+      <input type="text" [(ngModel)]="model.address.street1" name="address1" #addressAddress1="ngModel" />
+      <span>{{dateField.errors | json}}</span>
+      <mz-field-errors [field]="dateField" *ngIf="dateField.dirty && dateField.invalid"></mz-field-errors>
+    </label>
+  </fieldset>
 
   <button type="submit">Check out</button>
 </form>

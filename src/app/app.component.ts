@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { FieldError, ModelSchemaFactory, NgFormModelState, NgFormModelStateFactory } from '@muziehdesign/forms';
-import { CheckoutModel } from './models';
+import { AddressModel, CheckoutModel } from './models';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +14,7 @@ export class AppComponent implements AfterViewInit {
   modelState!: NgFormModelState<CheckoutModel>;
   constructor(private factory: ModelSchemaFactory, private modelStateFactory: NgFormModelStateFactory) {
     this.model = new CheckoutModel();
+    this.model.address = new AddressModel();
   }
   ngAfterViewInit(): void {
     this.modelState = this.modelStateFactory.create(this.checkoutForm, this.model, { onValidate: (errors) => this.onValidate(errors, this.model) });

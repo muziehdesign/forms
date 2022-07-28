@@ -1,4 +1,15 @@
-import { DateType, maxLength, min, pattern, required, StringType, test } from '@muziehdesign/forms';
+import { DateType, maxLength, min, ObjectType, pattern, required, StringType, test } from '@muziehdesign/forms';
+
+export class AddressModel {
+  @StringType(required())
+  street1?: string;
+  street2?: string;
+  @StringType(required())
+  city?: string;
+  @StringType(required())
+  state?: string;
+}
+
 
 export class CheckoutModel {
   @StringType(
@@ -22,10 +33,15 @@ export class CheckoutModel {
     min(new Date(1900, 0, 1), 'Minimum date is 01/01/1900')
   )
   date?: Date;
+
+  @ObjectType(AddressModel, required())
+  address?: AddressModel;
+
+  @ObjectType(AddressModel)
+  optionalAddress?: AddressModel;
 }
 
 export class ItemModel {
   itemId?: number;
-
   quantity?: number;
 }
