@@ -45,6 +45,8 @@ export class NgFormModelState<T> {
         let validationErrors = <ValidationErrors>{};
         value.forEach((v) => (validationErrors[v.type] = v.message));
 
+        console.log("FORM ", this.form);
+
         const control = this.form.form.get(path);
         if (!control) {
           // TODO: use actual logging service

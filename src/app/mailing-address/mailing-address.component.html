@@ -1,4 +1,5 @@
-<form class="form" #mailingAddressForm="ngForm">
+<fieldset ngModelGroup="mailingAddress">
+    <legend>Mailing address</legend>
     <label class="block p-8 my-2 bg-slate-100">
         <span>Street 1</span>
         <input type="text" [(ngModel)]="model.street1" name="street1" #street1Field="ngModel" />
@@ -26,4 +27,4 @@
         <span>{{stateField.errors | json}}</span>
         <mz-field-errors [field]="stateField" *ngIf="stateField.dirty && stateField.invalid"></mz-field-errors>
     </label>
-</form>
+</fieldset>
