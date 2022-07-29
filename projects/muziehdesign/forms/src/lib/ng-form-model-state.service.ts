@@ -18,7 +18,7 @@ export class NgFormModelStateFactory {
 }
 
 export interface ModelStateOptions {
-  onValidate: (errors: FieldError[]) => FieldError[]
+  onValidate: (errors: FieldError[]) => FieldError[];
 }
 
 export class NgFormModelState<T> {
@@ -28,12 +28,12 @@ export class NgFormModelState<T> {
 
   constructor(private form: NgForm, private modelValidator: ModelValidator<T>, private model: T, options?: ModelStateOptions) {
     this.options = options;
-    
+
     this.form.form.valueChanges
       .pipe(
         switchMap(async (x) => {
           this.model = x;
-          return from(this.runValidations(this.options?.onValidate))
+          return from(this.runValidations(this.options?.onValidate));
         })
       )
       .subscribe();
@@ -41,10 +41,17 @@ export class NgFormModelState<T> {
     this.errors$.subscribe((list) => {
       const grouped = list.reduce((grouped, v) => grouped.set(v.path, [...(grouped.get(v.path) || []), v]), new Map<string, FieldError[]>());
 
-      grouped.forEach((value, key) => {
+      grouped.forEach((value, path) => {
         let validationErrors = <ValidationErrors>{};
         value.forEach((v) => (validationErrors[v.type] = v.message));
-        this.form.controls[key]?.setErrors(validationErrors);
+
+        const control = this.form.form.get(path);
+        if (!control) {
+          // TODO: use actual logging service
+          console.log(`cannot find path ${path}, which has errors`, validationErrors);
+        } else {
+          control.setErrors(validationErrors);
+        }
       });
     });
   }
@@ -61,7 +68,7 @@ export class NgFormModelState<T> {
     return await this.runValidations(this.options?.onValidate);
   }
 
-  private async runValidations(callback?: (list:FieldError[])=>FieldError[]): Promise<void> {
+  private async runValidations(callback?: (list: FieldError[]) => FieldError[]): Promise<void> {
     this.removeCurrentErrors();
     const list = await this.modelValidator.validate(this.model);
     const final = callback?.(list) || list;
@@ -69,6 +76,6 @@ export class NgFormModelState<T> {
   }
 
   private removeCurrentErrors() {
-    Object.keys(this.form.controls).forEach(key => this.form.controls[key].setErrors(null));
+    Object.keys(this.form.controls).forEach((key) => this.form.controls[key].setErrors(null));
   }
 }
