@@ -1,4 +1,4 @@
-import { DateType, maxLength, min, ObjectType, pattern, required, StringType, test } from '@muziehdesign/forms';
+import { DateType, maxLength, min, ObjectType, NumberType, pattern, required, StringType, test } from '@muziehdesign/forms';
 
 export class AddressModel {
   @StringType(required())
@@ -34,6 +34,10 @@ export class CheckoutModel {
   )
   date?: Date;
 
+  @NumberType(
+    required()
+  )
+  totalCost?: number;
   @ObjectType(AddressModel, required())
   address?: AddressModel;
 
