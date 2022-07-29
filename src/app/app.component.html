@@ -17,15 +17,9 @@
     <span>{{dateField.errors | json}}</span>
     <mz-field-errors [field]="dateField" *ngIf="dateField.dirty && dateField.invalid"></mz-field-errors>
   </label>
-
-  <fieldset ngModelGroup="mailingAddress" *ngIf="model.address">
+  <fieldset class="fieldset" *ngIf="model.address">
     <legend>Mailing address</legend>
-    <label class="block p-8 my-2 bg-slate-100">
-      <span>Street 1</span>
-      <input type="text" [(ngModel)]="model.address.street1" name="address1" #addressAddress1="ngModel" />
-      <span>{{dateField.errors | json}}</span>
-      <mz-field-errors [field]="dateField" *ngIf="dateField.dirty && dateField.invalid"></mz-field-errors>
-    </label>
+    <app-mailing-address [model]="model.address"></app-mailing-address>
   </fieldset>
 
   <button type="submit">Check out</button>

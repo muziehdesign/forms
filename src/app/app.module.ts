@@ -6,10 +6,12 @@ import { FormsModule as MuziehFormsModule } from '@muziehdesign/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { MailingAddressComponent } from './mailing-address/mailing-address.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    MailingAddressComponent
   ],
   imports: [
     BrowserModule,
