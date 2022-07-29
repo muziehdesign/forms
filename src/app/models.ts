@@ -1,4 +1,4 @@
-import { DateType, maxLength, min, pattern, required, StringType, test } from '@muziehdesign/forms';
+import { DateType, maxLength, min, NumberType, pattern, required, StringType, test } from '@muziehdesign/forms';
 
 export class CheckoutModel {
   @StringType(
@@ -22,6 +22,11 @@ export class CheckoutModel {
     min(new Date(1900, 0, 1), 'Minimum date is 01/01/1900')
   )
   date?: Date;
+
+  @NumberType(
+    required()
+  )
+  totalCost?: number;
 }
 
 export class ItemModel {
