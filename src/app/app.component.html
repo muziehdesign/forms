@@ -17,7 +17,13 @@
     <span>{{dateField.errors | json}}</span>
     <mz-field-errors [field]="dateField" *ngIf="dateField.dirty && dateField.invalid"></mz-field-errors>
   </label>
-  <fieldset class="fieldset" *ngIf="model.address">
+  <label class="block p-8">
+    <span>Total cost</span>
+    <input type="text" [(ngModel)]="model.totalCost" name="totalCost" #totalCost="ngModel" />
+    <span>{{totalCost.errors | json}}</span>
+    <mz-field-errors [field]="totalCost" *ngIf="totalCost.dirty && totalCost.invalid"></mz-field-errors>
+  </label>
+  <fieldset ngModelGroup="mailingAddress" *ngIf="model.address">
     <legend>Mailing address</legend>
     <app-mailing-address [model]="model.address"></app-mailing-address>
   </fieldset>

@@ -7,6 +7,7 @@ export enum ConstraintType {
   boolean,
   date,
   object,
+  number,
 }
 
 export interface ConstraintAnnotations {
@@ -36,6 +37,10 @@ export interface DateTypeAnnotations extends ConstraintAnnotations {
 export interface ObjectTypeAnnotations extends ConstraintAnnotations {
   required?: RequiredAnnotation;
   getInstance: () => any;
+}
+
+export interface NumberTypeAnnotations extends ConstraintAnnotations {
+  required?: RequiredAnnotation;
 }
 
 export interface ValidationAnnotation {
@@ -109,6 +114,14 @@ export function DateType(...annotations: { [key: string]: ValidationAnnotation }
   return function (target: Object, propertyKey: string) {
     const o = Object.assign({}, ...annotations) as DateTypeAnnotations;
     o.constraintType = ConstraintType.date;
+    registerMetadata(target, propertyKey, o);
+  };
+}
+
+export function NumberType(...annotations: { [key: string]: ValidationAnnotation }[]) {
+  return function (target: Object, propertyKey: string) {
+    const o = Object.assign({}, ...annotations) as NumberTypeAnnotations;
+    o.constraintType = ConstraintType.number;
     registerMetadata(target, propertyKey, o);
   };
 }
