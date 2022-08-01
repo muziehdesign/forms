@@ -1,27 +1,70 @@
-# Forms
+```typescript
+export class CheckoutModel {
+  @StringType(
+    required(),
+    pattern(/\d{9}$/i, 'Must have 9 numbers'),
+    maxLength(9)
+  )
+  instructions?: string;
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.0.2.
+  items?: ItemModel[];
 
-## Development server
+  @DateType(
+    required(),
+    test(
+        'minimumAge',
+        (d: Date) => {
+          return Number(+new Date().getFullYear() - +d?.getFullYear()) >= 18;
+        },
+        'You must be over 18'
+    ),
+    min(new Date(1900, 0, 1), 'Minimum date is 01/01/1900')
+  )
+  date?: Date;
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+  @NumberType(
+    required()
+  )
+  totalCost?: number;
+  @ObjectType(AddressModel, required())
+  address?: AddressModel;
 
-## Code scaffolding
+  @ObjectType(AddressModel)
+  optionalAddress?: AddressModel;
+}
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```html
+<form #checkoutForm="ngForm" (ngSubmit)="checkout()">
+  <div>
+    {{checkoutForm.errors | json}}
+  </div>
+  <label class="block p-8 my-2 bg-slate-100">
+    <span>Instructions</span>
+    <input type="text" [(ngModel)]="model.instructions" name="instructions" #instructionsField="ngModel" />
+    <span>{{instructionsField.errors | json}}</span>
+    <mz-field-errors [field]="instructionsField" *ngIf="instructionsField.dirty && instructionsField.invalid"></mz-field-errors>
+  </label>
+  <br/>
+  <label class="block p-8 my-2 bg-slate-100">
+    <span>Date of birth</span>
+    <input type="text" [(ngModel)]="model.date" name="date" #dateField="ngModel" />
+    <span>{{dateField.errors | json}}</span>
+    <mz-field-errors [field]="dateField" *ngIf="dateField.dirty && dateField.invalid"></mz-field-errors>
+  </label>
+  <label class="block p-8">
+    <span>Total cost</span>
+    <input type="text" [(ngModel)]="model.totalCost" name="totalCost" #totalCost="ngModel" />
+    <span>{{totalCost.errors | json}}</span>
+    <mz-field-errors [field]="totalCost" *ngIf="totalCost.dirty && totalCost.invalid"></mz-field-errors>
+  </label>
 
-## Build
+  <fieldset ngModelGroup="address">
+    <legend>Mailing address</legend>
+    <app-mailing-address [model]="model.address!"></app-mailing-address>
+  </fieldset>
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+  <button type="submit">Check out</button>
+</form>
+```
