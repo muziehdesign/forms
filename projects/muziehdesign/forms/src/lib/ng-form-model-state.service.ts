@@ -22,10 +22,13 @@ export interface ModelStateOptions {
 }
 
 export class NgFormModelState<T> {
+  private changesSubject = new BehaviorSubject<boolean | undefined>(undefined);
+  public readonly changes = this.changesSubject.asObservable();
   private errors: BehaviorSubject<FieldError[]> = new BehaviorSubject<FieldError[]>([]);
-  public errors$ = this.errors.asObservable();
+  private errors$ = this.errors.asObservable();
   private options?: ModelStateOptions;
 
+  // TODO: remove model
   constructor(private form: NgForm, private modelValidator: ModelValidator<T>, private model: T, options?: ModelStateOptions) {
     this.options = options;
 
@@ -53,6 +56,8 @@ export class NgFormModelState<T> {
           control.setErrors(validationErrors);
         }
       });
+
+      this.changesSubject.next(this.errors.value.length == 0);
     });
   }
 
@@ -78,4 +83,5 @@ export class NgFormModelState<T> {
   private removeCurrentErrors() {
     Object.keys(this.form.controls).forEach((key) => this.form.controls[key].setErrors(null));
   }
+
 }
