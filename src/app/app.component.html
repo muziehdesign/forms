@@ -23,11 +23,19 @@
     <span>{{totalCost.errors | json}}</span>
     <mz-field-errors [field]="totalCost" *ngIf="totalCost.dirty && totalCost.invalid"></mz-field-errors>
   </label>
-  <app-mailing-address *ngIf="model.address" [model]="model.address"></app-mailing-address>
-  
+
+  <fieldset ngModelGroup="address">
+    <legend>Mailing address</legend>
+    <app-mailing-address [model]="model.address!"></app-mailing-address>
+  </fieldset>
+
+
   <button type="submit">Check out</button>
 </form>
 
 <div>
   {{model | json}}
+</div>
+<div>
+  {{checkoutForm.value | json}}
 </div>
