@@ -1,4 +1,15 @@
-import { DateType, maxLength, min, NumberType, pattern, required, StringType, test } from '@muziehdesign/forms';
+import { DateType, maxLength, min, ObjectType, NumberType, pattern, required, StringType, test } from '@muziehdesign/forms';
+
+export class AddressModel {
+  @StringType(required())
+  street1?: string;
+  street2?: string;
+  @StringType(required())
+  city?: string;
+  @StringType(required())
+  state?: string;
+}
+
 
 export class CheckoutModel {
   @StringType(
@@ -27,10 +38,14 @@ export class CheckoutModel {
     required()
   )
   totalCost?: number;
+  @ObjectType(AddressModel, required())
+  address?: AddressModel;
+
+  @ObjectType(AddressModel)
+  optionalAddress?: AddressModel;
 }
 
 export class ItemModel {
   itemId?: number;
-
   quantity?: number;
 }

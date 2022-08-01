@@ -3,7 +3,7 @@ import { object, SchemaOf } from 'yup';
 import { ModelValidator } from './model-validator';
 import { SCHEMA_METADATA_NAMESPACE } from './constants';
 import { ObjectShape } from 'yup/lib/object';
-import { BooleanTypeAnnotations, ConstraintAnnotations, ConstraintType, DateTypeAnnotations, NumberTypeAnnotations, StringTypeAnnotations } from './type-annotations';
+import { BooleanTypeAnnotations, ConstraintAnnotations, ConstraintType, DateTypeAnnotations, ObjectTypeAnnotations, NumberTypeAnnotations, StringTypeAnnotations } from './type-annotations';
 import * as Yup from 'yup';
 
 /*
@@ -25,6 +25,11 @@ export class ModelSchemaFactory {
   constructor() {}
 
   build<T>(model: T): ModelValidator<T> {
+    const schema = this.buildObjectSchema(model);
+    return new ModelValidator(schema);
+  }
+
+  private buildObjectSchema<T>(model: T) {
     const metadata: Map<string, ConstraintAnnotations> = Reflect.getMetadata(SCHEMA_METADATA_NAMESPACE, model);
     let shape: ObjectShape = {};
     metadata.forEach((value, key) => {
@@ -34,12 +39,13 @@ export class ModelSchemaFactory {
         shape[key] = this.buildBooleanSchema(value as BooleanTypeAnnotations);
       } else if (value.constraintType == ConstraintType.date) {
         shape[key] = this.buildDateSchema(value as DateTypeAnnotations);
+      } else if(value.constraintType == ConstraintType.object) {
+        shape[key] = this.buildNestedObjectSchema(value as ObjectTypeAnnotations);
       } else if (value.constraintType == ConstraintType.number) {
         shape[key] = this.buildNumberSchema(value as NumberTypeAnnotations);
       }
     });
-    const schema = object(shape) as SchemaOf<T>;
-    return new ModelValidator(schema);
+    return object(shape) as SchemaOf<T>;
   }
 
   private buildStringSchema(options: StringTypeAnnotations) {
@@ -112,5 +118,15 @@ export class ModelSchemaFactory {
     }
 
     return schema;
+  }
+
+  private buildNestedObjectSchema(options: ObjectTypeAnnotations) {
+
+    let nestedSchema = this.buildObjectSchema(options.getInstance());
+    if(options.required) {
+      nestedSchema = nestedSchema.required();
+    }
+
+    return nestedSchema;
   }
 }
