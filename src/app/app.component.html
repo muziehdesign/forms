@@ -1,41 +1,41 @@
-<h1>Forms</h1>
+<h1>Form</h1>
 
-<form #checkoutForm="ngForm" (ngSubmit)="checkout()">
+<div class="grid grid-cols-2 gap-4">
   <div>
-    {{checkoutForm.errors | json}}
+    <form #checkoutForm="ngForm" (ngSubmit)="checkout()" class="form">
+      <label class="field">
+        <span class="field-label">Instructions</span>
+        <input type="text" [(ngModel)]="model.instructions" name="instructions" #instructionsField="ngModel" class="field-control" />
+        <mz-field-errors [field]="instructionsField" *ngIf="instructionsField.touched && instructionsField.invalid"></mz-field-errors>
+      </label>
+      <label class="field">
+        <span class="field-label">Date of birth</span>
+        <input type="text" [(ngModel)]="model.date" name="date" #dateField="ngModel" class="field-control" />
+        <mz-field-errors [field]="dateField" *ngIf="dateField.touched && dateField.invalid"></mz-field-errors>
+      </label>
+      <label class="field">
+        <span class="field-label">Total cost</span>
+        <input type="text" [(ngModel)]="model.totalCost" name="totalCost" #totalCost="ngModel" class="field-control" />
+        <mz-field-errors [field]="totalCost" *ngIf="totalCost.touched && totalCost.invalid"></mz-field-errors>
+      </label>
+
+      <fieldset ngModelGroup="address">
+        <legend>Mailing address</legend>
+        <app-mailing-address [model]="model.address!"></app-mailing-address>
+      </fieldset>
+
+
+      <button type="submit">Check out</button>
+    </form>
   </div>
-  <label class="block p-8 my-2 bg-slate-100">
-    <span>Instructions</span>
-    <input type="text" [(ngModel)]="model.instructions" name="instructions" #instructionsField="ngModel" />
-    <span>{{instructionsField.errors | json}}</span>
-    <mz-field-errors [field]="instructionsField" *ngIf="instructionsField.touched && instructionsField.invalid"></mz-field-errors>
-  </label>
-  <br/>
-  <label class="block p-8 my-2 bg-slate-100">
-    <span>Date of birth</span>
-    <input type="text" [(ngModel)]="model.date" name="date" #dateField="ngModel" />
-    <span>{{dateField.errors | json}}</span>
-    <mz-field-errors [field]="dateField" *ngIf="dateField.touched && dateField.invalid"></mz-field-errors>
-  </label>
-  <label class="block p-8">
-    <span>Total cost</span>
-    <input type="text" [(ngModel)]="model.totalCost" name="totalCost" #totalCost="ngModel" />
-    <span>{{totalCost.errors | json}}</span>
-    <mz-field-errors [field]="totalCost" *ngIf="totalCost.touched && totalCost.invalid"></mz-field-errors>
-  </label>
-
-  <fieldset ngModelGroup="address">
-    <legend>Mailing address</legend>
-    <app-mailing-address [model]="model.address!"></app-mailing-address>
-  </fieldset>
-
-
-  <button type="submit">Check out</button>
-</form>
-
-<div>
-  {{model | json}}
-</div>
-<div>
-  {{checkoutForm.value | json}}
+  <div class="text-slate-600">
+    <div class="p-8 my-1 bg-slate-50">
+      <span>// model</span>
+      <pre>{{model | json}}</pre>
+    </div>
+    <div class="p-8 my-1 bg-slate-50">
+      <span>// checkoutForm.value</span>
+      <pre>{{checkoutForm.value | json}}</pre>
+    </div>
+  </div>
 </div>

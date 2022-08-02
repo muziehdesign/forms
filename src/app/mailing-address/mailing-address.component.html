@@ -1,27 +1,23 @@
-<label class="block p-8 my-2 bg-slate-100">
-  <span>Street 1</span>
-  <input type="text" [(ngModel)]="model.street1" name="street1" #street1Field="ngModel" />
-  <span>{{street1Field.errors | json}}</span>
+<label class="field">
+  <span class="field-label">Street 1</span>
+  <input type="text" class="field-control" [(ngModel)]="model.street1" name="street1" #street1Field="ngModel" />
   <mz-field-errors [field]="street1Field" *ngIf="street1Field.dirty && street1Field.invalid"></mz-field-errors>
 </label>
 
-<label class="block p-8 my-2 bg-slate-100">
-  <span>Street 2</span>
-  <input type="text" [(ngModel)]="model.street2" name="street2" #street2Field="ngModel" />
-  <span>{{street2Field.errors | json}}</span>
+<label class="field">
+  <span class="field-label">Street 2</span>
+  <input type="text" class="field-control" [(ngModel)]="model.street2" name="street2" #street2Field="ngModel" />
   <mz-field-errors [field]="street2Field" *ngIf="street2Field.dirty && street2Field.invalid"></mz-field-errors>
 </label>
 
-<label class="block p-8 my-2 bg-slate-100">
-  <span>City</span>
-  <input type="text" [(ngModel)]="model.city" name="city" #cityField="ngModel" />
-  <span>{{cityField.errors | json}}</span>
+<label class="field">
+  <span class="field-label">City</span>
+  <input type="text" class="field-control" [(ngModel)]="model.city" name="city" #cityField="ngModel" />
   <mz-field-errors [field]="cityField" *ngIf="cityField.dirty && cityField.invalid"></mz-field-errors>
 </label>
 
-<label class="block p-8 my-2 bg-slate-100">
-  <span>State</span>
-  <input type="text" [(ngModel)]="model.state" name="state" #stateField="ngModel" />
-  <span>{{stateField.errors | json}}</span>
+<label class="field">
+  <span class="field-label">State</span>
+  <input type="text" class="field-control" [(ngModel)]="model.state" name="state" #stateField="ngModel" />
   <mz-field-errors [field]="stateField" *ngIf="stateField.dirty && stateField.invalid"></mz-field-errors>
 </label>

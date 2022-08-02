@@ -2,6 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+.form {
+  @apply p-4;
+}
+
+legend {
+  @apply uppercase;
+}
+
 input {
   @apply border;
+}
+
+button {
+  @apply border border-gray-700 py-2 px-4;
+}
+
+.field {
+  @apply block p-4 my-4;
+}
+
+.field-label {
+  @apply block;
 }
