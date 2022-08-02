@@ -10,7 +10,6 @@ export class AddressModel {
   state?: string;
 }
 
-
 export class CheckoutModel {
   @StringType(
     required(),
@@ -18,7 +17,6 @@ export class CheckoutModel {
     maxLength(9)
   )
   instructions?: string;
-
   items?: ItemModel[];
 
   @DateType(
