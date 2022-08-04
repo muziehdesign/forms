@@ -6,7 +6,7 @@ import { ModelStateResult } from "./model-state-result";
 import { ModelValidator } from "./model-validator";
 
 export class NgFormModelState<T> {
-  private changesSubject = new BehaviorSubject<ModelStateResult | undefined>(undefined);
+  private changesSubject = new BehaviorSubject<ModelStateResult<T> | undefined>(undefined);
   public readonly changes = this.changesSubject.asObservable();
   private errors: BehaviorSubject<FieldError[]> = new BehaviorSubject<FieldError[]>([]);
   private errors$ = this.errors.asObservable();
