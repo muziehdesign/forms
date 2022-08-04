@@ -2,6 +2,7 @@
  * Public API Surface of forms
  */
 export * from './lib/field-error';
+export * from './lib/model-state-result';
 export * from './lib/model-schema.factory';
 export * from './lib/model-validator';
 export * from './lib/type-annotations';

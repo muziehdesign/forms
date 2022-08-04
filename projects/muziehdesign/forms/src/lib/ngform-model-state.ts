@@ -2,10 +2,11 @@ import { NgForm, ValidationErrors } from "@angular/forms";
 import { BehaviorSubject, from, switchMap } from "rxjs";
 import { FieldError } from "./field-error";
 import { ModelStateOptions } from "./model-state-options";
+import { ModelStateResult } from "./model-state-result";
 import { ModelValidator } from "./model-validator";
 
 export class NgFormModelState<T> {
-  private changesSubject = new BehaviorSubject<boolean | undefined>(undefined);
+  private changesSubject = new BehaviorSubject<ModelStateResult | undefined>(undefined);
   public readonly changes = this.changesSubject.asObservable();
   private errors: BehaviorSubject<FieldError[]> = new BehaviorSubject<FieldError[]>([]);
   private errors$ = this.errors.asObservable();
@@ -40,7 +41,7 @@ export class NgFormModelState<T> {
         }
       });
 
-      this.changesSubject.next(this.errors.value.length == 0);
+      this.changesSubject.next({valid: this.errors.value.length == 0, errors: list });
     });
   }
 
