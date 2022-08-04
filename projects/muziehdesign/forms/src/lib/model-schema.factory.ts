@@ -58,7 +58,7 @@ export class ModelSchemaFactory {
     }
 
     if (options.pattern) {
-      schema = schema.matches(options.pattern.pattern, options.pattern.message);
+      schema = schema.matches(options.pattern.pattern,  { message: options.pattern.message, excludeEmptyString: true });
     }
 
     return schema;
