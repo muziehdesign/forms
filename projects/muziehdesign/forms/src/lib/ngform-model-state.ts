@@ -41,7 +41,7 @@ export class NgFormModelState<T> {
         }
       });
 
-      this.changesSubject.next({valid: this.errors.value.length == 0, errors: list });
+      this.changesSubject.next({valid: this.errors.value.length == 0, errors: list, model: this.model });
     });
   }
 

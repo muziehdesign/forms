@@ -1,6 +1,7 @@
 import { FieldError } from "./field-error";
 
-export interface ModelStateResult {
+export interface ModelStateResult<T> {
   valid: boolean;
   errors: FieldError[];
+  model: T;
 }
