@@ -1,6 +1,6 @@
 import { Injectable, NO_ERRORS_SCHEMA } from '@angular/core';
 import { NgForm, ValidationErrors } from '@angular/forms';
-import { BehaviorSubject, filter, from, switchMap } from 'rxjs';
+import { BehaviorSubject, filter, from, switchMap, skip } from 'rxjs';
 import { FieldError } from './field-error';
 import { ModelSchemaFactory } from './model-schema.factory';
 import { ModelValidator } from './model-validator';
@@ -29,8 +29,9 @@ export class NgFormModelState<T> {
   private options?: ModelStateOptions;
 
   // TODO: remove model
-  constructor(private form: NgForm, private modelValidator: ModelValidator<T>, private model: T, options?: ModelStateOptions) {
+  constructor(private form: NgForm, private modelValidator: ModelValidator<T>, private model: T | undefined, options?: ModelStateOptions) {
     this.options = options;
+    this.model = undefined;
 
     this.form.form.valueChanges
       .pipe(
@@ -56,8 +57,7 @@ export class NgFormModelState<T> {
           control.setErrors(validationErrors);
         }
       });
-
-      this.changesSubject.next(this.errors.value.length == 0);
+      this.changesSubject.next(this.errors.value.length == 0 && this.model !== undefined);
     });
   }
 
