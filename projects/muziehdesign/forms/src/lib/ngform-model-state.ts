@@ -19,9 +19,8 @@ export class NgFormModelState<T> {
       .subscribe();
   }
 
-  // TODO: rename
-  isValid(): boolean {
-    return this.changesSubject.value?.errors.length == 0;
+  getCurrent(): ModelStateResult<T> | undefined {
+    return this.changesSubject.value;
   }
 
   setErrors(errors: FieldError[]) {
