@@ -55,6 +55,12 @@ export class NgFormModelState<T> {
     const state = await this.runValidations(model, this.options?.onValidate);
     Object.keys(this.form.controls).forEach((key) => {
       const control = this.form.controls[key];
+      if (control instanceof FormGroup) {
+        Object.keys(control.controls).forEach((key) => {
+          console.log('clearing errors for ' + key, control instanceof FormGroup, control instanceof FormArray);
+          control.controls[key].setErrors(null);
+        })
+      }
       console.log('clearing errors for ' + key, control instanceof FormGroup, control instanceof FormArray);
       this.form.controls[key].setErrors(null);
     });
