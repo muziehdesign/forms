@@ -1,4 +1,4 @@
-import { FormArray, FormGroup, NgForm, NgModelGroup, ValidationErrors } from '@angular/forms';
+import { AbstractControl, FormArray, FormGroup, NgForm, NgModelGroup, ValidationErrors } from '@angular/forms';
 import { BehaviorSubject, distinctUntilChanged, from, switchMap } from 'rxjs';
 import { FieldError } from './field-error';
 import { ModelStateOptions } from './model-state-options';
@@ -32,17 +32,7 @@ export class NgFormModelState<T> {
     console.log('validating');
     const model = this.form.value;
     const state = await this.runValidations(model, this.options?.onValidate);
-    Object.keys(this.form.controls).forEach((key) => {
-      const control = this.form.controls[key];
-      if (control instanceof FormGroup) {
-        Object.keys(control.controls).forEach((key) => {
-          console.log('clearing errors for ' + key, control instanceof FormGroup, control instanceof FormArray);
-          control.controls[key].setErrors(null);
-        })
-      }
-      console.log('clearing errors for ' + key, control instanceof FormGroup, control instanceof FormArray);
-      this.form.controls[key].setErrors(null);
-    });
+    this.deleteFormErrors();
 
     const grouped = state.errors.reduce((grouped, v) => grouped.set(v.path, [...(grouped.get(v.path) || []), v]), new Map<string, FieldError[]>());
     grouped.forEach((value, path) => {
@@ -60,6 +50,45 @@ export class NgFormModelState<T> {
 
     this.changesSubject.next(state);
     return state;
+  }
+
+  private deleteFormErrors() {
+    this.deleteErrors(this.form.form);
+  }
+
+  private deleteErrors(rootFormGroup: FormGroup) {
+    Object.keys(rootFormGroup.controls).forEach((key) => {
+      const control = rootFormGroup.controls[key];
+
+      if (!this.isParentControl(control)) {
+        this.deleteErrorsFromControl(key, control);
+      } else if (control instanceof FormGroup) {
+        this.deleteErrors(control as FormGroup);
+      } else if (control instanceof FormArray) {
+        this.loopFormArray(control as FormArray);
+      }
+    });
+  }
+
+  private deleteErrorsFromControl(key: string | number, control: AbstractControl) {
+    console.log('clearing errors for ' + key, control instanceof FormGroup, control instanceof FormArray);
+    control.setErrors(null);
+  }
+
+  private isParentControl(control: AbstractControl) {
+    return control instanceof FormGroup || control instanceof FormArray;
+  }
+
+  private loopFormArray(formArray: FormArray) {
+    formArray.controls.forEach((control, index) => {
+      if (!this.isParentControl(control)) {
+        this.deleteErrorsFromControl(index, control);
+      } else if (control instanceof FormGroup) {
+        this.deleteErrors(control as FormGroup);
+      } else if (control instanceof FormArray) {
+        this.loopFormArray(control as FormArray);
+      }
+    });
   }
 
   private async runValidations<T>(model: T, callback?: (list: FieldError[]) => FieldError[]): Promise<ModelStateResult<T>> {
