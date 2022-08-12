@@ -12,31 +12,11 @@ export class NgFormModelState<T> {
   constructor(private form: NgForm, private modelValidator: ModelValidator<T>, private options?: ModelStateOptions) {
     this.form.form.valueChanges
       .pipe(
-        distinctUntilChanged(),
         switchMap(async (x) => {
           return from(this.validate());
         })
       )
       .subscribe();
-
-    /*this.errors$.subscribe((list) => {
-      const grouped = list.reduce((grouped, v) => grouped.set(v.path, [...(grouped.get(v.path) || []), v]), new Map<string, FieldError[]>());
-
-      grouped.forEach((value, path) => {
-        let validationErrors = <ValidationErrors>{};
-        value.forEach((v) => (validationErrors[v.type] = v.message));
-
-        const control = this.form.form.get(path);
-        if (!control) {
-          // TODO: use actual logging service
-          console.log(`cannot find path ${path}, which has errors`, validationErrors);
-        } else {
-          control.setErrors(validationErrors);
-        }
-      });
-
-      this.changesSubject.next({valid: this.errors.value.length == 0, errors: list, model: this.model });
-    });*/
   }
 
   // TODO: rename
@@ -78,7 +58,6 @@ export class NgFormModelState<T> {
   }
 
   private async runValidations<T>(model: T, callback?: (list: FieldError[]) => FieldError[]): Promise<ModelStateResult<T>> {
-    //this.removeCurrentErrors();
     const list = await this.modelValidator.validate(model);
     const final = callback?.(list) || list;
     return {
@@ -86,6 +65,5 @@ export class NgFormModelState<T> {
       errors: final,
       model: model,
     };
-    // this.errors.next(final);
   }
 }
