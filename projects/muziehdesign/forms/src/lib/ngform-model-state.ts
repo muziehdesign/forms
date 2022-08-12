@@ -1,5 +1,5 @@
 import { NgForm, ValidationErrors } from "@angular/forms";
-import { BehaviorSubject, from, switchMap } from "rxjs";
+import { BehaviorSubject, from, Subscription, switchMap } from "rxjs";
 import { FieldError } from "./field-error";
 import { ModelStateOptions } from "./model-state-options";
 import { ModelStateResult } from "./model-state-result";
@@ -11,21 +11,21 @@ export class NgFormModelState<T> {
   private errors: BehaviorSubject<FieldError[]> = new BehaviorSubject<FieldError[]>([]);
   private errors$ = this.errors.asObservable();
   private options?: ModelStateOptions;
-
+  subs: Subscription[] = [];
   // TODO: remove model
   constructor(private form: NgForm, private modelValidator: ModelValidator<T>, private model: T, options?: ModelStateOptions) {
     this.options = options;
 
-    this.form.form.valueChanges
+    this.subs.push(this.form.form.valueChanges
       .pipe(
         switchMap(async (x) => {
           this.model = x;
           return from(this.runValidations(this.options?.onValidate));
         })
       )
-      .subscribe();
+      .subscribe());
 
-    this.errors$.subscribe((list) => {
+    this.subs.push(this.errors$.subscribe((list) => {
       const grouped = list.reduce((grouped, v) => grouped.set(v.path, [...(grouped.get(v.path) || []), v]), new Map<string, FieldError[]>());
 
       grouped.forEach((value, path) => {
@@ -42,7 +42,7 @@ export class NgFormModelState<T> {
       });
 
       this.changesSubject.next({valid: this.errors.value.length == 0, errors: list, model: this.model });
-    });
+    }));
   }
 
   isValid(): boolean {
@@ -51,6 +51,10 @@ export class NgFormModelState<T> {
 
   setErrors(errors: FieldError[]) {
     this.errors.next(errors);
+  }
+
+  dispose() {
+    this.subs.forEach(sub => sub.unsubscribe());
   }
 
   async validate(): Promise<void> {
