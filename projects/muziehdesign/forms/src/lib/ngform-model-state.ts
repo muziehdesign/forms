@@ -29,7 +29,6 @@ export class NgFormModelState<T> {
   }
 
   async validate(): Promise<ModelStateResult<T>> {
-    console.log('validating');
     const model = this.form.value;
     const state = await this.runValidations(model, this.options?.onValidate);
     this.deleteFormErrors();
@@ -42,7 +41,6 @@ export class NgFormModelState<T> {
       const control = this.form.form.get(path);
       if (!control) {
         // TODO: use actual logging service
-        console.log(`cannot find path ${path}, which has errors`, validationErrors);
       } else {
         control.setErrors(validationErrors);
       }
@@ -71,7 +69,6 @@ export class NgFormModelState<T> {
   }
 
   private deleteErrorsFromControl(key: string | number, control: AbstractControl) {
-    console.log('clearing errors for ' + key, control instanceof FormGroup, control instanceof FormArray);
     control.setErrors(null);
   }
 
