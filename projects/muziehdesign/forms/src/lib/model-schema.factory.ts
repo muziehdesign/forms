@@ -89,7 +89,9 @@ export class ModelSchemaFactory {
   }
 
   private buildDateSchema(options: DateTypeAnnotations) {
-    let schema = Yup.date().typeError('Please enter a valid date');
+    let schema = Yup.date()
+      .transform((v, o) => (o === '' ? undefined : v))
+      .typeError('Please enter a valid date');
     if (options.required) {
       schema = schema.required(options.required.message);
     }
