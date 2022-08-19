@@ -1,7 +1,7 @@
-import { format, isValid, parse } from "date-fns";
-import * as IMask from "imask";
+import { format, isValid, parse } from 'date-fns';
+import * as IMask from 'imask';
 
-export const dateMaskOptions =  {
+export const dateMaskOptions = {
   mask: 'MM/dd/yyyy',
   format: (date: Date | undefined): string => {
     if (!date) {
@@ -14,7 +14,11 @@ export const dateMaskOptions =  {
     if (!str.match(dateRegex)) {
       return undefined;
     }
-    return parse(str, 'MM/dd/yyyy', new Date());
+    const parsed = parse(str, 'MM/dd/yyyy', new Date());
+    if (isValid(parsed)) {
+      return parsed;
+    }
+    return undefined;
   },
   blocks: {
     // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -34,13 +38,13 @@ export const dateMaskOptions =  {
       mask: IMask.MaskedRange,
       from: 1000,
       to: 9999,
-    }
+    },
   },
 };
 
 export const phoneNumberOptions = {
-  mask: '(000) 000-0000'
-}
+  mask: '(000) 000-0000',
+};
 
 export const currencyOptions = {
   mask: 'num',

@@ -3,7 +3,12 @@
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^14.0.0",
-    "@angular/core": "^14.0.0"
+    "@angular/core": "^14.0.0",
+    "@angular/forms": "^14.0.0",
+    "date-fns": "^2.29.2",
+    "angular-imask": "^6.4.0",
+    "reflect-metadata": "^0.1.13",
+    "yup": "^0.32.11"
   },
   "dependencies": {
     "tslib": "^2.3.0"
