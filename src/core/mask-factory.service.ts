@@ -9,17 +9,17 @@ import { currencyOptions, dateMaskOptions, phoneNumberOptions } from '@muziehdes
 export class MaskFactoryService extends IMaskFactory {
   create<Opts extends IMask.AnyMaskedOptions>(el: IMask.MaskElement | HTMLElement, opts: Opts): IMask.InputMask<Opts> {
     if (opts.mask === 'phone') {
-      const finalOptions = Object.assign({}, phoneNumberOptions, opts, {mask: '(000) 000-0000'});
+      const finalOptions = Object.assign({}, phoneNumberOptions, opts, { mask: phoneNumberOptions.mask });
       return IMask(el, finalOptions);
     }
 
     if (opts.mask === 'currency') {
-      const finalOptions = Object.assign({}, currencyOptions, opts, {mask: 'num'});
+      const finalOptions = Object.assign({}, currencyOptions, opts, { mask: currencyOptions.mask });
       return IMask(el, finalOptions);
     }
 
     if (opts.mask === 'MM/dd/yyyy') {
-      const finalOptions = Object.assign({}, dateMaskOptions, opts, {mask: 'MM/dd/yyyy'});
+      const finalOptions = Object.assign({}, dateMaskOptions, opts, { mask: dateMaskOptions.mask });
       return IMask(el, finalOptions);
     }
 
