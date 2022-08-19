@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { IMaskFactory } from 'angular-imask';
 import IMask from 'imask';
-import { format, parse, isValid } from 'date-fns';
 import { dateMaskOptions } from '@muziehdesign/forms';
 
 @Injectable({
