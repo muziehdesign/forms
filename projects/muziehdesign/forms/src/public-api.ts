@@ -10,3 +10,4 @@ export * from './lib/forms.module';
 export * from './lib/ng-form-model-state.service';
 export * from './lib/ngform-model-state';
 export * from './lib/field-errors/field-errors.component';
+export * from './lib/masks';
