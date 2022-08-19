@@ -18,7 +18,7 @@
       </label>
       <label class="field">
         <span class="field-label">Total cost</span>
-        <input type="text" [(ngModel)]="model.totalCost" name="totalCost" #totalCost="ngModel" class="field-control" />
+        <input type="text" [(ngModel)]="model.totalCost" name="totalCost" #totalCost="ngModel" [imask]="{ mask: 'currency' }" [unmask]="true" class="field-control" />
         <mz-field-errors [field]="totalCost" *ngIf="totalCost.touched && totalCost.invalid"></mz-field-errors>
       </label>
 

@@ -9,30 +9,12 @@ import { currencyOptions, dateMaskOptions, phoneNumberOptions } from '@muziehdes
 export class MaskFactoryService extends IMaskFactory {
   create<Opts extends IMask.AnyMaskedOptions>(el: IMask.MaskElement | HTMLElement, opts: Opts): IMask.InputMask<Opts> {
     if (opts.mask === 'phone') {
-      const finalOptions = Object.assign({}, phoneNumberOptions, opts);
-      finalOptions.mask = '(000) 000-0000';
+      const finalOptions = Object.assign({}, phoneNumberOptions, opts, {mask: '(000) 000-0000'});
       return IMask(el, finalOptions);
     }
 
     if (opts.mask === 'currency') {
-      const finalOptions = Object.assign({}, currencyOptions, opts);
-      finalOptions.mask = [
-        { mask: '' },
-        {
-          mask: 'num',
-          lazy: false,
-          blocks: {
-            num: {
-              mask: Number,
-              scale: 2,
-              thousandsSeparator: ',',
-              padFractionalZeros: true,
-              radix: '.',
-              mapToRadix: ['.'],
-            },
-          },
-        },
-      ];
+      const finalOptions = Object.assign({}, currencyOptions, opts, {mask: 'num'});
       return IMask(el, finalOptions);
     }
 
