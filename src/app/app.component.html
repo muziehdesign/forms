@@ -10,12 +10,15 @@
       </label>
       <label class="field">
         <span class="field-label">Date of birth</span>
-        <input type="text" [(ngModel)]="model.date" name="date" #dateField="ngModel" [imask]="{mask: '00/00/0000'}" class="field-control" />
+        <input type="text" [(ngModel)]="model.date" name="date" #dateField="ngModel" [imask]="{ mask: 'MM/dd/yyyy' }" [unmask]="'typed'" class="field-control" />
         <mz-field-errors [field]="dateField" *ngIf="dateField.touched && dateField.invalid"></mz-field-errors>
+        <div>
+          {{model.date}}
+        </div>
       </label>
       <label class="field">
         <span class="field-label">Total cost</span>
-        <input type="text" [(ngModel)]="model.totalCost" name="totalCost" #totalCost="ngModel" class="field-control" />
+        <input type="text" [(ngModel)]="model.totalCost" name="totalCost" #totalCost="ngModel" [imask]="{ mask: 'currency' }" [unmask]="true" class="field-control" />
         <mz-field-errors [field]="totalCost" *ngIf="totalCost.touched && totalCost.invalid"></mz-field-errors>
       </label>
 
