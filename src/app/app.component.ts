@@ -15,6 +15,8 @@ export class AppComponent implements AfterViewInit {
   constructor(private factory: ModelSchemaFactory, private modelStateFactory: NgFormModelStateFactory) {
     this.model = new CheckoutModel();
     this.model.address = new AddressModel();
+
+    //this.model.date = new Date();
   }
   ngAfterViewInit(): void {
     this.modelState = this.modelStateFactory.create(this.checkoutForm, this.model, { onValidate: (errors) => this.onValidate(errors, this.model) });

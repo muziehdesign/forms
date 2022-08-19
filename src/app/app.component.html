@@ -10,7 +10,7 @@
       </label>
       <label class="field">
         <span class="field-label">Date of birth</span>
-        <input type="text" [(ngModel)]="model.date" name="date" #dateField="ngModel" [imask]="{ mask: 'date' }" class="field-control" />
+        <input type="text" [(ngModel)]="model.date" name="date" #dateField="ngModel" [imask]="{ mask: 'MM/dd/yyyy' }" [unmask]="'typed'" class="field-control" />
         <mz-field-errors [field]="dateField" *ngIf="dateField.touched && dateField.invalid"></mz-field-errors>
         <div>
           {{model.date}}
