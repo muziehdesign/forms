@@ -10,14 +10,11 @@ export const dateMaskOptions =  {
       return format(date, 'MM/dd/yyyy');
     },
     parse: (str: string): Date | undefined => {
-
-        // regex to match MM/dd/yyyy
-
-      const parsed = parse(str, 'MM/dd/yyyy', new Date());
-      if (isValid(parsed)) {
-        return parsed;
+      const dateRegex = /(0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])\/([12]\d{3})/;
+      if (!str.match(dateRegex)) {
+        return undefined;
       }
-      return undefined;
+      return parse(str, 'MM/dd/yyyy', new Date());
     },
     blocks: {
       // eslint-disable-next-line @typescript-eslint/naming-convention
