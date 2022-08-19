@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IMaskFactory } from 'angular-imask';
 import IMask from 'imask';
-import * as moment from 'moment';
+import { format, parse } from 'date-fns'
 
 @Injectable({
     providedIn: 'root',
@@ -39,12 +39,21 @@ export class MaskFactoryService extends IMaskFactory {
         }
 
         if (opts.mask === 'date') {
-            const format = 'MM/DD/YYYY';
             const dateOpts = {
                 mask: Date,
-                pattern: format,
-                format: (date: Date) => moment(date).format(format),
-                parse: (str: string) => moment(str, format),
+                pattern: 'MM/DD/YYYY',
+                format: (date: Date): string => format(date, 'MM/dd/yyyy'),
+                parse: (str: string) : Date | undefined => {
+                    try{
+                        console.log('parsing ' + str);
+                        const d = parse(str, 'MM/dd/yyyy', new Date());
+                        console.log('parsed:', d);
+                        return d;
+                    } catch(e) {
+                        console.log(e);
+                        return undefined;
+                    }
+                },
                 blocks: {
                     // eslint-disable-next-line @typescript-eslint/naming-convention
                     MM: {
