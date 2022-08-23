@@ -28,9 +28,21 @@ export class NgFormModelState<T> {
     throw new Error('needs implementation');
   }
 
+  appendErrors(errors: FieldError[], skipEmit?: boolean) {
+    const allErrors = [...this.changesSubject.value?.errors || [], ...errors];
+    const state = {...this.changesSubject.value} as ModelStateResult<T>;
+    state.errors = allErrors;
+    this.setState(state);
+  }
+
   async validate(): Promise<ModelStateResult<T>> {
     const model = this.form.value;
     const state = await this.runValidations(model, this.options?.onValidate);
+    this.setState(state);
+    return state;
+  }
+
+  private setState(state: ModelStateResult<T>) {
     this.deleteFormErrors();
 
     const grouped = state.errors.reduce((grouped, v) => grouped.set(v.path, [...(grouped.get(v.path) || []), v]), new Map<string, FieldError[]>());
@@ -47,7 +59,6 @@ export class NgFormModelState<T> {
     });
 
     this.changesSubject.next(state);
-    return state;
   }
 
   private deleteFormErrors() {
