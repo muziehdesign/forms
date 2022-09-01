@@ -23,26 +23,35 @@ export class NgFormModelState<T> {
     return this.changesSubject.value;
   }
 
+  setState(model: T, errors: FieldError[]) {
+    const state = {
+      model: model,
+      errors: errors,
+      valid: errors.length === 0,
+    } as ModelStateResult<T>;
+    this.setStateInternal(state);
+  }
+
   setErrors(errors: FieldError[]) {
     //this.errors.next(errors);
     throw new Error('needs implementation');
   }
 
   appendErrors(errors: FieldError[], skipEmit?: boolean) {
-    const allErrors = [...this.changesSubject.value?.errors || [], ...errors];
-    const state = {...this.changesSubject.value} as ModelStateResult<T>;
+    const allErrors = [...(this.changesSubject.value?.errors || []), ...errors];
+    const state = { ...this.changesSubject.value } as ModelStateResult<T>;
     state.errors = allErrors;
-    this.setState(state);
+    this.setStateInternal(state);
   }
 
   async validate(): Promise<ModelStateResult<T>> {
     const model = this.form.value;
     const state = await this.runValidations(model, this.options?.onValidate);
-    this.setState(state);
+    this.setStateInternal(state);
     return state;
   }
 
-  private setState(state: ModelStateResult<T>) {
+  private setStateInternal(state: ModelStateResult<T>) {
     this.deleteFormErrors();
 
     const grouped = state.errors.reduce((grouped, v) => grouped.set(v.path, [...(grouped.get(v.path) || []), v]), new Map<string, FieldError[]>());
