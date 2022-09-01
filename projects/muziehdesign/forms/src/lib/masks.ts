@@ -60,3 +60,12 @@ export const currencyOptions = {
     },
   },
 };
+
+export const integerOptions = {
+  mask: Number,
+  scale: 0,
+  thousandsSeparator: ',',
+  padFractionalZeros: true,
+  radix: '.',
+  mapToRadix: ['.'],
+};
