@@ -47,18 +47,12 @@ export const phoneNumberOptions = {
 };
 
 export const currencyOptions = {
-  mask: 'num',
-  lazy: false,
-  blocks: {
-    num: {
-      mask: Number,
-      scale: 2,
-      thousandsSeparator: ',',
-      padFractionalZeros: true,
-      radix: '.',
-      mapToRadix: ['.'],
-    },
-  },
+  mask: Number,
+  scale: 2,
+  thousandsSeparator: ',',
+  padFractionalZeros: true,
+  radix: '.',
+  mapToRadix: ['.'],
 };
 
 export const integerOptions = {
