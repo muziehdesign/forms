@@ -3,9 +3,10 @@ BUILD=$1
 BRANCH=$2
 
 VERSION=$(npm pkg get version | tr -d '"')
-ARR=($(echo $VERSION | tr '.' "\n"))
-MAJOR="${ARR[0]}"
-MINOR="${ARR[1]}"
+MAJOR=$(echo $VERSION | awk -F '[/.]' '{ print $1 }')
+ECHO $MAJOR
+MINOR=$(echo $VERSION | awk -F '[/.]' '{ print $2 }')
+ECHO $MINOR
 PATCH=$BUILD
 SUFFIX=''
 if [ $BRANCH != "master" ] && [ $BRANCH != "develop" ]
