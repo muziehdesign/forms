@@ -3,10 +3,9 @@ BUILD=$1
 BRANCH=$2
 
 VERSION=$(npm pkg get version | tr -d '"')
-IFS='.'
-read -a strarr <<< "$VERSION"
-MAJOR="${strarr[0]}"
-MINOR="${strarr[1]}"
+ARR=($(echo $VERSION | tr '.' "\n"))
+MAJOR="${ARR[0]}"
+MINOR="${ARR[1]}"
 PATCH=$BUILD
 SUFFIX=''
 if [ $BRANCH != "master" ] && [ $BRANCH != "develop" ]
