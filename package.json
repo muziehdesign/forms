@@ -1,6 +1,6 @@
 {
   "name": "forms",
-  "version": "0.0.20-alpha",
+  "version": "0.0.20",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
