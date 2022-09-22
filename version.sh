@@ -2,18 +2,17 @@
 BUILD=$1
 BRANCH=$2
 
-if [ $BRANCH = "master" ]
+VERSION=$(npm pkg get version | tr -d '"')
+IFS='.'
+read -a strarr <<< "$VERSION"
+MAJOR="${strarr[0]}"
+MINOR="${strarr[1]}"
+PATCH=$BUILD
+SUFFIX=''
+if [ $BRANCH != "master" ] && [ $BRANCH != "develop" ]
 then
-    npm version minor --no-commit-hooks --no-git-tag-version
-elif [ $BRANCH = "develop" ]
-then
-    npm version patch --no-commit-hooks --no-git-tag-version
-else
-    VERSION=$(npm pkg get version)
-    VERSION="${VERSION}-${BUILD}"
-    VERSION=$(echo "$VERSION" | tr -d '"')
-    echo ${VERSION}
-    npm version "${VERSION}" --no-commit-hooks --no-git-tag-version
+    SUFFIX='-alpha'
 fi
 
+npm version "${MAJOR}.${MINOR}.${PATCH}${SUFFIX}" --no-commit-hooks --no-git-tag-version
 
