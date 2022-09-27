@@ -1,5 +1,5 @@
-import { Component, Input, ViewChild } from '@angular/core';
-import { ControlContainer, NgForm, NgModelGroup } from '@angular/forms';
+import { Component, Input } from '@angular/core';
+import { ControlContainer, NgModelGroup } from '@angular/forms';
 import { AddressModel } from '../models';
 
 @Component({
