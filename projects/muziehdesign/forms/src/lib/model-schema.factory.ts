@@ -117,6 +117,12 @@ export class ModelSchemaFactory {
     if (options.required) {
       schema = schema.required(options.required.message);
     }
+    if (options.min) {
+      schema = schema.min(options.min.min, options.min.message);
+    }
+    if (options.max) {
+      schema = schema.max(options.max.max, options.max.message);
+    }
 
     return schema;
   }

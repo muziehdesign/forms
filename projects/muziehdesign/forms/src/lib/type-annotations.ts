@@ -41,6 +41,8 @@ export interface ObjectTypeAnnotations extends ConstraintAnnotations {
 
 export interface NumberTypeAnnotations extends ConstraintAnnotations {
   required?: RequiredAnnotation;
+  min?: MinimumAnnotation<number>;
+  max?: MaximumAnnotation<number>;
 }
 
 export interface ValidationAnnotation {
