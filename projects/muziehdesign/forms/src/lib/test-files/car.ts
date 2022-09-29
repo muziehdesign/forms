@@ -1,4 +1,5 @@
-import { StringType, length, required, pattern, min, max, maxLength, minLength, DateType, test, NumberType } from '../type-annotations';
+import { equals } from '@muziehdesign/forms';
+import { StringType, length, required, pattern, min, max, maxLength, minLength, DateType, test, NumberType, BooleanType } from '../type-annotations';
 
 export class Car {
   @NumberType(required('Please enter a valid top speed'), min(0, 'Please enter a valid top speed'), max(2000, 'Please enter a valid top speed'))
@@ -15,4 +16,7 @@ export class Car {
 
   @DateType(min(new Date(1800, 1, 1), 'Please enter a valid inscription date'), max(new Date(), 'Please enter a valid inscription date'))
   inscriptionDate?: Date;
+
+  @BooleanType(required('The car needs to be tested before use'), equals(true, 'The car needs to be tested before use'))
+  tested?: boolean;
 }
