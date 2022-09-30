@@ -1,5 +1,4 @@
-import { equals } from '@muziehdesign/forms';
-import { StringType, length, required, pattern, min, max, maxLength, minLength, DateType, test, NumberType, BooleanType } from '../type-annotations';
+import { StringType, equals, length, required, pattern, min, max, maxLength, minLength, DateType, test, NumberType, BooleanType } from '../type-annotations';
 
 export class Car {
   @NumberType(required('Please enter a valid top speed'), min(0, 'Please enter a valid top speed'), max(2000, 'Please enter a valid top speed'))
