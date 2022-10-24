@@ -46,6 +46,10 @@ export const phoneNumberOptions = {
   mask: '(000) 000-0000',
 };
 
+export const ssnOptions = {
+  mask: '000-00-0000',
+};
+
 export const currencyOptions = {
   mask: Number,
   scale: 2,
