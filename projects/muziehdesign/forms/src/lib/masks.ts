@@ -1,21 +1,6 @@
 import { format, isValid, parse } from 'date-fns';
 import * as IMask from 'imask';
 
-class NullableMaskedNumber extends IMask.MaskedNumber {
-	// @ts-ignore
-	get typedValue() {
-		return this.unmaskedValue !== ''
-			// @ts-ignore
-			? super.typedValue
-			: null;
-	}
-  // @ts-ignore
-	set typedValue(num) {
-    // @ts-ignore
-		super.typedValue = num;
-	}
-}
-
 export const dateMaskOptions = {
   mask: 'MM/dd/yyyy',
   format: (date: Date | undefined): string => {
@@ -74,11 +59,11 @@ export const currencyOptions = {
   mapToRadix: ['.'],
 };
 
-export const integerOptions = new NullableMaskedNumber({
+export const integerOptions = {
   mask: Number,
   scale: 0,
   thousandsSeparator: ',',
   padFractionalZeros: true,
   radix: '.',
   mapToRadix: ['.'],
-});
+};
