@@ -21,6 +21,11 @@
         <input type="text" [(ngModel)]="model.totalCost" name="totalCost" #totalCost="ngModel" [imask]="{ mask: 'currency' }" [unmask]="true" class="field-control" />
         <mz-field-errors [field]="totalCost" *ngIf="totalCost.touched && totalCost.invalid"></mz-field-errors>
       </label>
+      <label class="field">
+        <span class="field-label">Annual Income</span>
+        <input type="text" [imask]="{ mask: 'integer', min: 0, max: 999999999 }" [unmask]="false" class="field-control" [(ngModel)]="model.annualIncome" name="annualIncome" #annualIncome="ngModel" />
+        <mz-field-errors [field]="annualIncome" *ngIf="annualIncome.touched && annualIncome.invalid"></mz-field-errors>
+      </label>
 
       <fieldset ngModelGroup="address">
         <legend>Mailing address</legend>

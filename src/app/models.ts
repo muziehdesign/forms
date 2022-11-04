@@ -41,6 +41,9 @@ export class CheckoutModel {
 
   @ObjectType(AddressModel)
   optionalAddress?: AddressModel;
+
+  @StringType(required())
+  annualIncome?: number;
 }
 
 export class ItemModel {
