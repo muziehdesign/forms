@@ -1,5 +1,7 @@
 <h1>Form</h1>
 
+<app-number-inputs></app-number-inputs>
+
 <div class="grid grid-cols-2 gap-4">
   <div>
     <form #checkoutForm="ngForm" (ngSubmit)="checkout()" class="form">
@@ -18,7 +20,7 @@
       </label>
       <label class="field">
         <span class="field-label">Total cost</span>
-        <input type="text" [(ngModel)]="model.totalCost" name="totalCost" #totalCost="ngModel" [imask]="{ mask: 'currency' }" [unmask]="true" class="field-control" />
+        <input type="text" [(ngModel)]="model.totalCost" name="totalCost" #totalCost="ngModel" [imask]="{ mask: 'integer' }" [unmask]="'typed'" class="field-control" />
         <mz-field-errors [field]="totalCost" *ngIf="totalCost.touched && totalCost.invalid"></mz-field-errors>
       </label>
 

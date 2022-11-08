@@ -67,3 +67,17 @@ export const integerOptions = {
   radix: '.',
   mapToRadix: ['.'],
 };
+
+export const nullableIntegerOptions = {
+  mask: /^\d+$/,
+  format: (v: number | undefined): string => {
+    console.log('formatting');
+    return v?.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 }) || '';
+  },
+  parse: (str: string): number | undefined => {
+    if(str && str != '') {
+      return Number(str);
+    }
+    return undefined;
+  },
+};

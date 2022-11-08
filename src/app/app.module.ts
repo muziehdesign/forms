@@ -9,11 +9,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MailingAddressComponent } from './mailing-address/mailing-address.component';
 import { MaskFactoryService } from 'src/core/mask-factory.service';
+import { NumberInputsComponent } from './number-inputs/number-inputs.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MailingAddressComponent
+    MailingAddressComponent,
+    NumberInputsComponent
   ],
   imports: [
     BrowserModule,
