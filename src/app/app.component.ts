@@ -43,6 +43,5 @@ export class AppComponent implements AfterViewInit {
     if (!value) {
       this.model.annualIncome = undefined;
     }
-    console.log("VALUE ", value)
   }
 }
