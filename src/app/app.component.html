@@ -23,7 +23,7 @@
       </label>
       <label class="field">
         <span class="field-label">Annual Income</span>
-        <input type="text" [imask]="{ mask: 'integer', min: 0, max: 999999999 }" [unmask]="false" class="field-control" [(ngModel)]="model.annualIncome" name="annualIncome" #annualIncome="ngModel" />
+        <input type="text" [imask]="{ mask: 'integer', min: 0, max: 999999999 }" [unmask]="true" (accept)="onAccept($event)" class="field-control" [(ngModel)]="model.annualIncome" name="annualIncome" #annualIncome="ngModel" />
         <mz-field-errors [field]="annualIncome" *ngIf="annualIncome.touched && annualIncome.invalid"></mz-field-errors>
       </label>
 

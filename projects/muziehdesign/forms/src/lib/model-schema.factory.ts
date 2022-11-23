@@ -113,7 +113,7 @@ export class ModelSchemaFactory {
   }
 
   private buildNumberSchema(options: NumberTypeAnnotations) {
-    let schema = Yup.number().transform((value) => (isNaN(value) ? undefined : value)).nullable();
+    let schema = Yup.number();
     if (options.required) {
       schema = schema.required(options.required.message);
     }
