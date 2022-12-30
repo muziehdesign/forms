@@ -22,6 +22,16 @@ export class AppComponent implements AfterViewInit {
     this.modelState = this.modelStateFactory.create(this.checkoutForm, this.model, { onValidate: (errors) => this.onValidate(errors, this.model) });
   }
 
+  usePresetValues() {
+    this.model.instructions = 'instructions';
+    this.model.date = new Date(1975, 7, 7);
+    // this.model.totalCost = 35000; TODO: imask flaw
+    this.model.address!.city = 'South Jordan';
+    this.model.address!.street1 = 'Street 1';
+    this.model.address!.street2 = 'Street 2';
+    this.model.address!.state = 'UT';
+  }
+
   async checkout() {
     console.log('checking out');
     await this.modelState.validate();
