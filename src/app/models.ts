@@ -1,5 +1,23 @@
 import { DateType, maxLength, min, ObjectType, NumberType, pattern, required, StringType, test } from '@muziehdesign/forms';
 
+export class PhoneNumberModel {
+  @StringType(required())
+  number?: string;
+  @StringType()
+  extension?: string;
+}
+
+export class ApplicantModel {
+  @StringType(required())
+  name?: string;
+
+  @ObjectType(PhoneNumberModel)
+  phoneNumber?: PhoneNumberModel;
+
+  @ObjectType(PhoneNumberModel)
+  workPhoneNumber?: PhoneNumberModel;
+}
+
 export class AddressModel {
   @StringType(required())
   street1?: string;
@@ -8,6 +26,8 @@ export class AddressModel {
   city?: string;
   @StringType(required())
   state?: string;
+  @StringType(required())
+  zipCode?: string;
 }
 
 export class CheckoutModel {
