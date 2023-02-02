@@ -9,10 +9,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MailingAddressComponent } from './mailing-address/mailing-address.component';
 import { MaskFactoryService } from 'src/core/mask-factory.service';
+import { ApplicantComponent } from './examples/applicant/applicant.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    ApplicantComponent,
     MailingAddressComponent
   ],
   imports: [
