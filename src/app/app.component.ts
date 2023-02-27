@@ -48,4 +48,10 @@ export class AppComponent implements AfterViewInit {
       message: 'cannot contain number 7'
     }];
   }
+
+  onAccept(value: string) {
+    if (!value) {
+      this.model.annualIncome = undefined;
+    }
+  }
 }
