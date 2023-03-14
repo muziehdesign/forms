@@ -92,7 +92,9 @@ export class ModelSchemaFactory {
     let schema = Yup.date();
     
     if (options.required) {
-      schema = schema.required(options.required.message);
+      schema = schema.required(options.required.message)
+        .transform((v) => (v instanceof Date && !isNaN(v.getTime()) ? v : undefined))
+        .typeError(options.required.message ?? 'Invalid date');
     }
     if (options.min) {
       schema = schema.min(options.min.min, options.min.message);
