@@ -8,6 +8,7 @@ export enum ConstraintType {
   date,
   object,
   number,
+  array,
 }
 
 export interface ConstraintAnnotations {
@@ -40,6 +41,12 @@ export interface ObjectTypeAnnotations extends ConstraintAnnotations {
 }
 
 export interface NumberTypeAnnotations extends ConstraintAnnotations {
+  required?: RequiredAnnotation;
+  min?: MinimumAnnotation<number>;
+  max?: MaximumAnnotation<number>;
+}
+
+export interface ArrayTypeAnnotations extends ConstraintAnnotations {
   required?: RequiredAnnotation;
   min?: MinimumAnnotation<number>;
   max?: MaximumAnnotation<number>;
@@ -132,6 +139,14 @@ export function ObjectType<T>(type: { new (): T }, ...annotations: { [key: strin
   return function (target: Object, propertyKey: string) {
     const o = Object.assign({}, ...annotations, { getInstance: () => new type() } as Partial<ObjectTypeAnnotations>) as ObjectTypeAnnotations;
     o.constraintType = ConstraintType.object;
+    registerMetadata(target, propertyKey, o);
+  };
+}
+
+export function ArrayType(...annotations: { [key: string]: ValidationAnnotation }[]) {
+  return function (target: Object, propertyKey: string) {
+    const o = Object.assign({}, ...annotations) as ArrayTypeAnnotations;
+    o.constraintType = ConstraintType.array;
     registerMetadata(target, propertyKey, o);
   };
 }

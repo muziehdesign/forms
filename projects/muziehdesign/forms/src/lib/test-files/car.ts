@@ -1,4 +1,4 @@
-import { StringType, equals, length, required, pattern, min, max, maxLength, minLength, DateType, test, NumberType, BooleanType } from '../type-annotations';
+import { StringType, equals, length, required, pattern, min, max, maxLength, minLength, DateType, test, NumberType, BooleanType, ArrayType } from '../type-annotations';
 
 export class Car {
   @NumberType(required('Please enter a valid top speed'), min(0, 'Please enter a valid top speed'), max(2000, 'Please enter a valid top speed'))
@@ -18,4 +18,7 @@ export class Car {
 
   @BooleanType(required('The car needs to be tested before use'), equals(true, 'The car needs to be tested before use'))
   tested?: boolean;
+
+  @ArrayType(required('Please enter doors'), min(1, 'Please enter at least one door type'), max(2, 'Only 2 door types allowed'))
+  doors?: string[];
 }
