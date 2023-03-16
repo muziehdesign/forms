@@ -47,7 +47,6 @@ export interface NumberTypeAnnotations extends ConstraintAnnotations {
 }
 
 export interface ArrayTypeAnnotations extends ConstraintAnnotations {
-  required?: RequiredAnnotation;
   min?: MinimumAnnotation<number>;
   max?: MaximumAnnotation<number>;
 }

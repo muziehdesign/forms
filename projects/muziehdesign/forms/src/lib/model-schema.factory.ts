@@ -3,7 +3,16 @@ import { object, SchemaOf } from 'yup';
 import { ModelValidator } from './model-validator';
 import { SCHEMA_METADATA_NAMESPACE } from './constants';
 import { ObjectShape } from 'yup/lib/object';
-import { BooleanTypeAnnotations, ConstraintAnnotations, ConstraintType, DateTypeAnnotations, ObjectTypeAnnotations, NumberTypeAnnotations, StringTypeAnnotations, ArrayTypeAnnotations } from './type-annotations';
+import {
+  BooleanTypeAnnotations,
+  ConstraintAnnotations,
+  ConstraintType,
+  DateTypeAnnotations,
+  ObjectTypeAnnotations,
+  NumberTypeAnnotations,
+  StringTypeAnnotations,
+  ArrayTypeAnnotations,
+} from './type-annotations';
 import * as Yup from 'yup';
 
 /*
@@ -39,7 +48,7 @@ export class ModelSchemaFactory {
         shape[key] = this.buildBooleanSchema(value as BooleanTypeAnnotations);
       } else if (value.constraintType == ConstraintType.date) {
         shape[key] = this.buildDateSchema(value as DateTypeAnnotations);
-      } else if(value.constraintType == ConstraintType.object) {
+      } else if (value.constraintType == ConstraintType.object) {
         shape[key] = this.buildNestedObjectSchema(value as ObjectTypeAnnotations);
       } else if (value.constraintType == ConstraintType.number) {
         shape[key] = this.buildNumberSchema(value as NumberTypeAnnotations);
@@ -68,7 +77,7 @@ export class ModelSchemaFactory {
     }
 
     if (options.pattern) {
-      schema = schema.matches(options.pattern.pattern,  { message: options.pattern.message, excludeEmptyString: true });
+      schema = schema.matches(options.pattern.pattern, { message: options.pattern.message, excludeEmptyString: true });
     }
 
     return schema;
@@ -92,25 +101,29 @@ export class ModelSchemaFactory {
 
   private buildDateSchema(options: DateTypeAnnotations) {
     let schema = Yup.date();
-    
+
     if (options.required) {
-      schema = schema.required(options.required.message)
+      schema = schema
+        .required(options.required.message)
         .transform((v) => (v instanceof Date && !isNaN(v.getTime()) ? v : undefined))
         .typeError(options.required.message ?? 'Invalid date');
     }
     if (options.min) {
-      schema = schema.min(options.min.min, options.min.message);
+      schema = schema.min(options.min.min, options.min.message).typeError(options.min.message ?? 'Invalid date');
     }
     if (options.max) {
-      schema = schema.max(options.max.max, options.max.message);
+      schema = schema.max(options.max.max, options.max.message).typeError(options.max.message ?? 'Invalid date');
     }
     if (options.test) {
-      schema = schema.test({
-        name: options.test.name,
-        message: options.test.message,
-        test: (d?: Date, context?: any) => {
-        return options.test!.test(d!);
-      }});
+      schema = schema
+        .test({
+          name: options.test.name,
+          message: options.test.message,
+          test: (d?: Date, context?: any) => {
+            return options.test!.test(d!);
+          },
+        })
+        .typeError(options.test.message ?? 'Invalid date');
     }
 
     return schema;
@@ -133,9 +146,7 @@ export class ModelSchemaFactory {
 
   private buildArraySchema(options: ArrayTypeAnnotations) {
     let schema = Yup.array();
-    if (options.required) {
-      schema = schema.required(options.required.message);
-    }
+
     if (options.min) {
       schema = schema.min(options.min.min, options.min.message);
     }
@@ -147,9 +158,8 @@ export class ModelSchemaFactory {
   }
 
   private buildNestedObjectSchema(options: ObjectTypeAnnotations) {
-
     let nestedSchema = this.buildObjectSchema(options.getInstance());
-    if(options.required) {
+    if (options.required) {
       nestedSchema = nestedSchema.required();
     }
 

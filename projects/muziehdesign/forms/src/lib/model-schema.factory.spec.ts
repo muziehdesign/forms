@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { ModelSchemaFactory as ModelSchemaFactory } from './model-schema.factory';
 import { Car } from './test-files/car';
+import { Human } from './test-files/human';
 
 describe('ModelSchemaFactory', () => {
   let service: ModelSchemaFactory;
@@ -108,14 +109,6 @@ describe('ModelSchemaFactory', () => {
   });
 
   describe('array validations', () => {
-    it('should validate required array', async () => {
-      const builtFactory = service.build(new Car());
-
-      const validation = await builtFactory.validate({ brand: 'Audi', topSpeed: 35, tested: true } as Car);
-
-      expect(validation).toEqual([{ path: 'doors', type: 'required', message: 'Please enter doors' }]);
-    });
-
     it('should validate min count of array', async () => {
       const builtFactory = service.build(new Car());
 
@@ -148,6 +141,20 @@ describe('ModelSchemaFactory', () => {
       expect(validation).toEqual([{ path: 'inscriptionDate', type: 'min', message: 'Please enter a valid inscription date' }]);
     });
 
+    it('should validate min date even when invalid', async () => {
+      const builtFactory = service.build(new Car());
+
+      const validation = await builtFactory.validate({
+        topSpeed: 200,
+        brand: 'Toyota',
+        inscriptionDate: new Date('hello, I like to break stuff'),
+        tested: true,
+        doors: ['front'],
+      } as Car);
+
+      expect(validation).toEqual([{ path: 'inscriptionDate', type: 'typeError', message: 'Please enter a valid inscription date' }]);
+    });
+
     it('should validate max date', async () => {
       const builtFactory = service.build(new Car());
 
@@ -160,6 +167,20 @@ describe('ModelSchemaFactory', () => {
       } as Car);
 
       expect(validation).toEqual([{ path: 'inscriptionDate', type: 'max', message: 'Please enter a valid inscription date' }]);
+    });
+
+    it('should validate max date even when invalid', async () => {
+      const builtFactory = service.build(new Car());
+
+      const validation = await builtFactory.validate({
+        topSpeed: 200,
+        brand: 'Toyota',
+        inscriptionDate: new Date('yup, not valid'),
+        tested: true,
+        doors: ['front'],
+      } as Car);
+
+      expect(validation).toEqual([{ path: 'inscriptionDate', type: 'typeError', message: 'Please enter a valid inscription date' }]);
     });
 
     it('should validate date test', async () => {
@@ -175,6 +196,37 @@ describe('ModelSchemaFactory', () => {
       } as Car);
 
       expect(validation).toEqual([{ path: 'nextOilChange', type: 'nextOilChange', message: 'Please enter a valid oil change' }]);
+    });
+
+    it('should validate date test even when invalid', async () => {
+      const builtFactory = service.build(new Car());
+
+      const validation = await builtFactory.validate({
+        topSpeed: 200,
+        brand: 'Toyota',
+        inscriptionDate: new Date(new Date().getFullYear() - 2, 1, 1),
+        nextOilChange: new Date('invalid'),
+        tested: true,
+        doors: ['front'],
+      } as Car);
+
+      expect(validation).toEqual([{ path: 'nextOilChange', type: 'typeError', message: 'Please enter a valid oil change' }]);
+    });
+
+    it('should require a date test', async () => {
+      const builtFactory = service.build(new Human());
+
+      const validation = await builtFactory.validate({} as Human);
+
+      expect(validation).toEqual([{ path: 'birthDate', type: 'required', message: 'Please enter a birth date' }]);
+    });
+
+    it('should require a date when invalid test', async () => {
+      const builtFactory = service.build(new Human());
+
+      const validation = await builtFactory.validate({ birthDate: new Date('hi, I am invalid') } as Human);
+
+      expect(validation).toEqual([{ path: 'birthDate', type: 'required', message: 'Please enter a birth date' }]);
     });
   });
 
