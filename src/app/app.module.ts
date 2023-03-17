@@ -10,12 +10,22 @@ import { AppComponent } from './app.component';
 import { MailingAddressComponent } from './mailing-address/mailing-address.component';
 import { MaskFactoryService } from 'src/core/mask-factory.service';
 import { ApplicantComponent } from './examples/applicant/applicant.component';
+import { TicketComponent } from './examples/ticket/ticket.component';
+import { HomeComponent } from './home/home.component';
+import { OrderComponent } from './examples/order/order.component';
+import { CalendarComponent } from './examples/calendar/calendar.component';
+import { ActivateComponent } from './examples/activate/activate.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ApplicantComponent,
-    MailingAddressComponent
+    MailingAddressComponent,
+    TicketComponent,
+    HomeComponent,
+    OrderComponent,
+    CalendarComponent,
+    ActivateComponent
   ],
   imports: [
     BrowserModule,

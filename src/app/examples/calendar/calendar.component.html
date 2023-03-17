@@ -1,0 +1,47 @@
+<h1>Calendar form</h1>
+
+<div class="grid grid-cols-2 gap-4">
+  <div>
+    <form #checkoutForm="ngForm" (ngSubmit)="checkout()" class="form">
+      <label class="field">
+        <span class="field-label">First name</span>
+        <input type="text" [(ngModel)]="model.firstName" name="firstName" #firstNameField="ngModel"
+          class="field-control" />
+        <mz-field-errors [field]="firstNameField" *ngIf="firstNameField.touched && firstNameField.invalid"></mz-field-errors>
+      </label>
+      <label class="field">
+        <span class="field-label">Last name</span>
+        <input type="text" [(ngModel)]="model.lastName" name="lastName" #lastNameField="ngModel" class="field-control" />
+        <mz-field-errors [field]="lastNameField" *ngIf="lastNameField.touched && lastNameField.invalid"></mz-field-errors>
+      </label>
+      <label class="field">
+        <span class="field-label">Birth date</span>
+        <input type="text" [(ngModel)]="model.birthDate" name="date" #birthDateField="ngModel" [imask]="{ mask: 'MM/dd/yyyy' }"
+          [unmask]="'typed'" class="field-control" />
+        <mz-field-errors [field]="birthDateField" *ngIf="birthDateField.touched && birthDateField.invalid"></mz-field-errors>
+        <div>
+          {{model.birthDate}}
+        </div>
+      </label>
+
+      <button type="submit">Save</button>
+
+      <div class="mt-4">
+        <button type="reset" class="mr-4">Reset</button>
+        <button type="button" (click)="usePresetValues()">Use preset values</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="text-slate-600">
+    <div class="p-8 my-1 bg-slate-50">
+      <span>// model</span>
+      <pre>{{model | json}}</pre>
+    </div>
+    <div class="p-8 my-1 bg-slate-50">
+      <span>// checkoutForm.value</span>
+      <pre>{{checkoutForm.value | json}}</pre>
+    </div>
+  </div>
+
+</div>
