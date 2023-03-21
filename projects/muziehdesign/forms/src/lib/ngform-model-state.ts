@@ -47,7 +47,7 @@ export class NgFormModelState<T> {
   async validate(): Promise<ModelStateResult<T>> {
     const model = this.form.value;
     const validate = this.options?.onValidate ? await this.options?.onValidate(this.getErrors()) : []
-    const state = await this.runValidations(model, () => validate);
+    const state = await this.runValidations(model, this.options?.onValidate ? () => validate : undefined);
     this.setStateInternal(state);
     return state;
   }
