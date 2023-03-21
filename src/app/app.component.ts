@@ -37,9 +37,9 @@ export class AppComponent implements AfterViewInit {
     await this.modelState.validate();
   }
 
-  onValidate(errors: FieldError[], model: CheckoutModel): Promise<FieldError[]> {
+  onValidate(errors: FieldError[], _model: CheckoutModel): Promise<FieldError[]> {
     if (errors.findIndex(e => e.path === 'instructions') !== -1) {
-      return Promise.resolve(errors)
+      return Promise.resolve(errors);
     }
 
     return Promise.resolve([...errors, {

@@ -38,7 +38,7 @@ export class NgFormModelState<T> {
   }
 
   appendErrors(errors: FieldError[], skipEmit?: boolean) {
-    const allErrors = [...this.getErrors(), ...errors];
+    const allErrors = [...(this.changesSubject.value?.errors || []), ...errors];
     const state = { ...this.changesSubject.value } as ModelStateResult<T>;
     state.errors = allErrors;
     this.setStateInternal(state);
@@ -46,15 +46,11 @@ export class NgFormModelState<T> {
 
   async validate(): Promise<ModelStateResult<T>> {
     const model = this.form.value;
-    const validate = this.options?.onValidate ? await this.options?.onValidate(this.getErrors()) : []
-    const state = await this.runValidations(model, this.options?.onValidate ? () => validate : undefined);
+    const state = await this.runValidations(model, this.options?.onValidate);
     this.setStateInternal(state);
     return state;
   }
 
-  private getErrors() {
-    return [...(this.changesSubject.value?.errors || [])];
-  }
 
   private setStateInternal(state: ModelStateResult<T>) {
     this.deleteFormErrors();
@@ -113,9 +109,9 @@ export class NgFormModelState<T> {
     });
   }
 
-  private async runValidations<T>(model: T, callback?: (list: FieldError[]) => FieldError[]): Promise<ModelStateResult<T>> {
+  private async runValidations<T>(model: T, callback?: (list: FieldError[]) => Promise<FieldError[]>): Promise<ModelStateResult<T>> {
     const list = await this.modelValidator.validate(model);
-    const final = callback?.(list) || list;
+    const final =  callback ? (await callback?.(list)) : list;
     return {
       valid: final.length === 0,
       errors: final,
