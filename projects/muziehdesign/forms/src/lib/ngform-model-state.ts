@@ -38,7 +38,7 @@ export class NgFormModelState<T> {
   }
 
   appendErrors(errors: FieldError[], skipEmit?: boolean) {
-    const allErrors = [...(this.changesSubject.value?.errors || []), ...errors];
+    const allErrors = [...this.getErrors(), ...errors];
     const state = { ...this.changesSubject.value } as ModelStateResult<T>;
     state.errors = allErrors;
     this.setStateInternal(state);
@@ -46,9 +46,14 @@ export class NgFormModelState<T> {
 
   async validate(): Promise<ModelStateResult<T>> {
     const model = this.form.value;
-    const state = await this.runValidations(model, this.options?.onValidate);
+    const validate = this.options?.onValidate ? await this.options?.onValidate(this.getErrors()) : []
+    const state = await this.runValidations(model, () => validate);
     this.setStateInternal(state);
     return state;
+  }
+
+  private getErrors() {
+    return [...(this.changesSubject.value?.errors || [])];
   }
 
   private setStateInternal(state: ModelStateResult<T>) {
