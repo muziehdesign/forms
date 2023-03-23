@@ -226,7 +226,7 @@ describe('ModelSchemaFactory', () => {
 
       const validation = await builtFactory.validate({ birthDate: new Date('hi, I am invalid') } as Human);
 
-      expect(validation).toEqual([{ path: 'birthDate', type: 'required', message: 'Please enter a birth date' }]);
+      expect(validation).toEqual([{ path: 'birthDate', type: 'typeError', message: 'Please enter a birth date' }]);
     });
   });
 
