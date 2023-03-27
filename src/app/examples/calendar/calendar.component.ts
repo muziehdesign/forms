@@ -33,9 +33,9 @@ export class CalendarComponent implements AfterViewInit {
     await this.modelState.validate();
   }
 
-  onValidate(modelErrors: FieldError[], model: CalendarModel):FieldError[] {
+  onValidate(modelErrors: FieldError[], model: CalendarModel): Promise<FieldError[]> {
     const errors: FieldError[] = [];
 
-    return [...modelErrors, ...errors];
+    return Promise.resolve([...modelErrors, ...errors]);
   }
 }

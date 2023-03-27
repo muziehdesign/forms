@@ -37,15 +37,15 @@ export class HomeComponent implements AfterViewInit {
     await this.modelState.validate();
   }
 
-  onValidate(errors: FieldError[], model: CheckoutModel):FieldError[] {
+  onValidate(errors: FieldError[], model: CheckoutModel): Promise<FieldError[]> {
     if (errors.findIndex(e => e.path === 'instructions') !== -1) {
-      return errors;
+      return Promise.resolve(errors);
     }
 
-    return [...errors, {
+    return Promise.resolve([...errors, {
       path: 'instructions',
       type: 'custom',
       message: 'cannot contain number 7'
-    }];
+    }]);
   }
 }

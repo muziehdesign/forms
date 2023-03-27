@@ -32,9 +32,9 @@ export class ActivateComponent implements AfterViewInit {
     await this.modelState.validate();
   }
 
-  onValidate(modelErrors: FieldError[], model: ActivateModel):FieldError[] {
+  onValidate(modelErrors: FieldError[], model: ActivateModel): Promise<FieldError[]> {
     const errors: FieldError[] = [];
 
-    return [...modelErrors, ...errors];
+    return Promise.resolve([...modelErrors, ...errors]);
   }
 }

@@ -33,7 +33,7 @@ export class TicketComponent implements AfterViewInit {
     await this.modelState.validate();
   }
 
-  onValidate(modelErrors: FieldError[], model: TicketModel):FieldError[] {
+  onValidate(modelErrors: FieldError[], model: TicketModel): Promise<FieldError[]> {
     const errors: FieldError[] = [];
 
     if (this.model.code && this.model.code === 'ABCDE') {
@@ -43,6 +43,6 @@ export class TicketComponent implements AfterViewInit {
             path: 'code',
         });
     }
-    return [...modelErrors, ...errors];
+    return Promise.resolve([...modelErrors, ...errors]);
   }
 }

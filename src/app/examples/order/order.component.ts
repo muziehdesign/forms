@@ -32,16 +32,9 @@ export class OrderComponent implements AfterViewInit {
     await this.modelState.validate();
   }
 
-  onValidate(modelErrors: FieldError[], model: OrderModel):FieldError[] {
+  onValidate(modelErrors: FieldError[], model: OrderModel): Promise<FieldError[]> {
     const errors: FieldError[] = [];
 
-    // if (this.model.code && this.model.code === 'ABCDE') {
-    //     errors.push({
-    //         type: 'invalid',
-    //         message: 'We do not accept the code ABCDE',
-    //         path: 'code',
-    //     });
-    // }
-    return [...modelErrors, ...errors];
+    return Promise.resolve([...modelErrors, ...errors]);
   }
 }
