@@ -103,24 +103,22 @@ export class ModelSchemaFactory {
     let schema = Yup.date();
 
     if (options.required) {
-      schema = schema.required(options.required.message).typeError(options.required.message ?? 'Invalid date');
+      schema = schema.required(options.required.message);
     }
     if (options.min) {
-      schema = schema.min(options.min.min, options.min.message).typeError(options.min.message ?? 'Invalid date');
+      schema = schema.min(options.min.min, options.min.message);
     }
     if (options.max) {
-      schema = schema.max(options.max.max, options.max.message).typeError(options.max.message ?? 'Invalid date');
+      schema = schema.max(options.max.max, options.max.message);
     }
     if (options.test) {
-      schema = schema
-        .test({
-          name: options.test.name,
-          message: options.test.message,
-          test: (d?: Date, context?: any) => {
-            return options.test!.test(d!);
-          },
-        })
-        .typeError(options.test.message ?? 'Invalid date');
+      schema = schema.test({
+        name: options.test.name,
+        message: options.test.message,
+        test: (d?: Date, context?: any) => {
+          return options.test!.test(d!);
+        },
+      });
     }
 
     return schema;
