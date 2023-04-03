@@ -1,14 +1,13 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { NgFormModelState, ModelSchemaFactory, NgFormModelStateFactory, FieldError } from '@muziehdesign/forms';
-import { ActivateModel } from 'src/app/models';
+import { NgFormModelState, ModelSchemaFactory, NgFormModelStateFactory, FieldError, BooleanType, equals, required, StringType } from '@muziehdesign/forms';
 
 @Component({
-  selector: 'app-activate',
-  templateUrl: './activate.component.html',
-  styleUrls: ['./activate.component.scss']
+  selector: 'app-boolean',
+  templateUrl: './boolean.component.html',
+  styleUrls: ['./boolean.component.scss']
 })
-export class ActivateComponent implements AfterViewInit {
+export class BooleanComponent implements AfterViewInit {
 
   model: ActivateModel;
   modelState!: NgFormModelState<ActivateModel>;
@@ -22,8 +21,6 @@ export class ActivateComponent implements AfterViewInit {
   }
 
   usePresetValues() {
-    this.model.firstName = 'Tuxedo';
-    this.model.lastName = 'Mask'
     this.model.active = true;
   }
 
@@ -37,4 +34,9 @@ export class ActivateComponent implements AfterViewInit {
 
     return Promise.resolve([...modelErrors, ...errors]);
   }
+}
+
+export class ActivateModel {
+  @BooleanType(required('Value is required'), equals(true, 'Activate must be true/checked'))
+  active?: boolean;
 }

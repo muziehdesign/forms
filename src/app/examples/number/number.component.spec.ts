@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ActivateComponent } from './activate.component';
+import { NumberComponent } from './number.component';
 
-describe('ActivateComponent', () => {
-  let component: ActivateComponent;
-  let fixture: ComponentFixture<ActivateComponent>;
+describe('OrderComponent', () => {
+  let component: NumberComponent;
+  let fixture: ComponentFixture<NumberComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ActivateComponent ]
+      declarations: [ NumberComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ActivateComponent);
+    fixture = TestBed.createComponent(NumberComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

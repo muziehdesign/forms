@@ -4,17 +4,6 @@
   <div>
     <form #checkoutForm="ngForm" (ngSubmit)="checkout()" class="form">
       <label class="field">
-        <span class="field-label">First name</span>
-        <input type="text" [(ngModel)]="model.firstName" name="firstName" #firstNameField="ngModel"
-          class="field-control" />
-        <mz-field-errors [field]="firstNameField" *ngIf="firstNameField.touched && firstNameField.invalid"></mz-field-errors>
-      </label>
-      <label class="field">
-        <span class="field-label">Last name</span>
-        <input type="text" [(ngModel)]="model.lastName" name="lastName" #lastNameField="ngModel" class="field-control" />
-        <mz-field-errors [field]="lastNameField" *ngIf="lastNameField.touched && lastNameField.invalid"></mz-field-errors>
-      </label>
-      <label class="field">
         <span class="field-label">Birth date</span>
         <input type="text" [(ngModel)]="model.birthDate" name="date" #birthDateField="ngModel" [imask]="{ mask: 'MM/dd/yyyy' }"
           [unmask]="'typed'" class="field-control" />

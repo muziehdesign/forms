@@ -4,17 +4,6 @@
   <div>
     <form #checkoutForm="ngForm" (ngSubmit)="checkout()" class="form">
       <label class="field">
-        <span class="field-label">First name</span>
-        <input type="text" [(ngModel)]="model.firstName" name="firstName" #firstNameField="ngModel"
-          class="field-control" />
-        <mz-field-errors [field]="firstNameField" *ngIf="firstNameField.touched && firstNameField.invalid"></mz-field-errors>
-      </label>
-      <label class="field">
-        <span class="field-label">Last name</span>
-        <input type="text" [(ngModel)]="model.lastName" name="lastName" #lastNameField="ngModel" class="field-control" />
-        <mz-field-errors [field]="lastNameField" *ngIf="lastNameField.touched && lastNameField.invalid"></mz-field-errors>
-      </label>
-      <label class="field">
         <span class="field-label">Activate</span>
         <input type="checkbox" class="field-control" [(ngModel)]="model.active" name="active" #activeField="ngModel" />
         <mz-field-errors *ngIf="(activeField.touched && activeField.invalid)" [field]="activeField"></mz-field-errors>

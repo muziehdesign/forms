@@ -1,15 +1,14 @@
 
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { NgFormModelState, ModelSchemaFactory, NgFormModelStateFactory, FieldError } from '@muziehdesign/forms';
-import { CalendarModel } from 'src/app/models';
+import { NgFormModelState, ModelSchemaFactory, NgFormModelStateFactory, FieldError, DateType, min, required, StringType, test } from '@muziehdesign/forms';
 
 @Component({
-  selector: 'app-calendar',
-  templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.scss']
+  selector: 'app-date',
+  templateUrl: './date.component.html',
+  styleUrls: ['./date.component.scss']
 })
-export class CalendarComponent implements AfterViewInit {
+export class DateComponent implements AfterViewInit {
 
   model: CalendarModel;
   modelState!: NgFormModelState<CalendarModel>;
@@ -23,8 +22,6 @@ export class CalendarComponent implements AfterViewInit {
   }
 
   usePresetValues() {
-    this.model.firstName = 'Tuxedo';
-    this.model.lastName = 'Mask'
     this.model.birthDate = new Date();
   }
 
@@ -38,4 +35,9 @@ export class CalendarComponent implements AfterViewInit {
 
     return Promise.resolve([...modelErrors, ...errors]);
   }
+}
+
+export class CalendarModel {
+  @DateType(required(), test('minimumAge', (d: Date) => {return Number(+new Date().getFullYear() - +d?.getFullYear()) >= 18;}, 'You must be over 18'), min(new Date(1900, 0, 1), 'Minimum date is 01/01/1900'))
+  birthDate?: Date;
 }
