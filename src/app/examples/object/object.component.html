@@ -1,62 +1,66 @@
-<h1>Order form</h1>
+<app-navbar></app-navbar>
 
-<div class="grid grid-cols-2 gap-4">
-  <div>
-    <form #form="ngForm" (ngSubmit)="checkout()" class="form">
-      <label class="field">
-        <span class="field-label">Order number</span>
-        <input type="text" [(ngModel)]="model.orderNumber" name="orderNumber" #orderNumberField="ngModel" class="field-control" />
-        <mz-field-errors [field]="orderNumberField" *ngIf="orderNumberField.touched && orderNumberField.invalid"></mz-field-errors>
-      </label>
+<div class="m-10">
+  <h1>Object example form</h1>
 
-      <label class="field">
-        <span class="field-label">Address 1 <span class="text-red-500">*</span></span>
-        <input type="text" [(ngModel)]="model.address!.street1" name="street1" maxlength="100" #street1Field="ngModel" />
-        <mz-field-errors [field]="street1Field" *ngIf="street1Field.touched && street1Field.invalid"></mz-field-errors>
-      </label>
+  <div class="grid grid-cols-2 gap-4">
+    <div>
+      <form #form="ngForm" (ngSubmit)="checkout()" class="form">
+        <label class="field">
+          <span class="field-label">Order number</span>
+          <input type="text" [(ngModel)]="model.orderNumber" name="orderNumber" #orderNumberField="ngModel" class="field-control" />
+          <mz-field-errors [field]="orderNumberField" *ngIf="orderNumberField.touched && orderNumberField.invalid || form.submitted"></mz-field-errors>
+        </label>
 
-      <label class="field">
-        <span class="field-label">Address 2 <span class="text-red-500">*</span></span>
-        <input type="text" [(ngModel)]="model.address!.street2" name="street2" maxlength="100" #street2Field="ngModel" />
-        <mz-field-errors [field]="street2Field" *ngIf="(street2Field.touched && street2Field.invalid) || form.submitted"></mz-field-errors>
-      </label>
+        <label class="field">
+          <span class="field-label">Address 1 <span class="text-red-500">*</span></span>
+          <input type="text" [(ngModel)]="model.address!.street1" name="street1" maxlength="100" #street1Field="ngModel" />
+          <mz-field-errors [field]="street1Field" *ngIf="street1Field.touched && street1Field.invalid || form.submitted"></mz-field-errors>
+        </label>
 
-      <label class="field">
-        <span class="field-label"> City <span class="text-red-500">*</span></span>
-        <input type="text" [(ngModel)]="model.address!.city" name="city" maxlength="100" #cityField="ngModel" />
-        <mz-field-errors [field]="cityField" *ngIf="(cityField.touched && cityField.invalid) || form.submitted"></mz-field-errors>
-      </label>
+        <label class="field">
+          <span class="field-label">Address 2 <span class="text-red-500">*</span></span>
+          <input type="text" [(ngModel)]="model.address!.street2" name="street2" maxlength="100" #street2Field="ngModel" />
+          <mz-field-errors [field]="street2Field" *ngIf="(street2Field.touched && street2Field.invalid) || form.submitted"></mz-field-errors>
+        </label>
 
-      <label class="field">
-        <span class="field-label">State <span class="text-red-500">*</span></span>
-        <input type="text" [(ngModel)]="model.address!.state" name="state" maxlength="100" #stateField="ngModel" />
-        <mz-field-errors [field]="stateField" *ngIf="(stateField.touched && stateField.invalid) || form.submitted"></mz-field-errors>
-      </label>
+        <label class="field">
+          <span class="field-label"> City <span class="text-red-500">*</span></span>
+          <input type="text" [(ngModel)]="model.address!.city" name="city" maxlength="100" #cityField="ngModel" />
+          <mz-field-errors [field]="cityField" *ngIf="(cityField.touched && cityField.invalid) || form.submitted"></mz-field-errors>
+        </label>
 
-      <label class="field">
-        <span class="field-label">Zipcode <span class="text-red-500">*</span></span>
-        <input type="text" [(ngModel)]="model.address!.zipCode" name="zipCode" maxlength="100" #zipCodeField="ngModel" />
-        <mz-field-errors [field]="zipCodeField" *ngIf="(zipCodeField.touched && zipCodeField.invalid) || form.submitted"></mz-field-errors>
-      </label>
+        <label class="field">
+          <span class="field-label">State <span class="text-red-500">*</span></span>
+          <input type="text" [(ngModel)]="model.address!.state" name="state" maxlength="100" #stateField="ngModel" />
+          <mz-field-errors [field]="stateField" *ngIf="(stateField.touched && stateField.invalid) || form.submitted"></mz-field-errors>
+        </label>
 
-      <button type="submit">Search</button>
+        <label class="field">
+          <span class="field-label">Zipcode <span class="text-red-500">*</span></span>
+          <input type="text" [(ngModel)]="model.address!.zipCode" name="zipCode" maxlength="100" #zipCodeField="ngModel" />
+          <mz-field-errors [field]="zipCodeField" *ngIf="(zipCodeField.touched && zipCodeField.invalid) || form.submitted"></mz-field-errors>
+        </label>
 
-      <div class="mt-4">
-        <button type="reset" class="mr-4">Reset</button>
-        <button type="button" (click)="usePresetValues()">Use preset values</button>
+        <button type="submit">Search</button>
+
+        <div class="mt-4">
+          <button type="reset" class="mr-4">Reset</button>
+          <button type="button" (click)="usePresetValues()">Use preset values</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="text-slate-600">
+      <div class="p-8 my-1 bg-slate-50">
+        <span>// model</span>
+        <pre>{{model | json}}</pre>
       </div>
-    </form>
-  </div>
-
-  <div class="text-slate-600">
-    <div class="p-8 my-1 bg-slate-50">
-      <span>// model</span>
-      <pre>{{model | json}}</pre>
+      <div class="p-8 my-1 bg-slate-50">
+        <span>// form.value</span>
+        <pre>{{form.value | json}}</pre>
+      </div>
     </div>
-    <div class="p-8 my-1 bg-slate-50">
-      <span>// form.value</span>
-      <pre>{{form.value | json}}</pre>
-    </div>
-  </div>
 
+  </div>
 </div>

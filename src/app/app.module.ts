@@ -16,6 +16,7 @@ import { NumberComponent } from './examples/number/number.component';
 import { DateComponent } from './examples/date/date.component';
 import { BooleanComponent } from './examples/boolean/boolean.component';
 import { ObjectComponent } from './examples/object/object.component';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { ObjectComponent } from './examples/object/object.component';
     AppRoutingModule,
     FormsModule,
     IMaskModule,
-    MuziehFormsModule
+    MuziehFormsModule,
+    SharedModule
   ],
   providers: [
     {
