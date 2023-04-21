@@ -1,0 +1,37 @@
+<app-navbar></app-navbar>
+
+<div class="m-10">
+
+  <h1>Boolean example form</h1>
+
+  <div class="grid grid-cols-2 gap-4">
+    <div>
+      <form #checkoutForm="ngForm" (ngSubmit)="checkout()" class="form">
+        <label class="field">
+          <span class="field-label">Activate</span>
+          <input type="checkbox" class="field-control" [(ngModel)]="model.active" name="active" #activeField="ngModel" />
+          <mz-field-errors *ngIf="(activeField.touched && activeField.invalid)" [field]="activeField"></mz-field-errors>
+        </label>
+
+        <button type="submit">Activate</button>
+
+        <div class="mt-4">
+          <button type="reset" class="mr-4">Reset</button>
+          <button type="button" (click)="usePresetValues()">Use preset values</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="text-slate-600">
+      <div class="p-8 my-1 bg-slate-50">
+        <span>// model</span>
+        <pre>{{model | json}}</pre>
+      </div>
+      <div class="p-8 my-1 bg-slate-50">
+        <span>// checkoutForm.value</span>
+        <pre>{{checkoutForm.value | json}}</pre>
+      </div>
+    </div>
+
+  </div>
+</div>

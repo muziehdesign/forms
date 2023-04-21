@@ -1,0 +1,53 @@
+<app-navbar></app-navbar>
+
+<div class="m-10">
+
+  <h1 class="mt-10">String example form</h1>
+
+  <div class="grid grid-cols-2 gap-4">
+    <div>
+      <form #checkoutForm="ngForm" (ngSubmit)="checkout()" class="form">
+        <label class="field">
+          <span class="field-label">First name</span>
+          <input type="text" [(ngModel)]="model.firstName" name="firstName" #firstNameField="ngModel"
+            class="field-control" />
+          <mz-field-errors [field]="firstNameField" *ngIf="firstNameField.touched && firstNameField.invalid"></mz-field-errors>
+        </label>
+        <label class="field">
+          <span class="field-label">Last name</span>
+          <input type="text" [(ngModel)]="model.lastName" name="lastName" #lastNameField="ngModel" class="field-control" />
+          <mz-field-errors [field]="lastNameField" *ngIf="lastNameField.touched && lastNameField.invalid"></mz-field-errors>
+        </label>
+        <label class="field">
+          <span class="field-label">Email</span>
+          <input type="text" [(ngModel)]="model.email" name="email" #emailField="ngModel" class="field-control" />
+          <mz-field-errors [field]="emailField" *ngIf="emailField.touched && emailField.invalid"></mz-field-errors>
+        </label>
+        <label class="field">
+          <span class="field-label">Verification ticket code</span>
+          <input type="text" [(ngModel)]="model.code" name="code" #codeField="ngModel" class="field-control" />
+          <mz-field-errors [field]="codeField" *ngIf="codeField.touched && codeField.invalid"></mz-field-errors>
+        </label>
+
+        <button type="submit">Verify</button>
+
+        <div class="mt-4">
+          <button type="reset" class="mr-4">Reset</button>
+          <button type="button" (click)="usePresetValues()">Use preset values</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="text-slate-600">
+      <div class="p-8 my-1 bg-slate-50">
+        <span>// model</span>
+        <pre>{{model | json}}</pre>
+      </div>
+      <div class="p-8 my-1 bg-slate-50">
+        <span>// checkoutForm.value</span>
+        <pre>{{checkoutForm.value | json}}</pre>
+      </div>
+    </div>
+
+  </div>
+</div>

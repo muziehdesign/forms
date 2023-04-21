@@ -1,0 +1,8 @@
+
+.menu-item {
+  @apply px-3 py-2 text-sm font-medium flex items-center border-transparent hover:border-purple-600 transition duration-300;
+}
+
+.active {
+  @apply border-b-2 border-purple-600
+}
