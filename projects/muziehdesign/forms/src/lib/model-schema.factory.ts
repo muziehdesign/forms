@@ -12,6 +12,7 @@ import {
   NumberTypeAnnotations,
   StringTypeAnnotations,
   ArrayTypeAnnotations,
+  FileTypeAnnotations,
 } from './type-annotations';
 import * as Yup from 'yup';
 
@@ -41,21 +42,25 @@ export class ModelSchemaFactory {
   private buildObjectSchema<T>(model: T) {
     const metadata: Map<string, ConstraintAnnotations> = Reflect.getMetadata(SCHEMA_METADATA_NAMESPACE, model);
     let shape: ObjectShape = {};
-    metadata.forEach((value, key) => {
-      if (value.constraintType == ConstraintType.string) {
-        shape[key] = this.buildStringSchema(value as StringTypeAnnotations);
-      } else if (value.constraintType == ConstraintType.boolean) {
-        shape[key] = this.buildBooleanSchema(value as BooleanTypeAnnotations);
-      } else if (value.constraintType == ConstraintType.date) {
-        shape[key] = this.buildDateSchema(value as DateTypeAnnotations);
-      } else if (value.constraintType == ConstraintType.object) {
-        shape[key] = this.buildNestedObjectSchema(value as ObjectTypeAnnotations);
-      } else if (value.constraintType == ConstraintType.number) {
-        shape[key] = this.buildNumberSchema(value as NumberTypeAnnotations);
-      } else if (value.constraintType == ConstraintType.array) {
-        shape[key] = this.buildArraySchema(value as ArrayTypeAnnotations);
-      }
-    });
+    if (metadata) {
+      metadata.forEach((value, key) => {
+        if (value.constraintType == ConstraintType.string) {
+          shape[key] = this.buildStringSchema(value as StringTypeAnnotations);
+        } else if (value.constraintType == ConstraintType.boolean) {
+          shape[key] = this.buildBooleanSchema(value as BooleanTypeAnnotations);
+        } else if (value.constraintType == ConstraintType.date) {
+          shape[key] = this.buildDateSchema(value as DateTypeAnnotations);
+        } else if (value.constraintType == ConstraintType.object) {
+          shape[key] = this.buildNestedObjectSchema(value as ObjectTypeAnnotations);
+        } else if (value.constraintType == ConstraintType.number) {
+          shape[key] = this.buildNumberSchema(value as NumberTypeAnnotations);
+        } else if (value.constraintType == ConstraintType.array) {
+          shape[key] = this.buildArraySchema(value as ArrayTypeAnnotations);
+        } else if (value.constraintType == ConstraintType.file) {
+          shape[key] = this.buildFileSchema(value as FileTypeAnnotations);
+        }
+      });
+    }
     return object(shape) as SchemaOf<T>;
   }
 
@@ -159,5 +164,14 @@ export class ModelSchemaFactory {
     }
 
     return nestedSchema;
+  }
+
+  private buildFileSchema(options: FileTypeAnnotations) {
+    let schema = Yup.mixed().nullable().optional();
+    if (options.required) {
+      schema = schema.required(options.required.message);
+    }
+   
+    return schema;
   }
 }

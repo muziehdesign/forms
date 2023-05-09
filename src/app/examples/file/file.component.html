@@ -1,0 +1,35 @@
+<app-navbar></app-navbar>
+
+<div class="m-10">
+  <h1>File example form</h1>
+
+  <div class="grid grid-cols-2 gap-4">
+    <div>
+      <form #fileInputForm="ngForm" (ngSubmit)="submit()" class="form">
+        <label class="field">
+          <span class="field-label">Pick file</span>
+          <input ngModel name="file" [(ngModel)]="model.file" type="file" #fileInput="ngModel" id="files" />
+          <mz-field-errors [field]="fileInput"></mz-field-errors>
+        </label>
+
+        <div class="mt-4">
+          <button type="submit" class="mr-4">Submit</button>
+          <button type="reset" class="mr-4">Reset</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="text-slate-600">
+      <div class="p-8 my-1 bg-slate-50">
+        <span>// model</span>
+        <pre>{{model | json}}</pre>
+      </div>
+      <div class="p-8 my-1 bg-slate-50">
+        <span>// fileForm.value</span>
+        <pre>{{fileInputForm.value | json}}</pre>
+      </div>
+    </div>
+
+  </div>
+
+</div>
