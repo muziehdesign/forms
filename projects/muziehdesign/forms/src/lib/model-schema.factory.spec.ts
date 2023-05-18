@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { ModelSchemaFactory as ModelSchemaFactory } from './model-schema.factory';
 import { Car } from './test-files/car';
 import { Human } from './test-files/human';
+import { Movie } from './test-files/movie';
 
 describe('ModelSchemaFactory', () => {
   let service: ModelSchemaFactory;
@@ -213,6 +214,29 @@ describe('ModelSchemaFactory', () => {
       } as Car);
 
       expect(validation).toEqual([{ path: 'tested', type: 'is-value', message: 'The car needs to be tested before use' }]);
+    });
+  });
+
+  describe('file validations', () => {
+    it('should validate required file', async () => {
+      const builtFactory = service.build(new Movie());
+
+      const content = Uint8Array.from([0xff, 0xD8, 0xFF, 0xE0]);
+
+      const validation = await builtFactory.validate({
+        movie: new File([content], 'test.jpg', { type: 'image/jpg' })
+      } as Movie);
+
+      expect(service).toBeTruthy();
+      expect(validation.length).toBe(0);
+    });
+
+    it('should fail required file validation', async () => {
+      const builtFactory = service.build(new Movie());
+
+      const validation = await builtFactory.validate({} as Movie);
+
+      expect(validation).toEqual([{ path: 'movie', type: 'required', message: 'Please select a file' }]);
     });
   });
 });
