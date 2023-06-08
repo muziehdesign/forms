@@ -12,6 +12,7 @@ import {
   NumberTypeAnnotations,
   StringTypeAnnotations,
   ArrayTypeAnnotations,
+  FileTypeAnnotations,
 } from './type-annotations';
 import * as Yup from 'yup';
 
@@ -54,8 +55,11 @@ export class ModelSchemaFactory {
         shape[key] = this.buildNumberSchema(value as NumberTypeAnnotations);
       } else if (value.constraintType == ConstraintType.array) {
         shape[key] = this.buildArraySchema(value as ArrayTypeAnnotations);
+      } else if (value.constraintType == ConstraintType.file) {
+        shape[key] = this.buildFileSchema(value as FileTypeAnnotations);
       }
     });
+
     return object(shape) as SchemaOf<T>;
   }
 
@@ -159,5 +163,14 @@ export class ModelSchemaFactory {
     }
 
     return nestedSchema;
+  }
+
+  private buildFileSchema(options: FileTypeAnnotations) {
+    let schema = Yup.mixed().nullable().optional();
+    if (options.required) {
+      schema = schema.required(options.required.message);
+    }
+
+    return schema;
   }
 }

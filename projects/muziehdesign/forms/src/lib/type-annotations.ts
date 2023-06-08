@@ -9,6 +9,7 @@ export enum ConstraintType {
   object,
   number,
   array,
+  file
 }
 
 export interface ConstraintAnnotations {
@@ -49,6 +50,10 @@ export interface NumberTypeAnnotations extends ConstraintAnnotations {
 export interface ArrayTypeAnnotations extends ConstraintAnnotations {
   min?: MinimumAnnotation<number>;
   max?: MaximumAnnotation<number>;
+}
+
+export interface FileTypeAnnotations extends ConstraintAnnotations {
+  required?: RequiredAnnotation;
 }
 
 export interface ValidationAnnotation {
@@ -146,6 +151,14 @@ export function ArrayType(...annotations: { [key: string]: ValidationAnnotation 
   return function (target: Object, propertyKey: string) {
     const o = Object.assign({}, ...annotations) as ArrayTypeAnnotations;
     o.constraintType = ConstraintType.array;
+    registerMetadata(target, propertyKey, o);
+  };
+}
+
+export function FileType<T>(...annotations: { [key: string]: ValidationAnnotation }[]) {
+  return function (target: Object, propertyKey: string) {
+    const o = Object.assign({}, ...annotations) as FileTypeAnnotations;
+    o.constraintType = ConstraintType.file;
     registerMetadata(target, propertyKey, o);
   };
 }
