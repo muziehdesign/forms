@@ -6,11 +6,11 @@ import { AddressModel, CheckoutModel } from '../models';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements AfterViewInit {
-  model:CheckoutModel;
-  @ViewChild('checkoutForm', {static: true}) checkoutForm!: NgForm;
+  model: CheckoutModel;
+  @ViewChild('checkoutForm', { static: true }) checkoutForm!: NgForm;
   modelState!: NgFormModelState<CheckoutModel>;
   constructor(private factory: ModelSchemaFactory, private modelStateFactory: NgFormModelStateFactory) {
     this.model = new CheckoutModel();
@@ -38,14 +38,17 @@ export class HomeComponent implements AfterViewInit {
   }
 
   onValidate(errors: FieldError[], model: CheckoutModel): Promise<FieldError[]> {
-    if (errors.findIndex(e => e.path === 'instructions') !== -1) {
+    if (errors.findIndex((e) => e.path === 'instructions') !== -1) {
       return Promise.resolve(errors);
     }
 
-    return Promise.resolve([...errors, {
-      path: 'instructions',
-      type: 'custom',
-      message: 'cannot contain number 7'
-    }]);
+    return Promise.resolve([
+      ...errors,
+      {
+        path: 'instructions',
+        type: 'custom',
+        message: 'cannot contain number 7',
+      },
+    ]);
   }
 }
