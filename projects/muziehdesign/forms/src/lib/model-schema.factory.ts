@@ -161,7 +161,7 @@ export class ModelSchemaFactory {
     if (options.required) {
       nestedSchema = nestedSchema.required();
     } else {
-      nestedSchema = nestedSchema.notRequired(); // test
+      nestedSchema = nestedSchema.notRequired().default(undefined);
     }
 
     return nestedSchema;

@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { ModelSchemaFactory as ModelSchemaFactory } from './model-schema.factory';
 import { Car } from './test-files/car';
+import { Cat } from './test-files/cat';
 import { Human } from './test-files/human';
 import { Movie } from './test-files/movie';
 
@@ -221,10 +222,10 @@ describe('ModelSchemaFactory', () => {
     it('should validate required file', async () => {
       const builtFactory = service.build(new Movie());
 
-      const content = Uint8Array.from([0xff, 0xD8, 0xFF, 0xE0]);
+      const content = Uint8Array.from([0xff, 0xd8, 0xff, 0xe0]);
 
       const validation = await builtFactory.validate({
-        movie: new File([content], 'test.jpg', { type: 'image/jpg' })
+        movie: new File([content], 'test.jpg', { type: 'image/jpg' }),
       } as Movie);
 
       expect(service).toBeTruthy();
@@ -237,6 +238,52 @@ describe('ModelSchemaFactory', () => {
       const validation = await builtFactory.validate({} as Movie);
 
       expect(validation).toEqual([{ path: 'movie', type: 'required', message: 'Please select a file' }]);
+    });
+  });
+
+  describe('nested object validations', () => {
+    it('should validate required nested object but not undefined non-required nested object', async () => {
+      const builtFactory = service.build(new Cat());
+
+      const content = Uint8Array.from([0xff, 0xd8, 0xff, 0xe0]);
+
+      const validation = await builtFactory.validate({
+        catMovie: {
+          movie: new File([content], 'test.jpg', { type: 'image/jpg' }),
+        } as Movie,
+        humanPet: undefined, // not required
+      } as Cat);
+
+      expect(service).toBeTruthy();
+      expect(validation.length).toBe(0);
+    });
+
+    it('should fail required nested object validation', async () => {
+      const builtFactory = service.build(new Cat());
+
+      const validation = await builtFactory.validate({
+        catMovie: undefined,
+        humanPet: undefined, // not required
+      } as Cat);
+
+      expect(service).toBeTruthy();
+      expect(validation).toEqual([{ path: 'catMovie.movie', type: 'required', message: 'Please select a file' }]);
+    });
+
+    it('should fail non-required nested object validation if nested object is defined', async () => {
+      const builtFactory = service.build(new Cat());
+
+      const content = Uint8Array.from([0xff, 0xd8, 0xff, 0xe0]);
+
+      const validation = await builtFactory.validate({
+        catMovie: {
+          movie: new File([content], 'test.jpg', { type: 'image/jpg' }),
+        } as Movie,
+        humanPet: {} as Human, // not required, but defined
+      } as Cat);
+
+      expect(service).toBeTruthy();
+      expect(validation).toEqual([{ path: 'humanPet.birthDate', type: 'required', message: 'Please enter a birth date' }]);
     });
   });
 });
