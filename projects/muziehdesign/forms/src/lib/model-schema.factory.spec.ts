@@ -8,6 +8,8 @@ import { Movie } from './test-files/movie';
 
 describe('ModelSchemaFactory', () => {
   let service: ModelSchemaFactory;
+  const content = Uint8Array.from([0xff, 0xd8, 0xff, 0xe0]);
+  const movieFile = new File([content], 'test.jpg', { type: 'image/jpg' });
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
@@ -222,10 +224,9 @@ describe('ModelSchemaFactory', () => {
     it('should validate required file', async () => {
       const builtFactory = service.build(new Movie());
 
-      const content = Uint8Array.from([0xff, 0xd8, 0xff, 0xe0]);
-
+      // act
       const validation = await builtFactory.validate({
-        movie: new File([content], 'test.jpg', { type: 'image/jpg' }),
+        movie: movieFile,
       } as Movie);
 
       expect(service).toBeTruthy();
@@ -242,9 +243,6 @@ describe('ModelSchemaFactory', () => {
   });
 
   describe('nested object validations', () => {
-    const content = Uint8Array.from([0xff, 0xd8, 0xff, 0xe0]);
-    const movieFile = new File([content], 'test.jpg', { type: 'image/jpg' });
-
     it('should validate required nested object but not undefined non-required nested object', async () => {
       const builtFactory = service.build(new Cat());
 
