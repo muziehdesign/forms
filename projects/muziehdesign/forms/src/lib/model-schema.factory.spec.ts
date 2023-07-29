@@ -242,14 +242,16 @@ describe('ModelSchemaFactory', () => {
   });
 
   describe('nested object validations', () => {
+    const content = Uint8Array.from([0xff, 0xd8, 0xff, 0xe0]);
+    const movieFile = new File([content], 'test.jpg', { type: 'image/jpg' });
+
     it('should validate required nested object but not undefined non-required nested object', async () => {
       const builtFactory = service.build(new Cat());
 
-      const content = Uint8Array.from([0xff, 0xd8, 0xff, 0xe0]);
-
+      // act
       const validation = await builtFactory.validate({
         catMovie: {
-          movie: new File([content], 'test.jpg', { type: 'image/jpg' }),
+          movie: movieFile,
         } as Movie,
         humanPet: undefined, // not required
       } as Cat);
@@ -261,6 +263,7 @@ describe('ModelSchemaFactory', () => {
     it('should fail required nested object validation', async () => {
       const builtFactory = service.build(new Cat());
 
+      // act
       const validation = await builtFactory.validate({
         catMovie: undefined,
         humanPet: undefined, // not required
@@ -273,11 +276,10 @@ describe('ModelSchemaFactory', () => {
     it('should fail non-required nested object validation if nested object is defined', async () => {
       const builtFactory = service.build(new Cat());
 
-      const content = Uint8Array.from([0xff, 0xd8, 0xff, 0xe0]);
-
+      // act
       const validation = await builtFactory.validate({
         catMovie: {
-          movie: new File([content], 'test.jpg', { type: 'image/jpg' }),
+          movie: movieFile,
         } as Movie,
         humanPet: {} as Human, // not required, but defined
       } as Cat);
