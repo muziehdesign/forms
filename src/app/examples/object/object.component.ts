@@ -82,6 +82,7 @@ export class OrderModel {
   @BooleanType()
   isGift?: boolean;
 
+  // nested object example which is not required
   @ObjectType(GiftOptionsModel)
   giftOptions?: GiftOptionsModel;
 }
