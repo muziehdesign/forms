@@ -42,6 +42,20 @@
           <mz-field-errors [field]="zipCodeField" *ngIf="(zipCodeField.touched && zipCodeField.invalid) || form.submitted"></mz-field-errors>
         </label>
 
+        <label class="field">
+          <span class="field-label">Is this a gift?</span>
+          <input type="checkbox" [(ngModel)]="model.isGift" name="isGift" #isGiftField="ngModel" (change)="onToggleGift()" />
+        </label>
+
+        <fieldset ngModelGroup="giftOptions" *ngIf="model.isGift">
+          <legend>Gift options</legend>
+          <label class="field">
+          <span class="field-label">Gift message <span class="text-red-500">*</span></span>
+          <input type="text" [(ngModel)]="model.giftOptions!.giftMessage" name="giftMessage" maxlength="100" #giftMessageField="ngModel" />
+          <mz-field-errors [field]="giftMessageField" *ngIf="(giftMessageField.touched && giftMessageField.invalid) || form.submitted"></mz-field-errors>
+          </label>
+        </fieldset>
+
         <button type="submit">Search</button>
 
         <div class="mt-4">
