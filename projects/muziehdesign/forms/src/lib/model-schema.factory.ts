@@ -160,6 +160,8 @@ export class ModelSchemaFactory {
     let nestedSchema = this.buildObjectSchema(options.getInstance());
     if (options.required) {
       nestedSchema = nestedSchema.required();
+    } else {
+      nestedSchema = nestedSchema.notRequired().default(undefined);
     }
 
     return nestedSchema;

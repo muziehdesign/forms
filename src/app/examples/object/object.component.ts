@@ -1,22 +1,36 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { NgFormModelState, ModelSchemaFactory, NgFormModelStateFactory, ObjectType, FieldError, max, min, NumberType, required, StringType } from '@muziehdesign/forms';
+import {
+  NgFormModelState,
+  ModelSchemaFactory,
+  NgFormModelStateFactory,
+  ObjectType,
+  FieldError,
+  max,
+  min,
+  NumberType,
+  required,
+  StringType,
+  BooleanType,
+  ModelStateResult,
+} from '@muziehdesign/forms';
+import { bool } from 'yup';
 
 @Component({
   selector: 'app-object',
   templateUrl: './object.component.html',
-  styleUrls: ['./object.component.scss']
+  styleUrls: ['./object.component.scss'],
 })
 export class ObjectComponent implements AfterViewInit {
-
   model: OrderModel;
   modelState!: NgFormModelState<OrderModel>;
-  @ViewChild('form', {static: true}) form!: NgForm;
+  result: ModelStateResult<OrderModel> | undefined;
+  @ViewChild('form', { static: true }) form!: NgForm;
 
   constructor(private factory: ModelSchemaFactory, private modelStateFactory: NgFormModelStateFactory) {
     this.model = new OrderModel();
     this.model.address = new AddressModel();
-    this.model.address.street1 = "dd"
+    this.model.address.street1 = 'dd';
   }
   ngAfterViewInit(): void {
     this.modelState = this.modelStateFactory.create(this.form, this.model, { onValidate: (errors) => this.onValidate(errors, this.model) });
@@ -24,18 +38,21 @@ export class ObjectComponent implements AfterViewInit {
 
   usePresetValues() {
     this.model.orderNumber = 500;
-    this.model
   }
 
-  async checkout() {
-    console.log('checking out');
-    await this.modelState.validate();
+  async submitForm() {
+    console.log('submitting form');
+    this.result = await this.modelState.validate();
   }
 
   onValidate(modelErrors: FieldError[], model: OrderModel): Promise<FieldError[]> {
     const errors: FieldError[] = [];
 
     return Promise.resolve([...modelErrors, ...errors]);
+  }
+
+  onToggleGift() {
+    this.model.giftOptions = this.model.isGift === true ? new GiftOptionsModel() : undefined;
   }
 }
 
@@ -51,11 +68,21 @@ export class AddressModel {
   zipCode?: string;
 }
 
-export class OrderModel {
+export class GiftOptionsModel {
+  @StringType(required('Gift message is required'))
+  giftMessage?: string;
+}
 
+export class OrderModel {
   @NumberType(required('Please enter a value from 1 to 1000'), min(1), max(1000))
   orderNumber?: number;
   @ObjectType(AddressModel, required())
   address?: AddressModel;
-}
 
+  @BooleanType()
+  isGift?: boolean;
+
+  // nested object example which is not required, but has required properties if user chooses it
+  @ObjectType(GiftOptionsModel)
+  giftOptions?: GiftOptionsModel;
+}
