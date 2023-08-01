@@ -12,6 +12,7 @@ import {
   required,
   StringType,
   BooleanType,
+  ModelStateResult,
 } from '@muziehdesign/forms';
 import { bool } from 'yup';
 
@@ -23,6 +24,7 @@ import { bool } from 'yup';
 export class ObjectComponent implements AfterViewInit {
   model: OrderModel;
   modelState!: NgFormModelState<OrderModel>;
+  result: ModelStateResult<OrderModel> | undefined;
   @ViewChild('form', { static: true }) form!: NgForm;
 
   constructor(private factory: ModelSchemaFactory, private modelStateFactory: NgFormModelStateFactory) {
@@ -38,11 +40,9 @@ export class ObjectComponent implements AfterViewInit {
     this.model.orderNumber = 500;
   }
 
-  async checkout() {
-    console.log('checking out');
-
-    const result = await this.modelState.validate();
-    console.log(result, 'in checkout');
+  async submitForm() {
+    console.log('submitting form');
+    this.result = await this.modelState.validate();
   }
 
   onValidate(modelErrors: FieldError[], model: OrderModel): Promise<FieldError[]> {
