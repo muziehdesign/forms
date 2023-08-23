@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NgFormModelState, ModelSchemaFactory, NgFormModelStateFactory, FieldError, max, min, NumberType, required, StringType } from '@muziehdesign/forms';
+import { NumberExampleModel } from './number-example.model';
 
 @Component({
   selector: 'app-number',
@@ -9,35 +10,23 @@ import { NgFormModelState, ModelSchemaFactory, NgFormModelStateFactory, FieldErr
 })
 export class NumberComponent implements AfterViewInit {
 
-  model: OrderModel;
-  modelState!: NgFormModelState<OrderModel>;
-  @ViewChild('checkoutForm', {static: true}) checkoutForm!: NgForm;
+  model: NumberExampleModel;
+  modelState!: NgFormModelState<NumberExampleModel>;
+  @ViewChild('exampleForm', {static: true}) exampleForm!: NgForm;
 
   constructor(private factory: ModelSchemaFactory, private modelStateFactory: NgFormModelStateFactory) {
-    this.model = new OrderModel();
+    this.model = new NumberExampleModel();
   }
   ngAfterViewInit(): void {
-    this.modelState = this.modelStateFactory.create(this.checkoutForm, this.model, { onValidate: (errors) => this.onValidate(errors, this.model) });
+    this.modelState = this.modelStateFactory.create(this.exampleForm, this.model);
   }
 
   usePresetValues() {
-    this.model.orderNumber = 500;
+    this.model.requiredNumber = 5;
+    this.model.optionalNumber = undefined;
   }
 
-  async checkout() {
-    console.log('checking out');
+  async submitForm() {
     await this.modelState.validate();
   }
-
-  onValidate(modelErrors: FieldError[], model: OrderModel): Promise<FieldError[]> {
-    const errors: FieldError[] = [];
-
-    return Promise.resolve([...modelErrors, ...errors]);
-  }
-}
-
-export class OrderModel {
-
-  @NumberType(required('Please enter a value from 1 to 1000'), min(1), max(1000))
-  orderNumber?: number;
 }
