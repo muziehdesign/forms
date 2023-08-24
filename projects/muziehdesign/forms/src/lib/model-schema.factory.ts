@@ -34,12 +34,12 @@ evaluates the 3 rules in this order
 export class ModelSchemaFactory {
   constructor() {}
 
-  build<T>(model: T): ModelValidator<T> {
+  build<T extends object>(model: T): ModelValidator<T> {
     const schema = this.buildObjectSchema(model);
     return new ModelValidator(schema);
   }
 
-  private buildObjectSchema<T>(model: T) {
+  private buildObjectSchema<T extends object>(model: T) {
     const metadata: Map<string, ConstraintAnnotations> = Reflect.getMetadata(SCHEMA_METADATA_NAMESPACE, model);
     let shape: ObjectShape = {};
     metadata.forEach((value, key) => {

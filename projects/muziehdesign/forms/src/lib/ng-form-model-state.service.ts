@@ -10,7 +10,7 @@ import { NgFormModelState } from './ngform-model-state';
 export class NgFormModelStateFactory {
   constructor(private factory: ModelSchemaFactory) {}
 
-  create<T>(form: NgForm, model: T, options?: ModelStateOptions) {
+  create<T extends object>(form: NgForm, model: T, options?: ModelStateOptions) {
     const modelState = new NgFormModelState<T>(form, this.factory.build(model), options);
     return modelState;
   }
