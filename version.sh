@@ -9,10 +9,9 @@ MINOR=$(echo $VERSION | awk -F '[/.]' '{ print $2 }')
 ECHO $MINOR
 PATCH=$BUILD
 SUFFIX=''
-if [ $BRANCH != "master" ] && [ $BRANCH != "develop" ]
+if [[ $BRANCH != "master" ]] && [[ $BRANCH != "develop" ]] && [[ $BRANCH =~ ^"release/" ]]
 then
     SUFFIX='-alpha'
 fi
 
-npm version "${MAJOR}.${MINOR}.${PATCH}${SUFFIX}" --no-commit-hooks --no-git-tag-version
-
+npm version "${MAJOR}.${MINOR}.${PATCH:="0"}${SUFFIX}" --no-commit-hooks --no-git-tag-version
