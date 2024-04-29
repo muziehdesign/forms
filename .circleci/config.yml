@@ -16,21 +16,8 @@ defaults: &defaults
       environment:
         CHROME_BIN: /usr/bin/google-chrome
 
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+
 jobs:
-  say-hello:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
-    #docker:
-    #  - image: circleci/node
-    <<: *defaults
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
-    steps:
-      - run:
-          name: 'Say hello'
-          command: 'echo Hello, World!'
   test:
     <<: *defaults
     steps:
@@ -108,13 +95,9 @@ jobs:
 workflows:
   publish:
     jobs:
-      - say-hello
     #  - test:
     #      requires:
-    #        - say-hello
-      - build:
-          requires:
-            - say-hello
+      - build
       #- publish:
       #    requires:
       #      - test
