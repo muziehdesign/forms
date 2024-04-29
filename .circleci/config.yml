@@ -66,21 +66,26 @@ jobs:
                   matches:
                     pattern: '^master$'
                     value: << pipeline.git.branch >>
+              - not:
+                  matches:
+                    pattern: '^develop$'
+                    value: << pipeline.git.branch >>
+              - not:
                   matches:
                     pattern: '^develop$'
                     value: << pipeline.git.branch >>
           steps:
-            - run:
+            - deploy:
                 name: 'npm publish'
                 command: |
-                  npm publish ./dist/muziehdesign/forms --tag beta
+                  npm publish ./dist/muziehdesign/forms --tag alpha
       - when:
           condition:
             or:
               - equal: [master, << pipeline.git.branch >>]
               - equal: [develop, << pipeline.git.branch >>]
           steps:
-            - run:
+            - deploy:
                 name: 'npm publish'
                 command: |
                   npm publish ./dist/muziehdesign/forms
