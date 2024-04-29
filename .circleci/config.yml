@@ -47,10 +47,12 @@ jobs:
           name: 'version'
           command: |
             sh ./version.sh ${CIRCLE_BUILD_NUM} ${CIRCLE_BRANCH}
+            echo ${CIRCLE_BRANCH}
       - run:
           name: 'version muziehdesign/forms'
           command: |
             sh ./../../../version.sh ${CIRCLE_BUILD_NUM} ${CIRCLE_BRANCH}
+            echo ${CIRCLE_BRANCH}
           working_directory: ./projects/muziehdesign/forms
       - run: npm ci
       - run: npm run ng -- build @muziehdesign/forms
@@ -83,11 +85,15 @@ jobs:
                   matches:
                     pattern: '^develop$'
                     value: << pipeline.git.branch >>
+              - not:
+                  matches:
+                    pattern: '^develop$'
+                    value: << pipeline.git.branch >>
           steps:
             - deploy:
                 name: 'npm publish'
                 command: |
-                  npm publish ./dist/muziehdesign/forms --tag alpha
+                  
       - when:
           condition:
             or:
@@ -97,7 +103,7 @@ jobs:
             - deploy:
                 name: 'npm publish'
                 command: |
-                  npm publish ./dist/muziehdesign/forms
+                  
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
