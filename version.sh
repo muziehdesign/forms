@@ -8,9 +8,11 @@ MAJOR=$(echo "$VERSION" | awk -F '[/.]' '{ print $1 }')
 MINOR=$(echo "$VERSION" | awk -F '[/.]' '{ print $2 }')
 PATCH=$BUILD
 
-if [ "$BRANCH" = "master" ] || [ "$BRANCH" = "develop" ] ||  [ "$BRANCH" =~ "release/" ]
+if [ "$BRANCH" = "master" ] || [ "$BRANCH" = "develop" ] ||  [[ "$BRANCH" = \release\/* ]]
 then
     npm version "${MAJOR}.${MINOR}.${PATCH:="0"}" --no-commit-hooks --no-git-tag-version
 else
     npm version "${MAJOR}.${MINOR}.${PATCH:="0"}-beta" --no-commit-hooks --no-git-tag-version
 fi
+
+sleep 5000
