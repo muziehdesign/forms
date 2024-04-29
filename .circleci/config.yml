@@ -93,7 +93,7 @@ jobs:
             - deploy:
                 name: 'npm publish'
                 command: |
-                  
+                  npm publish ./dist/muziehdesign/forms --tag alpha
       - when:
           condition:
             or:
@@ -103,7 +103,7 @@ jobs:
             - deploy:
                 name: 'npm publish'
                 command: |
-                  
+                  npm publish ./dist/muziehdesign/forms
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
@@ -111,13 +111,13 @@ workflows:
   publish:
     jobs:
       - say-hello
-      - test:
-          requires:
-            - say-hello
+    #  - test:
+    #      requires:
+    #        - say-hello
       - build:
           requires:
             - say-hello
-      - publish:
-          requires:
-            - test
-            - build
+      #- publish:
+      #    requires:
+      #      - test
+      #      - build
