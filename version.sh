@@ -14,5 +14,3 @@ then
 else
     npm version "${MAJOR}.${MINOR}.${PATCH:="0"}-beta" --no-commit-hooks --no-git-tag-version
 fi
-
-sleep 5000
