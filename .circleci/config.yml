@@ -63,17 +63,19 @@ jobs:
           name: 'npm publish'
           command: |
             if [ "$BRANCH" = "master" ] || [ "$BRANCH" = "develop" ] ||  [[ "$BRANCH" = \release\/* ]]; then
+              echo "publishing non-beta package"
               npm publish ./dist/muziehdesign/forms
             else
+              echo "publishing beta package"
               npm publish ./dist/muziehdesign/forms --tag alpha
             fi
 
 workflows:
   publish:
     jobs:
-    #  - test:
+      - test
       - build
-      #- publish:
-      #    requires:
-      #      - test
-      #      - build
+      - publish:
+          requires:
+            - test
+            - build
