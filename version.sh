@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 BUILD=$1
 BRANCH=$2
