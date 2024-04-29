@@ -16,21 +16,8 @@ defaults: &defaults
       environment:
         CHROME_BIN: /usr/bin/google-chrome
 
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+
 jobs:
-  say-hello:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
-    #docker:
-    #  - image: circleci/node
-    <<: *defaults
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
-    steps:
-      - run:
-          name: 'Say hello'
-          command: 'echo Hello, World!'
   test:
     <<: *defaults
     steps:
@@ -46,11 +33,11 @@ jobs:
       - run:
           name: 'version'
           command: |
-            sh ./version.sh ${CIRCLE_BUILD_NUM} ${CIRCLE_BRANCH}
+            bash ./version.sh ${CIRCLE_BUILD_NUM} ${CIRCLE_BRANCH}
       - run:
           name: 'version muziehdesign/forms'
           command: |
-            sh ./../../../version.sh ${CIRCLE_BUILD_NUM} ${CIRCLE_BRANCH}
+            bash ./../../../version.sh ${CIRCLE_BUILD_NUM} ${CIRCLE_BRANCH}
           working_directory: ./projects/muziehdesign/forms
       - run: npm ci
       - run: npm run ng -- build @muziehdesign/forms
@@ -72,45 +59,22 @@ jobs:
           command: |
             touch .npmrc
             echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
-      - when:
-          condition:
-            and:
-              - not:
-                  matches:
-                    pattern: '^master$'
-                    value: << pipeline.git.branch >>
-              - not:
-                  matches:
-                    pattern: '^develop$'
-                    value: << pipeline.git.branch >>
-          steps:
-            - deploy:
-                name: 'npm publish'
-                command: |
-                  npm publish ./dist/muziehdesign/forms --tag alpha
-      - when:
-          condition:
-            or:
-              - equal: [master, << pipeline.git.branch >>]
-              - equal: [develop, << pipeline.git.branch >>]
-          steps:
-            - deploy:
-                name: 'npm publish'
-                command: |
-                  npm publish ./dist/muziehdesign/forms
+      - run: 
+          name: 'npm publish'
+          command: |
+            if [ "$BRANCH" = "master" ] || [ "$BRANCH" = "develop" ] ||  [[ "$BRANCH" = \release\/* ]]; then
+              echo "publishing non-beta package"
+              npm publish ./dist/muziehdesign/forms
+            else
+              echo "publishing beta package"
+              npm publish ./dist/muziehdesign/forms --tag alpha
+            fi
 
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
   publish:
     jobs:
-      - say-hello
-      - test:
-          requires:
-            - say-hello
-      - build:
-          requires:
-            - say-hello
+      - test
+      - build
       - publish:
           requires:
             - test
