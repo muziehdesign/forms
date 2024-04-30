@@ -67,7 +67,7 @@ jobs:
               npm publish ./dist/muziehdesign/forms
             else
               echo "publishing beta package"
-              npm publish ./dist/muziehdesign/forms --tag alpha
+              npm publish ./dist/muziehdesign/forms --tag beta
             fi
 
 workflows:
