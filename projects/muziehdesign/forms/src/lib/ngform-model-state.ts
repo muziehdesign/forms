@@ -47,6 +47,7 @@ export class NgFormModelState<T> {
   async validate(): Promise<ModelStateResult<T>> {
     const model = this.form.value;
     const state = await this.runValidations(model, this.options?.onValidate);
+    console.log('running validations, result:', state);
     this.setStateInternal(state);
     return state;
   }

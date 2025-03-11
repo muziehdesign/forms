@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IMaskFactory } from 'angular-imask';
 import IMask from 'imask';
-import { currencyOptions, dateMaskOptions, phoneNumberOptions } from '@muziehdesign/forms';
-import { ssnOptions } from 'projects/muziehdesign/forms/src/public-api';
+import { currencyOptions, dateMaskOptions, phoneNumberOptions, ssnOptions } from '@muziehdesign/forms';
 
 @Injectable({
   providedIn: 'root',

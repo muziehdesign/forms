@@ -3,13 +3,13 @@ import 'reflect-metadata';
 const METADATA_KEY = 'custom:muziehdesign:annotations';
 
 export enum ConstraintType {
-  string,
-  boolean,
-  date,
-  object,
-  number,
-  array,
-  file
+  string = 'string',
+  boolean = 'boolean',
+  date = 'date',
+  object = 'object',
+  number = 'number',
+  array = 'array',
+  file = 'file'
 }
 
 export interface ConstraintAnnotations {
@@ -109,8 +109,8 @@ const registerMetadata = (target: Object, propertyKey: string, constraint: Const
 
 export function StringType(...annotations: { [key: string]: ValidationAnnotation }[]) {
   return function (target: Object, propertyKey: string) {
-    const o = Object.assign({}, ...annotations) as StringTypeAnnotations;
-    o.constraintType = ConstraintType.string;
+    const o = Object.assign({}, ...annotations, {constraintType: ConstraintType.string}) as StringTypeAnnotations;
+    
     registerMetadata(target, propertyKey, o);
   };
 }

@@ -15,6 +15,7 @@ import {
   FileTypeAnnotations,
 } from './type-annotations';
 import * as Yup from 'yup';
+import { FieldSchema } from './field-schema';
 
 /*
 Schema rules need to be built in the order they need to be evaluated in.
@@ -35,12 +36,17 @@ export class ModelSchemaFactory {
   constructor() {}
 
   build<T extends object>(model: T): ModelValidator<T> {
-    const schema = this.buildObjectSchema(model);
-    return new ModelValidator(schema);
+    const metadata: Map<string, ConstraintAnnotations> = Reflect.getMetadata(SCHEMA_METADATA_NAMESPACE, model);
+    const schema = this.buildObjectSchema(metadata);
+    return new ModelValidator(schema, metadata);
   }
 
-  private buildObjectSchema<T extends object>(model: T) {
-    const metadata: Map<string, ConstraintAnnotations> = Reflect.getMetadata(SCHEMA_METADATA_NAMESPACE, model);
+  buildUntyped(metadata: Map<string, ConstraintAnnotations>) : ModelValidator<{[key: string]: string}> {
+    const schema = this.buildObjectSchema(metadata);
+    return new ModelValidator(schema, metadata);
+  }
+
+  private buildObjectSchema(metadata: Map<string, ConstraintAnnotations>) : Yup.AnyObjectSchema {
     let shape: ObjectShape = {};
     metadata.forEach((value, key) => {
       if (value.constraintType == ConstraintType.string) {
@@ -60,11 +66,16 @@ export class ModelSchemaFactory {
       }
     });
 
-    return object(shape) as SchemaOf<T>;
+    return object(shape);
+  }
+
+  private buildSchema(fields: FieldSchema<ConstraintAnnotations>[]) {
+    
   }
 
   private buildStringSchema(options: StringTypeAnnotations) {
-    let schema = Yup.string();
+    let schema = Yup.string().default('');
+    
     if (options.required) {
       schema = schema.required(options.required.message);
     }
@@ -157,7 +168,9 @@ export class ModelSchemaFactory {
   }
 
   private buildNestedObjectSchema(options: ObjectTypeAnnotations) {
-    let nestedSchema = this.buildObjectSchema(options.getInstance());
+    const metadata: Map<string, ConstraintAnnotations> = Reflect.getMetadata(SCHEMA_METADATA_NAMESPACE, options.getInstance());
+
+    let nestedSchema = this.buildObjectSchema(metadata);
     if (options.required) {
       nestedSchema = nestedSchema.required();
     } else {

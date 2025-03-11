@@ -1,5 +1,37 @@
 <app-navbar></app-navbar>
 
 <div class="m-10">
-    
+    <form #dynamicForm="ngForm" mzForm [schema]="schema" (ngSubmit)="submitForm()">
+        @for(path of schema.paths; track $index) {
+            
+            <mzField [label]="path.key">
+                <input type="text" [(ngModel)]="model[path.key]" name="{{path.key}}" />
+            </mzField>
+        }
+
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+<div class="grid grid-cols-2">
+    <div>
+        model:
+        <pre>
+            {{ model | json }}
+        </pre>
+    </div>
+    <div>
+        form:
+        <pre>
+            {{ dynamicForm.value | json }}
+        </pre>
+        <pre>
+            status:
+            {{ dynamicForm.status }}
+        </pre>
+        <pre>
+            errors:
+            {{ dynamicForm.errors | json }}
+        </pre>
+    </div>
 </div>

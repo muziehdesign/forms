@@ -24,7 +24,7 @@ jobs:
       - checkout
       - browser-tools/install-chrome
       - run: npm ci
-      - run: npm run ng -- test @muziehdesign/forms
+      - run: npm run test:ci
   build:
     <<: *defaults
     steps:

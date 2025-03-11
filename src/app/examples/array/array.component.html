@@ -1,0 +1,14 @@
+<!--<label field="field">
+    <span class="field-label">Numbers</span>
+    <mz-checkbox-group [options]="numberOptions" [(ngModel)]="model.numbers" (ngModelChange)="onNumbersChanged($event)" />
+</label>-->
+
+<select multiple [(ngModel)]="model.numbers" (ngModelChange)="onNumbersChanged($event)">
+    @for(option of numberOptions; track option.value) {
+        <option [value]="option.value">{{option.label}}</option>
+    }
+</select>
+
+{{ model | json }}
+
+<button (click)="preset()">Preset</button>

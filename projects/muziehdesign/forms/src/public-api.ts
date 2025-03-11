@@ -11,3 +11,6 @@ export * from './lib/ng-form-model-state.service';
 export * from './lib/ngform-model-state';
 export * from './lib/field-errors/field-errors.component';
 export * from './lib/masks';
+
+export { FieldSchema } from './lib/field-schema';
+export { MzCheckboxGroupComponent, FieldOption } from './lib/checkbox-group/checkbox-group.component';

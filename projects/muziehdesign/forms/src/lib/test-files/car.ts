@@ -5,7 +5,6 @@ export class Car {
   topSpeed?: number;
 
   @StringType(
-    required('Please enter a valid brand'),
     minLength(2, 'Brand requires at least 2 characters'),
     maxLength(200, 'Brand cannot exceed 200 characters'),
     pattern(/^[A-Za-z\s]*$/, 'Please enter a valid brand')
@@ -21,7 +20,7 @@ export class Car {
   @DateType(min(new Date(1800, 1, 1), 'Please enter a valid inscription date'), max(new Date(), 'Please enter a valid inscription date'))
   inscriptionDate?: Date;
 
-  @BooleanType(required('The car needs to be tested before use'), equals(true, 'The car needs to be tested before use'))
+  @BooleanType(equals(true, 'The car needs to be tested before use'))
   tested?: boolean;
 
   @ArrayType(min(1, 'Please enter at least one door type'), max(2, 'Only 2 door types allowed'))

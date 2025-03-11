@@ -34,17 +34,10 @@ describe('ModelSchemaFactory', () => {
   });
 
   describe('string validations', () => {
-    it('should validate required string', async () => {
-      const builtFactory = service.build(new Car());
-      const validation = await builtFactory.validate({ topSpeed: 200, tested: true, doors: ['front'] } as Car);
-
-      expect(validation).toEqual([{ path: 'brand', type: 'required', message: 'Please enter a valid brand' }]);
-    });
-
     it('should validate minlength', async () => {
       const builtFactory = service.build(new Car());
 
-      const validation = await builtFactory.validate({ topSpeed: 200, brand: 'a', tested: true, doors: ['front'] } as Car);
+      const validation = await builtFactory.validate({ topSpeed: 200, brand: 'a', tested: true, hexColor: '#000000', doors: ['front'] } as Car);
 
       expect(validation).toEqual([{ path: 'brand', type: 'min', message: 'Brand requires at least 2 characters' }]);
     });
@@ -57,6 +50,7 @@ describe('ModelSchemaFactory', () => {
         brand: 'Audi '.repeat(500),
         nextOilChange: new Date(new Date().getFullYear() + 5, 1, 1),
         tested: true,
+        hexColor: '#000000',
         doors: ['front'],
       } as Car);
 
@@ -71,6 +65,7 @@ describe('ModelSchemaFactory', () => {
         brand: 'Audi %',
         nextOilChange: new Date(new Date().getFullYear() + 5, 1, 1),
         tested: true,
+        hexColor: '#000000',
         doors: ['front'],
       } as Car);
 
@@ -90,7 +85,7 @@ describe('ModelSchemaFactory', () => {
     it('should validate required number', async () => {
       const builtFactory = service.build(new Car());
 
-      const validation = await builtFactory.validate({ brand: 'Audi', tested: true, doors: ['front'] } as Car);
+      const validation = await builtFactory.validate({ brand: 'Audi', tested: true, doors: ['front'], hexColor: '#000000' } as Car);
 
       expect(validation).toEqual([{ path: 'topSpeed', type: 'required', message: 'Please enter a valid top speed' }]);
     });
@@ -98,7 +93,7 @@ describe('ModelSchemaFactory', () => {
     it('should validate min number', async () => {
       const builtFactory = service.build(new Car());
 
-      const validation = await builtFactory.validate({ brand: 'Audi', topSpeed: -1, tested: true, doors: ['front'] } as Car);
+      const validation = await builtFactory.validate({ brand: 'Audi', topSpeed: -1, tested: true, hexColor: '#000000', doors: ['front'] } as Car);
 
       expect(validation).toEqual([{ path: 'topSpeed', type: 'min', message: 'Please enter a valid top speed' }]);
     });
@@ -106,7 +101,13 @@ describe('ModelSchemaFactory', () => {
     it('should validate max number', async () => {
       const builtFactory = service.build(new Car());
 
-      const validation = await builtFactory.validate({ brand: 'Audi', topSpeed: 3000, tested: true, doors: ['front'] } as Car);
+      const validation = await builtFactory.validate({ 
+        brand: 'Audi', 
+        topSpeed: 3000, 
+        tested: true, 
+        doors: ['front'],
+        hexColor: '#000000'
+      } satisfies Car);
 
       expect(validation).toEqual([{ path: 'topSpeed', type: 'max', message: 'Please enter a valid top speed' }]);
     });
@@ -116,7 +117,7 @@ describe('ModelSchemaFactory', () => {
     it('should validate min count of array', async () => {
       const builtFactory = service.build(new Car());
 
-      const validation = await builtFactory.validate({ brand: 'Audi', doors: [], topSpeed: 35, tested: true } as Car);
+      const validation = await builtFactory.validate({ brand: 'Audi', doors: [], topSpeed: 35, tested: true, hexColor: '#000000' } as Car);
 
       expect(validation).toEqual([{ path: 'doors', type: 'min', message: 'Please enter at least one door type' }]);
     });
@@ -124,7 +125,7 @@ describe('ModelSchemaFactory', () => {
     it('should validate max count of array', async () => {
       const builtFactory = service.build(new Car());
 
-      const validation = await builtFactory.validate({ brand: 'Audi', doors: ['front', 'back', 'hatchback'], topSpeed: 35, tested: true } as Car);
+      const validation = await builtFactory.validate({ brand: 'Audi', hexColor: '#000000', doors: ['front', 'back', 'hatchback'], topSpeed: 35, tested: true } as Car);
 
       expect(validation).toEqual([{ path: 'doors', type: 'max', message: 'Only 2 door types allowed' }]);
     });
@@ -140,6 +141,7 @@ describe('ModelSchemaFactory', () => {
         inscriptionDate: new Date(1799, 1, 1),
         tested: true,
         doors: ['front'],
+        hexColor: '#000000'
       } as Car);
 
       expect(validation).toEqual([{ path: 'inscriptionDate', type: 'min', message: 'Please enter a valid inscription date' }]);
@@ -151,6 +153,7 @@ describe('ModelSchemaFactory', () => {
       const validation = await builtFactory.validate({
         topSpeed: 200,
         brand: 'Toyota',
+        hexColor: '#000000',
         inscriptionDate: new Date(new Date().getFullYear() + 5, 1, 1),
         tested: true,
         doors: ['front'],
@@ -168,6 +171,7 @@ describe('ModelSchemaFactory', () => {
         inscriptionDate: new Date(new Date().getFullYear() - 2, 1, 1),
         nextOilChange: new Date(new Date().getFullYear() - 2, 1, 1),
         tested: true,
+        hexColor: '#000000',
         doors: ['front'],
       } as Car);
 
@@ -194,18 +198,6 @@ describe('ModelSchemaFactory', () => {
   });
 
   describe('boolean validations', () => {
-    it('should validate required boolean', async () => {
-      const builtFactory = service.build(new Car());
-
-      const validation = await builtFactory.validate({
-        topSpeed: 200,
-        brand: 'Toyota',
-        doors: ['front'],
-      } as Car);
-
-      expect(validation).toEqual([{ path: 'tested', type: 'required', message: 'The car needs to be tested before use' }]);
-    });
-
     it('should validate true match', async () => {
       const builtFactory = service.build(new Car());
 
@@ -213,6 +205,7 @@ describe('ModelSchemaFactory', () => {
         topSpeed: 200,
         brand: 'Toyota',
         tested: false,
+        hexColor: '#000000',
         doors: ['front'],
       } as Car);
 

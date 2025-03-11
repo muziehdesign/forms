@@ -18,6 +18,7 @@ import { BooleanComponent } from './examples/boolean/boolean.component';
 import { ObjectComponent } from './examples/object/object.component';
 import { SharedModule } from './shared/shared.module';
 import { FileComponent } from './examples/file/file.component';
+import { MzCheckboxGroupComponent } from '../../projects/muziehdesign/forms/src/lib/checkbox-group/checkbox-group.component';
 
 @NgModule({
   declarations: [
