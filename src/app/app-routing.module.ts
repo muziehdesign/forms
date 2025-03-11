@@ -7,6 +7,7 @@ import { NumberComponent } from './examples/number/number.component';
 import { StringComponent } from './examples/string/string.component';
 import { ObjectComponent } from './examples/object/object.component';
 import { FileComponent } from './examples/file/file.component';
+import { DynamicComponent } from './examples/dynamic/dynamic.component';
 
 const routes: Routes = [
   { path: '',  redirectTo: 'examples/string', pathMatch: 'full' },
@@ -16,7 +17,8 @@ const routes: Routes = [
   { path: 'examples/date', component: DateComponent },
   { path: 'examples/boolean', component: BooleanComponent },
   { path: 'examples/object', component: ObjectComponent },
-  { path: 'examples/file', component: FileComponent }
+  { path: 'examples/file', component: FileComponent },
+  { path: 'examples/dynamic', component: DynamicComponent }
 ];
 
 @NgModule({
