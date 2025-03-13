@@ -1,289 +1,390 @@
 import { TestBed } from '@angular/core/testing';
-
 import { ModelSchemaFactory as ModelSchemaFactory } from './model-schema.factory';
-import { Car } from './test-files/car';
-import { Cat } from './test-files/cat';
-import { Human } from './test-files/human';
-import { Movie } from './test-files/movie';
+import { ArrayTestModel, BooleanTestModel, DateTestModel, FileTestModel, NestedObjectModel, NumberTestModel, StringTestModel } from './test-files/annotation-test-models';
+import { ModelValidator } from './model-validator';
 
-describe('ModelSchemaFactory', () => {
+describe('ModelSchemaFactory validates string', () => {
   let service: ModelSchemaFactory;
-  const content = Uint8Array.from([0xff, 0xd8, 0xff, 0xe0]);
-  const movieFile = new File([content], 'test.jpg', { type: 'image/jpg' });
+  const validModel = new StringTestModel();
+  let schema: ModelValidator<any>;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(ModelSchemaFactory);
+
+    validModel.requiredEntry = 'required';
+    schema = service.build(validModel);
+    const validation = await schema.validate(validModel);
+    expect(validation).toEqual([]);
   });
 
-  it('should go through happy path', async () => {
-    const builtFactory = service.build(new Car());
+  it('should validate required string', async () => {
+    for (const invalidValue of [undefined, '']) {
+      const target = Object.assign({}, validModel) as StringTestModel;
+      target.requiredEntry = invalidValue;
 
-    const validation = await builtFactory.validate({
-      topSpeed: 200,
-      brand: 'Audi',
-      hexColor: '#ffffff',
-      nextOilChange: new Date(new Date().getFullYear() + 5, 1, 1),
-      inscriptionDate: new Date(new Date().getFullYear() - 2, 1, 1),
-      tested: true,
-      doors: ['front'],
-    } as Car);
+      const validation = await schema.validate(target);
+      expect(validation).toEqual([{ path: 'requiredEntry', type: 'required', message: 'requiredEntry is a required field' }]);
+    }
 
-    expect(service).toBeTruthy();
-    expect(validation.length).toBe(0);
+    for (const validValue of [' ', '  ', 'abc']) {
+      const target = Object.assign({}, validModel) as StringTestModel;
+      target.requiredEntry = validValue;
+
+      const validation = await schema.validate(target);
+      expect(validation).toEqual([]);
+    }
   });
 
-  describe('string validations', () => {
-    it('should validate required string', async () => {
-      const builtFactory = service.build(new Car());
-      const validation = await builtFactory.validate({ topSpeed: 200, tested: true, doors: ['front'] } as Car);
-
-      expect(validation).toEqual([{ path: 'brand', type: 'required', message: 'Please enter a valid brand' }]);
-    });
-
-    it('should validate minlength', async () => {
-      const builtFactory = service.build(new Car());
-
-      const validation = await builtFactory.validate({ topSpeed: 200, brand: 'a', tested: true, doors: ['front'] } as Car);
-
-      expect(validation).toEqual([{ path: 'brand', type: 'min', message: 'Brand requires at least 2 characters' }]);
-    });
-
-    it('should validate maxlength', async () => {
-      const builtFactory = service.build(new Car());
-
-      const validation = await builtFactory.validate({
-        topSpeed: 200,
-        brand: 'Audi '.repeat(500),
-        nextOilChange: new Date(new Date().getFullYear() + 5, 1, 1),
-        tested: true,
-        doors: ['front'],
-      } as Car);
-
-      expect(validation).toEqual([{ path: 'brand', type: 'max', message: 'Brand cannot exceed 200 characters' }]);
-    });
-
-    it('should validate regex', async () => {
-      const builtFactory = service.build(new Car());
-
-      const validation = await builtFactory.validate({
-        topSpeed: 200,
-        brand: 'Audi %',
-        nextOilChange: new Date(new Date().getFullYear() + 5, 1, 1),
-        tested: true,
-        doors: ['front'],
-      } as Car);
-
-      expect(validation).toEqual([{ path: 'brand', type: 'matches', message: 'Please enter a valid brand' }]);
-    });
-
-    it('should validate length', async () => {
-      const builtFactory = service.build(new Car());
-
-      const validation = await builtFactory.validate({ brand: 'Audi', hexColor: '#333', topSpeed: 100, tested: true, doors: ['front'] } as Car);
-
-      expect(validation).toEqual([{ path: 'hexColor', type: 'length', message: 'Please enter a valid hex color' }]);
-    });
+  it('should validate minlength', async () => {
+    const target = Object.assign({}, validModel) as StringTestModel;
+    target.minLengthEntry = '';
+    const validation = await schema.validate(target);
+    expect(validation).toEqual([{ path: 'minLengthEntry', type: 'min', message: 'minLengthEntry must be at least 5 characters' }]);
   });
 
-  describe('number validations', () => {
-    it('should validate required number', async () => {
-      const builtFactory = service.build(new Car());
+  it('should validate max', async () => {
+    const target = Object.assign({}, validModel) as StringTestModel;
+    target.maxLengthEntry = '123456789012345';
+    let validation = await schema.validate(target);
+    expect(validation).toEqual([{ path: 'maxLengthEntry', type: 'max', message: 'maxLengthEntry must be at most 10 characters' }]);
 
-      const validation = await builtFactory.validate({ brand: 'Audi', tested: true, doors: ['front'] } as Car);
-
-      expect(validation).toEqual([{ path: 'topSpeed', type: 'required', message: 'Please enter a valid top speed' }]);
-    });
-
-    it('should validate min number', async () => {
-      const builtFactory = service.build(new Car());
-
-      const validation = await builtFactory.validate({ brand: 'Audi', topSpeed: -1, tested: true, doors: ['front'] } as Car);
-
-      expect(validation).toEqual([{ path: 'topSpeed', type: 'min', message: 'Please enter a valid top speed' }]);
-    });
-
-    it('should validate max number', async () => {
-      const builtFactory = service.build(new Car());
-
-      const validation = await builtFactory.validate({ brand: 'Audi', topSpeed: 3000, tested: true, doors: ['front'] } as Car);
-
-      expect(validation).toEqual([{ path: 'topSpeed', type: 'max', message: 'Please enter a valid top speed' }]);
-    });
+    target.maxLengthEntry = '';
+    validation = await schema.validate(target);
+    expect(validation).toEqual([]);
   });
 
-  describe('array validations', () => {
-    it('should validate min count of array', async () => {
-      const builtFactory = service.build(new Car());
+  it('should validate regex', async () => {
+    const target = Object.assign({}, validModel) as StringTestModel;
+    target.patternEntry = 'muziehdeeeeesign';
+    let validation = await schema.validate(target);
+    expect(validation).toEqual([]);
 
-      const validation = await builtFactory.validate({ brand: 'Audi', doors: [], topSpeed: 35, tested: true } as Car);
-
-      expect(validation).toEqual([{ path: 'doors', type: 'min', message: 'Please enter at least one door type' }]);
-    });
-
-    it('should validate max count of array', async () => {
-      const builtFactory = service.build(new Car());
-
-      const validation = await builtFactory.validate({ brand: 'Audi', doors: ['front', 'back', 'hatchback'], topSpeed: 35, tested: true } as Car);
-
-      expect(validation).toEqual([{ path: 'doors', type: 'max', message: 'Only 2 door types allowed' }]);
-    });
+    target.patternEntry = 'muziehdsign';
+    validation = await schema.validate(target);
+    expect(validation).toEqual([{ path: 'patternEntry', type: 'matches', message: 'patternEntry must match the following: "/muziehd(e+)sign/g"' }]);
   });
 
-  describe('date validations', () => {
-    it('should validate min date', async () => {
-      const builtFactory = service.build(new Car());
+  it('should validate length', async () => {
+    const target = Object.assign({}, validModel) as StringTestModel;
+    target.lengthEntry = '123456789012345';
+    let validation = await schema.validate(target);
+    expect(validation).toEqual([{ path: 'lengthEntry', type: 'length', message: 'lengthEntry must be exactly 5 characters' }]);
+  });
+});
 
-      const validation = await builtFactory.validate({
-        topSpeed: 200,
-        brand: 'Toyota',
-        inscriptionDate: new Date(1799, 1, 1),
-        tested: true,
-        doors: ['front'],
-      } as Car);
+describe('ModelSchemaFactory validates number', () => {
+  let service: ModelSchemaFactory;
+  const validModel = new NumberTestModel();
+  let schema: ModelValidator<any>;
 
-      expect(validation).toEqual([{ path: 'inscriptionDate', type: 'min', message: 'Please enter a valid inscription date' }]);
-    });
+  beforeEach(async () => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(ModelSchemaFactory);
 
-    it('should validate max date', async () => {
-      const builtFactory = service.build(new Car());
-
-      const validation = await builtFactory.validate({
-        topSpeed: 200,
-        brand: 'Toyota',
-        inscriptionDate: new Date(new Date().getFullYear() + 5, 1, 1),
-        tested: true,
-        doors: ['front'],
-      } as Car);
-
-      expect(validation).toEqual([{ path: 'inscriptionDate', type: 'max', message: 'Please enter a valid inscription date' }]);
-    });
-
-    it('should validate date test', async () => {
-      const builtFactory = service.build(new Car());
-
-      const validation = await builtFactory.validate({
-        topSpeed: 200,
-        brand: 'Toyota',
-        inscriptionDate: new Date(new Date().getFullYear() - 2, 1, 1),
-        nextOilChange: new Date(new Date().getFullYear() - 2, 1, 1),
-        tested: true,
-        doors: ['front'],
-      } as Car);
-
-      expect(validation).toEqual([{ path: 'nextOilChange', type: 'nextOilChange', message: 'Please enter a valid oil change' }]);
-    });
-
-    it('should require a date test', async () => {
-      const builtFactory = service.build(new Human());
-
-      const validation = await builtFactory.validate({} as Human);
-
-      expect(validation).toEqual([{ path: 'birthDate', type: 'required', message: 'Please enter a birth date' }]);
-    });
-
-    it('should use default typeError text when js Date object is not valid', async () => {
-      const builtFactory = service.build(new Human());
-
-      const validation = await builtFactory.validate({ birthDate: new Date('hi, I am invalid') } as Human);
-
-      expect(validation).toEqual([
-        { path: 'birthDate', type: 'typeError', message: 'birthDate must be a `date` type, but the final value was: `Invalid Date` (cast from the value `Invalid Date`).' },
-      ]);
-    });
+    validModel.requiredEntry = 5;
+    schema = service.build(validModel);
+    const validation = await schema.validate(validModel);
+    expect(validation).toEqual([]);
   });
 
-  describe('boolean validations', () => {
-    it('should validate required boolean', async () => {
-      const builtFactory = service.build(new Car());
+  it('should validate required number', async () => {
+    for (const invalidValue of [undefined]) {
+      const target = Object.assign({}, validModel) as NumberTestModel;
+      target.requiredEntry = invalidValue;
 
-      const validation = await builtFactory.validate({
-        topSpeed: 200,
-        brand: 'Toyota',
-        doors: ['front'],
-      } as Car);
+      const validation = await schema.validate(target);
+      expect(validation).toEqual([{ path: 'requiredEntry', type: 'required', message: 'requiredEntry is a required field' }]);
+    }
 
-      expect(validation).toEqual([{ path: 'tested', type: 'required', message: 'The car needs to be tested before use' }]);
-    });
+    for (const validValue of [0, 1, -2]) {
+      const target = Object.assign({}, validModel) as NumberTestModel;
+      target.requiredEntry = validValue;
 
-    it('should validate true match', async () => {
-      const builtFactory = service.build(new Car());
-
-      const validation = await builtFactory.validate({
-        topSpeed: 200,
-        brand: 'Toyota',
-        tested: false,
-        doors: ['front'],
-      } as Car);
-
-      expect(validation).toEqual([{ path: 'tested', type: 'is-value', message: 'The car needs to be tested before use' }]);
-    });
+      const validation = await schema.validate(target);
+      expect(validation).toEqual([]);
+    }
   });
 
-  describe('file validations', () => {
-    it('should validate required file', async () => {
-      const builtFactory = service.build(new Movie());
+  it('should validate min number', async () => {
+    const target = Object.assign({}, validModel) as NumberTestModel;
+    target.minEntry = 1;
 
-      // act
-      const validation = await builtFactory.validate({
-        movie: movieFile,
-      } as Movie);
+    let validation = await schema.validate(target);
+    expect(validation).toEqual([{ path: 'minEntry', type: 'min', message: 'minEntry must be greater than or equal to 5' }]);
 
-      expect(service).toBeTruthy();
-      expect(validation.length).toBe(0);
-    });
-
-    it('should fail required file validation', async () => {
-      const builtFactory = service.build(new Movie());
-
-      const validation = await builtFactory.validate({} as Movie);
-
-      expect(validation).toEqual([{ path: 'movie', type: 'required', message: 'Please select a file' }]);
-    });
+    target.minEntry = 6;
+    validation = await schema.validate(target);
+    expect(validation).toEqual([]);
   });
 
-  describe('nested object validations', () => {
-    it('should validate required nested object but not undefined non-required nested object', async () => {
-      const builtFactory = service.build(new Cat());
+  it('should validate max number', async () => {
+    const target = Object.assign({}, validModel) as NumberTestModel;
+    target.maxEntry = 11;
 
-      // act
-      const validation = await builtFactory.validate({
-        catMovie: {
-          movie: movieFile,
-        } as Movie,
-        humanPet: undefined, // not required
-      } as Cat);
+    let validation = await schema.validate(target);
+    expect(validation).toEqual([{ path: 'maxEntry', type: 'max', message: 'maxEntry must be less than or equal to 10' }]);
 
-      expect(service).toBeTruthy();
-      expect(validation.length).toBe(0);
-    });
+    target.maxEntry = 10;
+    validation = await schema.validate(target);
+    expect(validation).toEqual([]);
+  });
+});
 
-    it('should fail required nested object validation', async () => {
-      const builtFactory = service.build(new Cat());
+describe('ModelSchemaFactory validates array', () => {
+  let service: ModelSchemaFactory;
+  const validModel = new ArrayTestModel();
+  let schema: ModelValidator<any>;
 
-      // act
-      const validation = await builtFactory.validate({
-        catMovie: undefined,
-        humanPet: undefined, // not required
-      } as Cat);
+  beforeEach(async () => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(ModelSchemaFactory);
 
-      expect(service).toBeTruthy();
-      expect(validation).toEqual([{ path: 'catMovie.movie', type: 'required', message: 'Please select a file' }]);
-    });
+    schema = service.build(validModel);
+    const validation = await schema.validate(validModel);
+    expect(validation).toEqual([]);
+  });
 
-    it('should fail non-required nested object validation if nested object is defined', async () => {
-      const builtFactory = service.build(new Cat());
+  it('should validate min length', async () => {
+    const target = Object.assign({}, validModel) as ArrayTestModel;
+    target.minEntry = ['1', '2', '3', '4'];
 
-      // act
-      const validation = await builtFactory.validate({
-        catMovie: {
-          movie: movieFile,
-        } as Movie,
-        humanPet: {} as Human, // not required, but defined
-      } as Cat);
+    let validation = await schema.validate(target);
+    expect(validation).toEqual([{ path: 'minEntry', type: 'min', message: 'minEntry field must have at least 5 items' }]);
 
-      expect(service).toBeTruthy();
-      expect(validation).toEqual([{ path: 'humanPet.birthDate', type: 'required', message: 'Please enter a birth date' }]);
-    });
+    target.minEntry = ['1', '2', '3', '4', '5'];
+    validation = await schema.validate(target);
+    expect(validation).toEqual([]);
+  });
+
+  it('should validate max length', async () => {
+    const target = Object.assign({}, validModel) as ArrayTestModel;
+    target.maxEntry = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'];
+
+    let validation = await schema.validate(target);
+    expect(validation).toEqual([{ path: 'maxEntry', type: 'max', message: 'maxEntry field must have less than or equal to 10 items' }]);
+
+    target.maxEntry = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+    validation = await schema.validate(target);
+    expect(validation).toEqual([]);
+  });
+});
+
+describe('ModelSchemaFactory validates number', () => {
+  let service: ModelSchemaFactory;
+  const validModel = new NumberTestModel();
+  let schema: ModelValidator<any>;
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(ModelSchemaFactory);
+
+    validModel.requiredEntry = 5;
+    schema = service.build(validModel);
+    const validation = await schema.validate(validModel);
+    expect(validation).toEqual([]);
+  });
+
+  it('should validate required number', async () => {
+    for (const invalidValue of [undefined]) {
+      const target = Object.assign({}, validModel) as NumberTestModel;
+      target.requiredEntry = invalidValue;
+
+      const validation = await schema.validate(target);
+      expect(validation).toEqual([{ path: 'requiredEntry', type: 'required', message: 'requiredEntry is a required field' }]);
+    }
+
+    for (const validValue of [0, 1, -2]) {
+      const target = Object.assign({}, validModel) as NumberTestModel;
+      target.requiredEntry = validValue;
+
+      const validation = await schema.validate(target);
+      expect(validation).toEqual([]);
+    }
+  });
+
+  it('should validate min number', async () => {
+    const target = Object.assign({}, validModel) as NumberTestModel;
+    target.minEntry = 1;
+
+    let validation = await schema.validate(target);
+    expect(validation).toEqual([{ path: 'minEntry', type: 'min', message: 'minEntry must be greater than or equal to 5' }]);
+
+    target.minEntry = 6;
+    validation = await schema.validate(target);
+    expect(validation).toEqual([]);
+  });
+
+  it('should validate max number', async () => {
+    const target = Object.assign({}, validModel) as NumberTestModel;
+    target.maxEntry = 11;
+
+    let validation = await schema.validate(target);
+    expect(validation).toEqual([{ path: 'maxEntry', type: 'max', message: 'maxEntry must be less than or equal to 10' }]);
+
+    target.maxEntry = 10;
+    validation = await schema.validate(target);
+    expect(validation).toEqual([]);
+  });
+});
+
+describe('ModelSchemaFactory validates date', () => {
+  let service: ModelSchemaFactory;
+  const validModel = new DateTestModel();
+  let schema: ModelValidator<any>;
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(ModelSchemaFactory);
+
+    validModel.requiredEntry = new Date();
+    schema = service.build(validModel);
+    const validation = await schema.validate(validModel);
+    expect(validation).toEqual([]);
+  });
+
+  it('should validate required date', async () => {
+    for (const invalidValue of [undefined]) {
+      const target = Object.assign({}, validModel) as DateTestModel;
+      target.requiredEntry = invalidValue;
+
+      const validation = await schema.validate(target);
+      expect(validation).toEqual([{ path: 'requiredEntry', type: 'required', message: 'requiredEntry is a required field' }]);
+    }
+
+    for (const validValue of [new Date()]) {
+      const target = Object.assign({}, validModel) as DateTestModel;
+      target.requiredEntry = validValue;
+
+      const validation = await schema.validate(target);
+      expect(validation).toEqual([]);
+    }
+  });
+
+  it('should validate min date', async () => {
+    const target = Object.assign({}, validModel) as DateTestModel;
+    target.minEntry = new Date(1999, 11, 31);
+
+    let validation = await schema.validate(target);
+    expect(validation).toEqual([{ path: 'minEntry', type: 'min', message: `minEntry field must be later than ${new Date(2000, 0, 5).toISOString()}` }]);
+
+    target.minEntry = new Date(2000, 0, 5);
+    validation = await schema.validate(target);
+    expect(validation).toEqual([]);
+  });
+
+  it('should validate max date', async () => {
+    const target = Object.assign({}, validModel) as DateTestModel;
+    target.maxEntry = new Date(2000, 0, 11);
+
+    let validation = await schema.validate(target);
+    expect(validation).toEqual([{ path: 'maxEntry', type: 'max', message: `maxEntry field must be at earlier than ${new Date(2000, 0, 10).toISOString()}` }]);
+
+    target.maxEntry = new Date(2000, 0, 10);
+    validation = await schema.validate(target);
+    expect(validation).toEqual([]);
+  });
+});
+
+describe('ModelSchemaFactory validates boolean', () => {
+  let service: ModelSchemaFactory;
+  const validModel = new BooleanTestModel();
+  let schema: ModelValidator<any>;
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(ModelSchemaFactory);
+
+    validModel.requiredEntry = false;
+    schema = service.build(validModel);
+    const validation = await schema.validate(validModel);
+    expect(validation).toEqual([]);
+  });
+
+  it('should validate required boolean', async () => {
+    for (const invalidValue of [undefined]) {
+      const target = Object.assign({}, validModel) as BooleanTestModel;
+      target.requiredEntry = invalidValue;
+
+      const validation = await schema.validate(target);
+      expect(validation).toEqual([{ path: 'requiredEntry', type: 'required', message: 'requiredEntry is a required field' }]);
+    }
+
+    for (const validValue of [true, false]) {
+      const target = Object.assign({}, validModel) as BooleanTestModel;
+      target.requiredEntry = validValue;
+
+      const validation = await schema.validate(target);
+      expect(validation).toEqual([]);
+    }
+  });
+
+  it('should validate is value', async () => {
+    const target = Object.assign({}, validModel) as BooleanTestModel;
+    target.equalsEntry = false;
+
+    let validation = await schema.validate(target);
+    expect(validation).toEqual([{ path: 'equalsEntry', type: 'is-value', message: 'equalsEntry field must be true' }]);
+
+    target.equalsEntry = true;
+    validation = await schema.validate(target);
+    expect(validation).toEqual([]);
+  });
+});
+
+describe('ModelSchemaFactory validates file', () => {
+  let service: ModelSchemaFactory;
+  const validModel = new FileTestModel();
+  let schema: ModelValidator<any>;
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(ModelSchemaFactory);
+
+    validModel.requiredEntry = new File([], 'test.jpg');
+    schema = service.build(validModel);
+    const validation = await schema.validate(validModel);
+    expect(validation).toEqual([]);
+  });
+
+  it('should validate required file', async () => {
+      const target = Object.assign({}, validModel) as FileTestModel;
+      target.requiredEntry = undefined;
+      let validation = await schema.validate(target);
+      expect(validation).toEqual([{ path: 'requiredEntry', type: 'required', message: 'requiredEntry is a required field' }]);
+
+      target.requiredEntry = new File([], 'test.jpg');
+      validation = await schema.validate(target);
+      expect(validation).toEqual([]);
+  });
+});
+
+
+describe('ModelSchemaFactory validates nested object', () => {
+  let service: ModelSchemaFactory;
+  const validModel = new NestedObjectModel();
+  let schema: ModelValidator<any>;
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({});
+    service = TestBed.inject(ModelSchemaFactory);
+
+    validModel.requiredEntry = new StringTestModel();
+    validModel.requiredEntry.requiredEntry = 'abc';
+    schema = service.build(validModel);
+    const validation = await schema.validate(validModel);
+    expect(validation).toEqual([]);
+  });
+
+  it('should validate required object', async () => {
+      const target = Object.assign({}, validModel) as NestedObjectModel;
+      target.requiredEntry = undefined;
+      let validation = await schema.validate(target);
+      expect(validation).toEqual([{ path: 'requiredEntry.requiredEntry', type: 'required', message: 'requiredEntry.requiredEntry is a required field' }]);
+
+      target.requiredEntry = new StringTestModel();
+      target.requiredEntry.requiredEntry = 'abc';
+      validation = await schema.validate(target);
+      expect(validation).toEqual([]);
   });
 });
