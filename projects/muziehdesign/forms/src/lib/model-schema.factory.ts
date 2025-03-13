@@ -41,8 +41,8 @@ export class ModelSchemaFactory {
     return new ModelValidator(schema);
   }
 
-  buildUntyped(fields: FieldSchema<any>[]) : ModelValidator<{[key: string]: string}> {
-    const schema = this.buildYupSchema(fields);
+  buildUntyped(raw: FieldSchema<any>[]) : ModelValidator<{[key: string]: string}> {
+    const schema = this.buildYupSchema(raw);
     return new ModelValidator(schema);
   }
 

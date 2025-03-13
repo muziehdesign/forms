@@ -1,47 +1,12 @@
-import { ConstraintAnnotations, ConstraintType, FieldSchema, StringTypeAnnotations } from "@muziehdesign/forms";
-import { DynamicFormModel, FieldType } from "src/app/dynamic/models";
+import { ConstraintAnnotations, ConstraintType, FieldSchema, FieldSchemaType, StringTypeAnnotations } from "@muziehdesign/forms";
 
-export const FORM_DATA = {
-    title: 'Dynamic Form',
-    sections: [
-        {
-            sectionId: 1,
-            label: '',
-            fields: [
-                {
-                    fieldId: '1',
-                    label: 'Username',
-                    type: FieldType.Text,
-                    required: true,
-                    name: 'field1'
-                },
-                {
-                    fieldId: '2',
-                    label: 'Age',
-                    type: FieldType.Number,
-                    required: true,
-                    name: 'field2'
-                },
-                {
-                    fieldId: '3',
-                    label: 'acceptAgreement',
-                    type: FieldType.Checkbox,
-                    required: true,
-                    name: 'field3'
-                }
-            ]
-        }
-    ]
-} satisfies DynamicFormModel;
-
-/*
-export const FIELDS = [
+export const DYNAMIC_FIELDS = [
     {
         name: 'String',
-        type: 'string',
+        type: FieldSchemaType.string,
         label: 'String field',
         constraints: {
             constraintType: ConstraintType.string,
         } satisfies StringTypeAnnotations
     }
-] satisfies FieldSchema<ConstraintAnnotations>[];*/
+] satisfies FieldSchema<ConstraintAnnotations>[];

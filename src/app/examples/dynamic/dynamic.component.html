@@ -2,10 +2,10 @@
 
 <div class="m-10">
     <form #dynamicForm="ngForm" mzForm [schema]="schema" (ngSubmit)="submitForm()">
-        @for(path of schema.paths; track $index) {
+        @for(field of fields; track $index) {
             
-            <mzField [label]="path.key">
-                <input type="text" [(ngModel)]="model[path.key]" name="{{path.key}}" />
+            <mzField [label]="field.name">
+                <input type="text" [(ngModel)]="model[field.name]" name="{{field.name}}" />
             </mzField>
         }
 
