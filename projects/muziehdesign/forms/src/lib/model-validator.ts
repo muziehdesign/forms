@@ -3,10 +3,12 @@ import { FieldError } from './field-error';
 import { ConstraintAnnotations } from './type-annotations';
 
 export class ModelValidator<T> {
-    constructor(private schema: AnyObjectSchema, private metadata: Map<string, ConstraintAnnotations>) {}
+    constructor(private schema: AnyObjectSchema) {}
+
 
     get paths() {
-        return Array.from(this.metadata, ([key, value]) => ({ key, value }));
+        //return Array.from(this.metadata, ([key, value]) => ({ key, value }));
+        return [];
     }
 
     keyValue(key: string) {

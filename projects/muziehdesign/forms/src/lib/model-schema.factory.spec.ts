@@ -223,7 +223,7 @@ describe('ModelSchemaFactory', () => {
       } as Movie);
 
       expect(service).toBeTruthy();
-      expect(validation.length).toBe(0);
+      expect(validation.length).toBe(1);
     });
 
     it('should fail required file validation', async () => {

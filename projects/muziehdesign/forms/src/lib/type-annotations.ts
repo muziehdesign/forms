@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import { ArraySchema, BooleanSchema, DateSchema, FieldSchema, FieldSchemaType, FileSchema, NumberSchema, ObjectSchema, StringSchema } from './field-schema';
 
 const METADATA_KEY = 'custom:muziehdesign:annotations';
 
@@ -13,7 +14,7 @@ export enum ConstraintType {
 }
 
 export interface ConstraintAnnotations {
-  constraintType: ConstraintType;
+  constraintType?: ConstraintType; // TODO
 }
 
 export interface StringTypeAnnotations extends ConstraintAnnotations {
@@ -101,65 +102,93 @@ export interface MinLengthAnnotation extends ValidationAnnotation {
   minLength: number;
 }
 
-const registerMetadata = (target: Object, propertyKey: string, constraint: ConstraintAnnotations) => {
-  const metadata: Map<string, any> = Reflect.getMetadata(METADATA_KEY, target) || new Map<string, any>();
-  metadata.set(propertyKey, constraint);
+const registerMetadata = (target: Object, propertyKey: string, schema: FieldSchema<any>) => {
+  const metadata: Map<string, FieldSchema<any>> = Reflect.getMetadata(METADATA_KEY, target) || new Map<string, FieldSchema<any>>();
+  metadata.set(propertyKey, schema);
   Reflect.defineMetadata(METADATA_KEY, metadata, target);
 };
 
 export function StringType(...annotations: { [key: string]: ValidationAnnotation }[]) {
   return function (target: Object, propertyKey: string) {
-    const o = Object.assign({}, ...annotations, {constraintType: ConstraintType.string}) as StringTypeAnnotations;
-    
-    registerMetadata(target, propertyKey, o);
+    const schema = {
+      name: propertyKey,
+      type: FieldSchemaType.string,
+      constraints: Object.assign({}, ...annotations) as StringTypeAnnotations
+    } satisfies StringSchema;
+
+    registerMetadata(target, propertyKey, schema);
   };
 }
 
 export function BooleanType(...annotations: { [key: string]: ValidationAnnotation }[]) {
   return function (target: Object, propertyKey: string) {
-    const o = Object.assign({}, ...annotations) as BooleanTypeAnnotations;
-    o.constraintType = ConstraintType.boolean;
-    registerMetadata(target, propertyKey, o);
+    const schema = {
+      name: propertyKey,
+      type: FieldSchemaType.boolean,
+      constraints: Object.assign({}, ...annotations) as BooleanTypeAnnotations
+    } satisfies BooleanSchema;
+
+    registerMetadata(target, propertyKey, schema);
   };
 }
 
 export function DateType(...annotations: { [key: string]: ValidationAnnotation }[]) {
   return function (target: Object, propertyKey: string) {
-    const o = Object.assign({}, ...annotations) as DateTypeAnnotations;
-    o.constraintType = ConstraintType.date;
-    registerMetadata(target, propertyKey, o);
+    const schema = {
+      name: propertyKey,
+      type: FieldSchemaType.date,
+      constraints: Object.assign({}, ...annotations) as DateTypeAnnotations
+    } satisfies DateSchema;
+
+    registerMetadata(target, propertyKey, schema);
   };
 }
 
 export function NumberType(...annotations: { [key: string]: ValidationAnnotation }[]) {
   return function (target: Object, propertyKey: string) {
-    const o = Object.assign({}, ...annotations) as NumberTypeAnnotations;
-    o.constraintType = ConstraintType.number;
-    registerMetadata(target, propertyKey, o);
+    const schema = {
+      name: propertyKey,
+      type: FieldSchemaType.number,
+      constraints: Object.assign({}, ...annotations) as NumberTypeAnnotations
+    } satisfies NumberSchema;
+
+    registerMetadata(target, propertyKey, schema);
   };
 }
 
 export function ObjectType<T>(type: { new (): T }, ...annotations: { [key: string]: ValidationAnnotation }[]) {
   return function (target: Object, propertyKey: string) {
-    const o = Object.assign({}, ...annotations, { getInstance: () => new type() } as Partial<ObjectTypeAnnotations>) as ObjectTypeAnnotations;
-    o.constraintType = ConstraintType.object;
-    registerMetadata(target, propertyKey, o);
+    const schema = {
+      name: propertyKey,
+      type: FieldSchemaType.object,
+      constraints: Object.assign({}, ...annotations, { getInstance: () => new type() } as Partial<ObjectTypeAnnotations>) as ObjectTypeAnnotations
+    } satisfies ObjectSchema;
+
+    registerMetadata(target, propertyKey, schema);
   };
 }
 
 export function ArrayType(...annotations: { [key: string]: ValidationAnnotation }[]) {
   return function (target: Object, propertyKey: string) {
-    const o = Object.assign({}, ...annotations) as ArrayTypeAnnotations;
-    o.constraintType = ConstraintType.array;
-    registerMetadata(target, propertyKey, o);
+    const schema = {
+      name: propertyKey,
+      type: FieldSchemaType.array,
+      constraints: Object.assign({}, ...annotations) as ArrayTypeAnnotations
+    } satisfies ArraySchema;
+
+    registerMetadata(target, propertyKey, schema);
   };
 }
 
 export function FileType<T>(...annotations: { [key: string]: ValidationAnnotation }[]) {
   return function (target: Object, propertyKey: string) {
-    const o = Object.assign({}, ...annotations) as FileTypeAnnotations;
-    o.constraintType = ConstraintType.file;
-    registerMetadata(target, propertyKey, o);
+    const schema = {
+      name: propertyKey,
+      type: FieldSchemaType.file,
+      constraints: Object.assign({}, ...annotations) as ArrayTypeAnnotations
+    } satisfies FileSchema;
+
+    registerMetadata(target, propertyKey, schema);
   };
 }
 

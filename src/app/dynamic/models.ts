@@ -1,3 +1,5 @@
+import { ConstraintAnnotations } from "@muziehdesign/forms";
+
 export interface FieldModel {
     fieldId: string;
     name: string;
@@ -38,3 +40,10 @@ export interface DynamicFormModel {
     title: string;
     sections: FieldSectionModel[];
 }
+
+export interface FieldSchema<T extends ConstraintAnnotations> {
+    name: string;
+    type: string;
+    label: string;
+    constraints: T;
+  }

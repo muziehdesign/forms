@@ -15,7 +15,7 @@ import {
   FileTypeAnnotations,
 } from './type-annotations';
 import * as Yup from 'yup';
-import { FieldSchema } from './field-schema';
+import { ArraySchema, BooleanSchema, DateSchema, FieldSchema, FieldSchemaType, FileSchema, NumberSchema, ObjectSchema, StringSchema } from './field-schema';
 
 /*
 Schema rules need to be built in the order they need to be evaluated in.
@@ -36,46 +36,46 @@ export class ModelSchemaFactory {
   constructor() {}
 
   build<T extends object>(model: T): ModelValidator<T> {
-    const metadata: Map<string, ConstraintAnnotations> = Reflect.getMetadata(SCHEMA_METADATA_NAMESPACE, model);
-    const schema = this.buildObjectSchema(metadata);
-    return new ModelValidator(schema, metadata);
+    const metadata: Map<string, FieldSchema<any>> = Reflect.getMetadata(SCHEMA_METADATA_NAMESPACE, model);
+    const schema = this.buildYupSchema([...metadata.values()]);
+    return new ModelValidator(schema);
   }
 
-  buildUntyped(metadata: Map<string, ConstraintAnnotations>) : ModelValidator<{[key: string]: string}> {
-    const schema = this.buildObjectSchema(metadata);
-    return new ModelValidator(schema, metadata);
+  buildUntyped(fields: FieldSchema<any>[]) : ModelValidator<{[key: string]: string}> {
+    const schema = this.buildYupSchema(fields);
+    return new ModelValidator(schema);
   }
 
-  private buildObjectSchema(metadata: Map<string, ConstraintAnnotations>) : Yup.AnyObjectSchema {
+  private buildYupSchema(fields: FieldSchema<any>[]) : Yup.AnyObjectSchema {
     let shape: ObjectShape = {};
-    metadata.forEach((value, key) => {
-      if (value.constraintType == ConstraintType.string) {
-        shape[key] = this.buildStringSchema(value as StringTypeAnnotations);
-      } else if (value.constraintType == ConstraintType.boolean) {
-        shape[key] = this.buildBooleanSchema(value as BooleanTypeAnnotations);
-      } else if (value.constraintType == ConstraintType.date) {
-        shape[key] = this.buildDateSchema(value as DateTypeAnnotations);
-      } else if (value.constraintType == ConstraintType.object) {
-        shape[key] = this.buildNestedObjectSchema(value as ObjectTypeAnnotations);
-      } else if (value.constraintType == ConstraintType.number) {
-        shape[key] = this.buildNumberSchema(value as NumberTypeAnnotations);
-      } else if (value.constraintType == ConstraintType.array) {
-        shape[key] = this.buildArraySchema(value as ArrayTypeAnnotations);
-      } else if (value.constraintType == ConstraintType.file) {
-        shape[key] = this.buildFileSchema(value as FileTypeAnnotations);
+    fields.forEach((value, key) => {
+      if (value.type == FieldSchemaType.string) {
+        shape[key] = this.buildStringSchema(value as StringSchema);
+      } else if (value.type == FieldSchemaType.boolean) {
+        shape[key] = this.buildBooleanSchema(value as BooleanSchema);
+      } else if (value.type == FieldSchemaType.date) {
+        shape[key] = this.buildDateSchema(value as DateSchema);
+      } else if (value.type == FieldSchemaType.object) {
+        shape[key] = this.buildNestedObjectSchema(value as ObjectSchema);
+      } else if (value.type == FieldSchemaType.number) {
+        shape[key] = this.buildNumberSchema(value as NumberSchema);
+      } else if (value.type == FieldSchemaType.array) {
+        shape[key] = this.buildArraySchema(value as ArraySchema);
+      } else if (value.type == FieldSchemaType.file) {
+        shape[key] = this.buildFileSchema(value as FileSchema);
       }
     });
 
     return object(shape);
   }
 
-  private buildSchema(fields: FieldSchema<ConstraintAnnotations>[]) {
-    
-  }
-
-  private buildStringSchema(options: StringTypeAnnotations) {
+  private buildStringSchema(original: StringSchema) {
     let schema = Yup.string().default('');
-    
+    if(original.label) {
+      schema.label(original.label);
+    }
+
+    const options = original.constraints;    
     if (options.required) {
       schema = schema.required(options.required.message);
     }
@@ -98,8 +98,13 @@ export class ModelSchemaFactory {
     return schema;
   }
 
-  private buildBooleanSchema(options: BooleanTypeAnnotations) {
+  private buildBooleanSchema(original: BooleanSchema) {
     let schema = Yup.boolean();
+    if(original.label) {
+      schema.label(original.label);
+    }
+
+    const options = original.constraints;  
     if (options.required) {
       schema = schema.required(options.required.message);
     }
@@ -114,9 +119,13 @@ export class ModelSchemaFactory {
     return schema;
   }
 
-  private buildDateSchema(options: DateTypeAnnotations) {
+  private buildDateSchema(original: DateSchema) {
     let schema = Yup.date();
+    if(original.label) {
+      schema.label(original.label);
+    }
 
+    const options = original.constraints;  
     if (options.required) {
       schema = schema.required(options.required.message);
     }
@@ -139,8 +148,13 @@ export class ModelSchemaFactory {
     return schema;
   }
 
-  private buildNumberSchema(options: NumberTypeAnnotations) {
+  private buildNumberSchema(original: NumberSchema) {
     let schema = Yup.number();
+    if(original.label) {
+      schema.label(original.label);
+    }
+
+    const options = original.constraints;  
     if (options.required) {
       schema = schema.required(options.required.message);
     }
@@ -154,8 +168,13 @@ export class ModelSchemaFactory {
     return schema;
   }
 
-  private buildArraySchema(options: ArrayTypeAnnotations) {
+  private buildArraySchema(original: ArraySchema) {
     let schema = Yup.array();
+    if(original.label) {
+      schema.label(original.label);
+    }
+
+    const options = original.constraints;  
 
     if (options.min) {
       schema = schema.min(options.min.min, options.min.message);
@@ -167,10 +186,15 @@ export class ModelSchemaFactory {
     return schema;
   }
 
-  private buildNestedObjectSchema(options: ObjectTypeAnnotations) {
-    const metadata: Map<string, ConstraintAnnotations> = Reflect.getMetadata(SCHEMA_METADATA_NAMESPACE, options.getInstance());
+  private buildNestedObjectSchema(original: ObjectSchema) {
+    const metadata: Map<string, FieldSchema<any>> = Reflect.getMetadata(SCHEMA_METADATA_NAMESPACE, original.constraints.getInstance());
 
-    let nestedSchema = this.buildObjectSchema(metadata);
+    let nestedSchema = this.buildYupSchema([...metadata.values()]);
+    if(original.label) {
+      nestedSchema.label(original.label);
+    }
+
+    const options = original.constraints;  
     if (options.required) {
       nestedSchema = nestedSchema.required();
     } else {
@@ -180,8 +204,13 @@ export class ModelSchemaFactory {
     return nestedSchema;
   }
 
-  private buildFileSchema(options: FileTypeAnnotations) {
+  private buildFileSchema(original: FileSchema) {
     let schema = Yup.mixed().nullable().optional();
+    if(original.label) {
+      schema.label(original.label);
+    }
+
+    const options = original.constraints;  
     if (options.required) {
       schema = schema.required(options.required.message);
     }

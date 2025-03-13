@@ -1,3 +1,4 @@
+import { ConstraintAnnotations, ConstraintType, FieldSchema, StringTypeAnnotations } from "@muziehdesign/forms";
 import { DynamicFormModel, FieldType } from "src/app/dynamic/models";
 
 export const FORM_DATA = {
@@ -32,3 +33,15 @@ export const FORM_DATA = {
         }
     ]
 } satisfies DynamicFormModel;
+
+/*
+export const FIELDS = [
+    {
+        name: 'String',
+        type: 'string',
+        label: 'String field',
+        constraints: {
+            constraintType: ConstraintType.string,
+        } satisfies StringTypeAnnotations
+    }
+] satisfies FieldSchema<ConstraintAnnotations>[];*/
