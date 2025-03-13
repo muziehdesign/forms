@@ -14,12 +14,12 @@ export interface FieldOption {
     providers: [
         {
           provide: NG_VALUE_ACCESSOR,
-          useExisting: forwardRef(() => MzCheckboxGroupComponent),
+          useExisting: forwardRef(() => MzCheckboxGroup),
           multi: true
         }
       ]
 })
-export class MzCheckboxGroupComponent implements ControlValueAccessor {
+export class MzCheckboxGroup implements ControlValueAccessor {
     @Input({ required: true }) options!: FieldOption[];
     selections: any[] = [];
 

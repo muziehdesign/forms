@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { ArrayExampleModel } from './model';
 import { FormsModule } from '@angular/forms';
 import { JsonPipe } from '@angular/common';
-import { FieldOption, MzCheckboxGroupComponent } from '@muziehdesign/forms';
+import { FieldOption, MzCheckboxGroup } from '@muziehdesign/forms';
 
 @Component({
     selector: 'app-array',
     standalone: true,
-    imports: [MzCheckboxGroupComponent, FormsModule, JsonPipe],
+    imports: [MzCheckboxGroup, FormsModule, JsonPipe],
     templateUrl: './array.component.html',
     styleUrl: './array.component.scss',
 })

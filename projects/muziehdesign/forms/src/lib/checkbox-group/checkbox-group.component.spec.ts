@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { FieldOption, MzCheckboxGroupComponent } from './checkbox-group.component';
+import { FieldOption, MzCheckboxGroup } from './checkbox-group.component';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 describe('MzCheckboxGroupComponent', () => {
-    let component: MzCheckboxGroupComponent;
-    let fixture: ComponentFixture<MzCheckboxGroupComponent>;
+    let component: MzCheckboxGroup;
+    let fixture: ComponentFixture<MzCheckboxGroup>;
     const CHECKBOX_OPTIONS: FieldOption[] = [
         { label: 'Apple', value: 'apple' },
         { label: 'Banana', value: 'banana' },
@@ -16,12 +16,12 @@ describe('MzCheckboxGroupComponent', () => {
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             declarations: [],
-            imports: [MzCheckboxGroupComponent],
+            imports: [MzCheckboxGroup],
         }).compileComponents();
     });
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(MzCheckboxGroupComponent);
+        fixture = TestBed.createComponent(MzCheckboxGroup);
         component = fixture.componentInstance;
         component.options = CHECKBOX_OPTIONS;
         fixture.detectChanges();
