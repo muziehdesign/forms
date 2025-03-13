@@ -266,7 +266,7 @@ describe('ModelSchemaFactory validates date', () => {
     target.minEntry = new Date(1999, 11, 31);
 
     let validation = await schema.validate(target);
-    expect(validation).toEqual([{ path: 'minEntry', type: 'min', message: 'minEntry field must be later than 2000-01-05T07:00:00.000Z' }]);
+    expect(validation).toEqual([{ path: 'minEntry', type: 'min', message: `minEntry field must be later than ${new Date(2000, 0, 5).toISOString()}` }]);
 
     target.minEntry = new Date(2000, 0, 5);
     validation = await schema.validate(target);
@@ -278,7 +278,7 @@ describe('ModelSchemaFactory validates date', () => {
     target.maxEntry = new Date(2000, 0, 11);
 
     let validation = await schema.validate(target);
-    expect(validation).toEqual([{ path: 'maxEntry', type: 'max', message: 'maxEntry field must be at earlier than 2000-01-10T07:00:00.000Z' }]);
+    expect(validation).toEqual([{ path: 'maxEntry', type: 'max', message: `maxEntry field must be at earlier than ${new Date(2000, 0, 10).toISOString()}` }]);
 
     target.maxEntry = new Date(2000, 0, 10);
     validation = await schema.validate(target);
