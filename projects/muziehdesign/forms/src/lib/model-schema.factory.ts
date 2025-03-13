@@ -64,6 +64,7 @@ export class ModelSchemaFactory {
   }
 
   private buildStringSchema(options: StringTypeAnnotations) {
+    console.log('building string', options);
     let schema = Yup.string();
     if (options.required) {
       schema = schema.required(options.required.message);

@@ -1,4 +1,4 @@
-import { SchemaOf, ValidationError } from 'yup';
+import { AnyObjectSchema, SchemaOf, ValidationError } from 'yup';
 import { FieldError } from './field-error';
 
 export class ModelValidator<T> {
