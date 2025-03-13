@@ -44,3 +44,48 @@ export interface FileSchema extends FieldSchema<FileTypeAnnotations> {
 export interface ObjectSchema extends FieldSchema<ObjectTypeAnnotations> {
     type: FieldSchemaType.object;
 }
+
+export const buildStringSchema = (path: string, constraints: StringTypeAnnotations, label?: string) => {
+    return {
+        name: path,
+        label: label,
+        type: FieldSchemaType.string,
+        constraints: { ...constraints },
+    } satisfies StringSchema;
+};
+
+export const buildBooleanSchema = (path: string, constraints: BooleanTypeAnnotations, label?: string) => {
+    return {
+        name: path,
+        label: label,
+        type: FieldSchemaType.boolean,
+        constraints: { ...constraints },
+    } satisfies BooleanSchema;
+};
+
+export const buildNumberSchema = (path: string, constraints: NumberTypeAnnotations, label?: string) => {
+    return {
+        name: path,
+        label: label,
+        type: FieldSchemaType.number,
+        constraints: { ...constraints },
+    } satisfies NumberSchema;
+};
+
+export const buildDateSchema = (path: string, constraints: DateTypeAnnotations, label?: string) => {
+    return {
+        name: path,
+        label: label,
+        type: FieldSchemaType.date,
+        constraints: { ...constraints },
+    } satisfies DateSchema;
+};
+
+export const buildArraySchema = (path: string, constraints: ArrayTypeAnnotations, label?: string) => {
+    return {
+        name: path,
+        label: label,
+        type: FieldSchemaType.array,
+        constraints: { ...constraints },
+    } satisfies ArraySchema;
+};
