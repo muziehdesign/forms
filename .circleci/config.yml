@@ -8,7 +8,7 @@ general:
       - gh-pages
 
 orbs:
-  browser-tools: circleci/browser-tools@1.2.4
+  browser-tools: circleci/browser-tools@1.4.8
 
 defaults: &defaults
   docker:
@@ -18,29 +18,34 @@ defaults: &defaults
 
 
 jobs:
-  test:
+  prep:
     <<: *defaults
     steps:
       - checkout
-      - browser-tools/install-chrome
       - run: npm ci
+      - run:
+          name: "version"
+          command: |
+            sh ./version.sh ${CIRCLE_BUILD_NUM} ${CIRCLE_BRANCH}
+            cat foo.txt
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  test:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: .
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
       - run: npm run test:ci
   build:
     <<: *defaults
     steps:
-      - checkout
-      #- run: npm run lint
-      - run:
-          name: 'version'
-          command: |
-            bash ./version.sh ${CIRCLE_BUILD_NUM} ${CIRCLE_BRANCH}
-      - run:
-          name: 'version muziehdesign/forms'
-          command: |
-            bash ./../../../version.sh ${CIRCLE_BUILD_NUM} ${CIRCLE_BRANCH}
-          working_directory: ./projects/muziehdesign/forms
+      - attach_workspace:
+          at: .
       - run: npm ci
-      - run: npm run ng -- build @muziehdesign/forms
       - run: npm run build
       - store_artifacts:
           path: /dist/muziehdesign/forms
@@ -62,8 +67,11 @@ jobs:
       - run: 
           name: 'npm publish'
           command: |
-            if [ "$BRANCH" = "master" ] || [ "$BRANCH" = "develop" ] ||  [[ "$BRANCH" = \release\/* ]]; then
-              echo "publishing non-beta package"
+            if  [ "${CIRCLE_BRANCH}" = "develop" ]; then
+              echo "publishing next package"
+              npm publish ./dist/muziehdesign/forms --tag next
+            elif (echo "$BRANCH" | grep -q "^release/"); then
+              echo "publishing release package"
               npm publish ./dist/muziehdesign/forms
             else
               echo "publishing beta package"
@@ -73,9 +81,15 @@ jobs:
 workflows:
   publish:
     jobs:
-      - test
-      - build
+      - prep
+      - test:
+          requires:
+            - prep
+      - build:
+          requires:
+            - prep
       - publish:
+          context: SharedContext
           requires:
             - test
             - build
