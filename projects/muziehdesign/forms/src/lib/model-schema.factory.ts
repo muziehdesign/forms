@@ -3,17 +3,6 @@ import { object, SchemaOf } from 'yup';
 import { ModelValidator } from './model-validator';
 import { SCHEMA_METADATA_NAMESPACE } from './constants';
 import { ObjectShape } from 'yup/lib/object';
-import {
-  BooleanTypeAnnotations,
-  ConstraintAnnotations,
-  ConstraintType,
-  DateTypeAnnotations,
-  ObjectTypeAnnotations,
-  NumberTypeAnnotations,
-  StringTypeAnnotations,
-  ArrayTypeAnnotations,
-  FileTypeAnnotations,
-} from './type-annotations';
 import * as Yup from 'yup';
 import { ArraySchema, BooleanSchema, DateSchema, FieldSchema, FieldSchemaType, FileSchema, NumberSchema, ObjectSchema, StringSchema } from './field-schema';
 
@@ -48,21 +37,23 @@ export class ModelSchemaFactory {
 
   private buildYupSchema(fields: FieldSchema<any>[]) : Yup.AnyObjectSchema {
     let shape: ObjectShape = {};
-    fields.forEach((value, key) => {
+    fields.forEach((value) => {
       if (value.type == FieldSchemaType.string) {
-        shape[key] = this.buildStringSchema(value as StringSchema);
+        shape[value.name] = this.buildStringSchema(value as StringSchema);
       } else if (value.type == FieldSchemaType.boolean) {
-        shape[key] = this.buildBooleanSchema(value as BooleanSchema);
+        shape[value.name] = this.buildBooleanSchema(value as BooleanSchema);
       } else if (value.type == FieldSchemaType.date) {
-        shape[key] = this.buildDateSchema(value as DateSchema);
+        shape[value.name] = this.buildDateSchema(value as DateSchema);
       } else if (value.type == FieldSchemaType.object) {
-        shape[key] = this.buildNestedObjectSchema(value as ObjectSchema);
+        shape[value.name] = this.buildNestedObjectSchema(value as ObjectSchema);
       } else if (value.type == FieldSchemaType.number) {
-        shape[key] = this.buildNumberSchema(value as NumberSchema);
+        shape[value.name] = this.buildNumberSchema(value as NumberSchema);
       } else if (value.type == FieldSchemaType.array) {
-        shape[key] = this.buildArraySchema(value as ArraySchema);
+        shape[value.name] = this.buildArraySchema(value as ArraySchema);
       } else if (value.type == FieldSchemaType.file) {
-        shape[key] = this.buildFileSchema(value as FileSchema);
+        shape[value.name] = this.buildFileSchema(value as FileSchema);
+      } else {
+        throw new Error('Unrecognized field schema');
       }
     });
 
@@ -70,12 +61,13 @@ export class ModelSchemaFactory {
   }
 
   private buildStringSchema(original: StringSchema) {
-    let schema = Yup.string().default('');
+    let schema = Yup.string();
     if(original.label) {
       schema.label(original.label);
     }
 
     const options = original.constraints;    
+
     if (options.required) {
       schema = schema.required(options.required.message);
     }

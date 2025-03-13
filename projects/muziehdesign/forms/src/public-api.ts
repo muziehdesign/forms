@@ -12,5 +12,5 @@ export * from './lib/ngform-model-state';
 export * from './lib/field-errors/field-errors.component';
 export * from './lib/masks';
 
-export { FieldSchema, FieldSchemaType } from './lib/field-schema';
+export { FieldSchema, FieldSchemaType, StringSchema, NumberSchema, DateSchema, BooleanSchema, FileSchema, ObjectSchema } from './lib/field-schema';
 export { MzCheckboxGroupComponent, FieldOption } from './lib/checkbox-group/checkbox-group.component';

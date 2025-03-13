@@ -3,18 +3,8 @@ import { ArraySchema, BooleanSchema, DateSchema, FieldSchema, FieldSchemaType, F
 
 const METADATA_KEY = 'custom:muziehdesign:annotations';
 
-export enum ConstraintType {
-  string = 'string',
-  boolean = 'boolean',
-  date = 'date',
-  object = 'object',
-  number = 'number',
-  array = 'array',
-  file = 'file'
-}
-
 export interface ConstraintAnnotations {
-  constraintType?: ConstraintType; // TODO
+
 }
 
 export interface StringTypeAnnotations extends ConstraintAnnotations {
@@ -116,6 +106,8 @@ export function StringType(...annotations: { [key: string]: ValidationAnnotation
       constraints: Object.assign({}, ...annotations) as StringTypeAnnotations
     } satisfies StringSchema;
 
+    console.log(schema.constraints);
+
     registerMetadata(target, propertyKey, schema);
   };
 }
@@ -185,7 +177,7 @@ export function FileType<T>(...annotations: { [key: string]: ValidationAnnotatio
     const schema = {
       name: propertyKey,
       type: FieldSchemaType.file,
-      constraints: Object.assign({}, ...annotations) as ArrayTypeAnnotations
+      constraints: Object.assign({}, ...annotations) as FileTypeAnnotations
     } satisfies FileSchema;
 
     registerMetadata(target, propertyKey, schema);

@@ -6,6 +6,7 @@
     "start": "ng serve --port 8400 --open",
     "build": "ng build @muziehdesign/forms && ng build",
     "watch": "ng build --watch --configuration development",
+    "watch:forms": "ng build @muziehdesign/forms --watch",
     "test": "ng test @muziehdesign/forms --watch",
     "test:ci": "ng test @muziehdesign/forms"
   },
