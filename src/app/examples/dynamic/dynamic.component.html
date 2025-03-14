@@ -4,9 +4,9 @@
     <form #dynamicForm="ngForm" mzForm [schema]="schema" (ngSubmit)="submitForm()">
         @for(field of fields; track $index) {
             
-            <mzField [label]="field.name">
+            <mz-field [label]="field.name">
                 <input type="text" [(ngModel)]="model[field.name]" name="{{field.name}}" />
-            </mzField>
+            </mz-field>
         }
 
         <button type="submit">Submit</button>

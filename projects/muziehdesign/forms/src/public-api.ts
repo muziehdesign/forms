@@ -6,13 +6,11 @@ export * from './lib/model-state-result';
 export * from './lib/model-schema.factory';
 export * from './lib/model-validator';
 export * from './lib/type-annotations';
-export * from './lib/forms.module';
+export { FormsModule, MzFormsModule } from './lib/forms.module';
 export * from './lib/ng-form-model-state.service';
 export * from './lib/ngform-model-state';
 export * from './lib/field-errors/field-errors.component';
 export * from './lib/masks';
 
-export { FieldSchema, FieldSchemaType, StringSchema, NumberSchema, DateSchema, BooleanSchema, FileSchema, ObjectSchema,
-    buildStringSchema, buildNumberSchema, buildDateSchema, buildBooleanSchema, buildArraySchema
- } from './lib/field-schema';
+export { FieldSchema, FieldSchemaType, StringSchema, NumberSchema, DateSchema, BooleanSchema, FileSchema, ObjectSchema, buildStringSchema, buildNumberSchema, buildDateSchema, buildBooleanSchema, buildArraySchema } from './lib/field-schema';
 export { MzCheckboxGroup, FieldOption } from './lib/checkbox-group/checkbox-group.component';

@@ -1,22 +1,16 @@
 import { AfterContentInit, Component, ContentChild, ContentChildren, DestroyRef, Input, QueryList } from '@angular/core';
 import { NgModel } from '@angular/forms';
-import { JsonPipe } from '@angular/common';
 
 @Component({
-    selector: 'mzField',
+    selector: 'mz-field',
     standalone: true,
-    imports: [JsonPipe],
+    imports: [],
     templateUrl: './field.component.html',
-    styleUrl: './field.component.scss',
 })
-export class FieldComponent implements AfterContentInit {
+export class MzField {
     @Input() label?: string;
     @ContentChild(NgModel) ngModel!: NgModel;
-    constructor(private destroyRef: DestroyRef) {}
-
-    async ngAfterContentInit() {
-        console.log('path: ', this.ngModel.path);
-    }
+    constructor() {}
 
     getErrorMessage(): string | undefined {
         try {

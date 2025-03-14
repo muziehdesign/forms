@@ -1,17 +1,16 @@
 import { AfterViewInit, Directive, HostListener, Input, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ModelValidator, NgFormModelState, NgFormModelStateFactory } from '@muziehdesign/forms';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { ModelValidator } from '../model-validator';
+import { NgFormModelState } from '../ngform-model-state';
 
 @Directive({
     selector: '[mzForm]',
     standalone: true,
 })
-export class FormDirective implements AfterViewInit {
-    @Input({ required: true }) schema!: ModelValidator<unknown>;
+export class MzForm implements AfterViewInit {
+    @Input({ required: true }) schema!: ModelValidator<any>;
 
-    private modelState!: NgFormModelState<unknown>;
+    private modelState!: NgFormModelState<any>;
 
     constructor(private ngForm: NgForm) {
 

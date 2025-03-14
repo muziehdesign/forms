@@ -1,16 +1,15 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ModelSchemaFactory, ModelValidator } from '@muziehdesign/forms';
-import { FormDirective } from 'src/app/dynamic/form.directive';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { DYNAMIC_FIELDS } from './form-data';
 import { JsonPipe } from '@angular/common';
-import { FieldComponent } from 'src/app/dynamic/field/field.component';
+import { MzFormsModule } from 'projects/muziehdesign/forms/src/public-api';
 
 @Component({
     selector: 'app-dynamic',
     standalone: true,
-    imports: [SharedModule, FormDirective, FormsModule, FieldComponent, JsonPipe],
+    imports: [SharedModule, FormsModule, MzFormsModule, JsonPipe],
     templateUrl: './dynamic.component.html',
     styleUrl: './dynamic.component.scss',
 })
