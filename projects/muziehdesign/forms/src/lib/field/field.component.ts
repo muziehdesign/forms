@@ -9,12 +9,13 @@ import { NgModel } from '@angular/forms';
 })
 export class MzField {
     @Input() label?: string;
-    @ContentChild(NgModel) ngModel!: NgModel;
+    @Input() checkbox: boolean = false;
+    @ContentChild(NgModel) ngModel?: NgModel;
     constructor() {}
 
     getErrorMessage(): string | undefined {
         try {
-            const list = Object.values(this.ngModel.errors!);
+            const list = Object.values(this.ngModel!.errors!);
             return list[0];
         } catch {
             return undefined;
