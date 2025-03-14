@@ -8,9 +8,9 @@ import { NgFormModelState } from '../ngform-model-state';
     standalone: true,
 })
 export class MzForm implements AfterViewInit {
-    @Input({ required: true }) schema!: ModelValidator<any>;
+    @Input({ required: true }) schema!: ModelValidator<unknown>;
 
-    private modelState!: NgFormModelState<any>;
+    private modelState!: NgFormModelState<unknown>;
 
     constructor(private ngForm: NgForm) {
 

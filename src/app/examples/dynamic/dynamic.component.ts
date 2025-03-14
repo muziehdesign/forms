@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ModelSchemaFactory, ModelValidator } from '@muziehdesign/forms';
+import { ModelSchemaFactory, ModelValidator, MzFormsModule } from '@muziehdesign/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { DYNAMIC_FIELDS } from './form-data';
 import { JsonPipe } from '@angular/common';
-import { MzFormsModule } from 'projects/muziehdesign/forms/src/public-api';
 
 @Component({
     selector: 'app-dynamic',
@@ -16,16 +15,15 @@ import { MzFormsModule } from 'projects/muziehdesign/forms/src/public-api';
 export class DynamicComponent {
 
     fields = DYNAMIC_FIELDS;
-    schema: ModelValidator<{[key: string]: string}>;
-    model: {[key: string]: string | undefined};
+    schema: ModelValidator<unknown>;
+    model: {[key: string]: any } = {};
 
     constructor(private schemaFactory: ModelSchemaFactory) {
         this.schema = this.schemaFactory.buildUntyped(this.fields);
-        this.model = this.schema.instantiate(); 
     }
 
     submitForm() {
-        console.log('submitted', this.model);
+        console.log('submitted');
     }
 }
 

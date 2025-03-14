@@ -5,7 +5,6 @@ import { ConstraintAnnotations } from './type-annotations';
 export class ModelValidator<T> {
     constructor(private schema: AnyObjectSchema) {}
 
-
     get paths() {
         //return Array.from(this.metadata, ([key, value]) => ({ key, value }));
         return [];
@@ -24,10 +23,5 @@ export class ModelValidator<T> {
             .catch((e: ValidationError) => {
                 return e.inner.map((error) => <FieldError>{ path: error.path, type: error.type, message: error.message });
             });
-    }
-
-    instantiate(): any {
-        console.log(this.schema.fields);
-      return this.schema.getDefault();
     }
 }

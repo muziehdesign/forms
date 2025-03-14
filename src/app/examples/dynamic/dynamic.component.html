@@ -3,10 +3,17 @@
 <div class="m-10">
     <form #dynamicForm="ngForm" mzForm [schema]="schema" (ngSubmit)="submitForm()">
         @for(field of fields; track $index) {
-            
-            <mz-field [label]="field.name">
-                <input type="text" [(ngModel)]="model[field.name]" name="{{field.name}}" />
-            </mz-field>
+
+            @if(field.type === 'boolean') {
+                <mz-field [label]="field.name" [checkbox]="true">
+                    <input type="checkbox" [(ngModel)]="model[field.name]" name="{{ field.name }}" />
+                </mz-field>
+            } @else {
+                <mz-field [label]="field.name" [checkbox]="false">
+                    <input type="text" [(ngModel)]="model[field.name]" name="{{ field.name }}" />
+                </mz-field>
+            }
+
         }
 
         <button type="submit">Submit</button>
