@@ -16,7 +16,7 @@ export class DynamicComponent {
 
     fields = DYNAMIC_FIELDS;
     schema: ModelValidator<unknown>;
-    model: {[key: string]: any } = {};
+    model: {[key: string]: any } = {'Boolean': 'false'};
 
     constructor(private schemaFactory: ModelSchemaFactory) {
         this.schema = this.schemaFactory.buildUntyped(this.fields);

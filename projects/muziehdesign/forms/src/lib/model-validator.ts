@@ -24,4 +24,8 @@ export class ModelValidator<T> {
                 return e.inner.map((error) => <FieldError>{ path: error.path, type: error.type, message: error.message });
             });
     }
+
+    cast(value: any) {
+        return this.schema.cast(value);
+    }
 }
