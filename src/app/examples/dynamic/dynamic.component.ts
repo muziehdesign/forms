@@ -4,11 +4,12 @@ import { ModelSchemaFactory, ModelValidator, MzFormsModule } from '@muziehdesign
 import { SharedModule } from 'src/app/shared/shared.module';
 import { DYNAMIC_FIELDS } from './form-data';
 import { JsonPipe } from '@angular/common';
+import { NavbarComponent } from 'src/app/shared/navbar/navbar.component';
 
 @Component({
     selector: 'app-dynamic',
     standalone: true,
-    imports: [SharedModule, FormsModule, MzFormsModule, JsonPipe],
+    imports: [SharedModule, FormsModule, MzFormsModule, JsonPipe, NavbarComponent],
     templateUrl: './dynamic.component.html',
     styleUrl: './dynamic.component.scss',
 })

@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 
 import {IMaskFactory, IMaskModule} from 'angular-imask';
-import { FormsModule as MuziehFormsModule } from '@muziehdesign/forms';
+import { FormsModule as MuziehFormsModule, MzFormsModule } from '@muziehdesign/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,7 +18,6 @@ import { BooleanComponent } from './examples/boolean/boolean.component';
 import { ObjectComponent } from './examples/object/object.component';
 import { SharedModule } from './shared/shared.module';
 import { FileComponent } from './examples/file/file.component';
-import { MzCheckboxGroup } from '../../projects/muziehdesign/forms/src/lib/checkbox-group/checkbox-group.component';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 
@@ -44,7 +43,8 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
     SharedModule,
 
     DateComponent,
-    NavbarComponent
+    NavbarComponent,
+    MzFormsModule
   ],
   providers: [
     {
