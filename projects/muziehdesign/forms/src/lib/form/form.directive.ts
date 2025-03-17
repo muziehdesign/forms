@@ -17,13 +17,11 @@ export class MzForm implements AfterViewInit {
     }
     
     ngAfterViewInit(): void {
-        console.log('this is form directive', this.ngForm.value, this.schema);
         this.modelState = new NgFormModelState(this.ngForm, this.schema);
     }
 
     @HostListener('submit', ['$event'])
     onSubmit(event: Event) {
-        console.log('submitting');
         this.ngForm.form.markAllAsTouched();
         if(this.ngForm.invalid) {
             event.preventDefault();
