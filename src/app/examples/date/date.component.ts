@@ -30,6 +30,7 @@ export class DateComponent implements AfterViewInit {
 
   usePresetValues() {
     this.model.birthDate = new Date();
+    this.dateModel = new Date();
   }
 
   async checkout() {

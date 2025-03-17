@@ -21,14 +21,20 @@ export class DateValueAccessor implements ControlValueAccessor {
   constructor(private _renderer: Renderer2, private _elementRef: ElementRef) {}
 
   writeValue(obj?: Date): void {
-    const normalizedValue = obj ? formatDate(obj, 'MM/dd/yyyy', 'en-US') : ''; // TODO: the format here should be dynamic
+    let normalizedValue = '';
+    if (!obj) {
+      normalizedValue = '';
+    } else if (this._elementRef.nativeElement.type === 'date') {
+      normalizedValue = obj.toISOString().split('T')[0];
+    } else {
+      normalizedValue = obj.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }); // TODO: support other date formats
+    }
     this.setProperty('value', normalizedValue);
   }
 
   registerOnChange(fn: any): void {
     this.onChange = (value) => {
       const parsed = this.parseDate(value);
-      console.log('changing with', typeof value, value, parsed);
       fn(parsed);
     };
   }
@@ -44,21 +50,21 @@ export class DateValueAccessor implements ControlValueAccessor {
 
   private parseDate(value: string): Date | undefined {
     const validFormat = /^(\d{1,2}\/\d{1,2}\/\d{4})$/.test(value) || /^(\d{4}-\d{2}-\d{2})$/.test(value);
-    if(!validFormat) {
+    if (!validFormat) {
       return undefined;
     }
 
     const entry = new Date(value).toISOString().split('T')[0];
 
-      /* For ISO Strings without time the day, month and year must be extracted from the ISO String
+    /* For ISO Strings without time the day, month and year must be extracted from the ISO String
       before Date creation to avoid time offset and errors in the new Date.
       If we only replace '-' with ',' in the ISO String ("2015,01,01"), and try to create a new
       date, some browsers (e.g. IE 9) will throw an invalid Date error.
       If we leave the '-' ("2015-01-01") and try to create a new Date("2015-01-01") the timeoffset
       is applied.
       Note: ISO months are 0 for January, 1 for February, ... */
-      const [y, m = 1, d = 1] = entry.split('-').map((val: string) => +val);
-      return this.createDate(y, m - 1, d);
+    const [y, m = 1, d = 1] = entry.split('-').map((val: string) => +val);
+    return this.createDate(y, m - 1, d);
   }
 
   private createDate(year: number, month: number, date: number): Date {
