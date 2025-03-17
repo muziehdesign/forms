@@ -49,7 +49,7 @@ export class DateValueAccessor implements ControlValueAccessor {
   }
 
   private parseDate(value: string): Date | undefined {
-    const validFormat = /^(\d{1,2}\/\d{1,2}\/\d{4})$/.test(value) || /^(\d{4}-\d{2}-\d{2})$/.test(value);
+    const validFormat = this._elementRef.nativeElement.type === 'date' ? /^(\d{4}-\d{2}-\d{2})$/.test(value) : /^(\d{1,2}\/\d{1,2}\/\d{4})$/.test(value);
     if (!validFormat) {
       return undefined;
     }
