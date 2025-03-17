@@ -18,6 +18,8 @@ import { BooleanComponent } from './examples/boolean/boolean.component';
 import { ObjectComponent } from './examples/object/object.component';
 import { SharedModule } from './shared/shared.module';
 import { FileComponent } from './examples/file/file.component';
+import { CommonModule } from '@angular/common';
+import { NavbarComponent } from './shared/navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -27,18 +29,21 @@ import { FileComponent } from './examples/file/file.component';
     StringComponent,
     HomeComponent,
     NumberComponent,
-    DateComponent,
     BooleanComponent,
     ObjectComponent,
     FileComponent
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     AppRoutingModule,
     FormsModule,
     IMaskModule,
     MuziehFormsModule,
-    SharedModule
+    SharedModule,
+
+    DateComponent,
+    NavbarComponent
   ],
   providers: [
     {
