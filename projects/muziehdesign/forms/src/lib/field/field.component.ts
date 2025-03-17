@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, ContentChild, ContentChildren, DestroyRef, Input, QueryList } from '@angular/core';
+import { AfterContentInit, Component, ContentChild, ElementRef, Input, ViewEncapsulation } from '@angular/core';
 import { NgModel } from '@angular/forms';
 
 @Component({
@@ -6,12 +6,18 @@ import { NgModel } from '@angular/forms';
     standalone: true,
     imports: [],
     templateUrl: './field.component.html',
+    encapsulation: ViewEncapsulation.None
 })
-export class MzField {
+export class MzField implements AfterContentInit {
     @Input() label?: string;
     @Input() checkbox: boolean = false;
     @ContentChild(NgModel) ngModel?: NgModel;
-    constructor() {}
+    constructor(private elementRef: ElementRef) {}
+
+    ngAfterContentInit(): void {
+        console.log('after init: ', this.elementRef.nativeElement.querySelector('input'));
+        this.elementRef.nativeElement.querySelector('input').name = this.ngModel?.path;
+    }
 
     getErrorMessage(): string | undefined {
         try {

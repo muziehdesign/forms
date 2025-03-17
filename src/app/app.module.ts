@@ -26,7 +26,6 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
     AppComponent,
     ApplicantComponent,
     MailingAddressComponent,
-    StringComponent,
     HomeComponent,
     NumberComponent,
     BooleanComponent,
@@ -42,6 +41,7 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
     MuziehFormsModule,
     SharedModule,
 
+    StringComponent,
     DateComponent,
     NavbarComponent,
     MzFormsModule

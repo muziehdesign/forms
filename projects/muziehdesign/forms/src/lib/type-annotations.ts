@@ -106,8 +106,6 @@ export function StringType(...annotations: { [key: string]: ValidationAnnotation
       constraints: Object.assign({}, ...annotations) as StringTypeAnnotations
     } satisfies StringSchema;
 
-    console.log(schema.constraints);
-
     registerMetadata(target, propertyKey, schema);
   };
 }

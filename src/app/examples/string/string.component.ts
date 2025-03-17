@@ -1,38 +1,38 @@
+import { JsonPipe } from '@angular/common';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { NgFormModelState, ModelSchemaFactory, NgFormModelStateFactory, FieldError, StringType, required, maxLength, length, pattern } from '@muziehdesign/forms';
+import { FormsModule, NgForm } from '@angular/forms';
+import { NgFormModelState, ModelSchemaFactory, NgFormModelStateFactory, FieldError, StringType, required, maxLength, length, pattern, ModelValidator, MzFormsModule } from '@muziehdesign/forms';
+import { NavbarComponent } from 'src/app/shared/navbar/navbar.component';
 
 @Component({
   selector: 'app-string',
+  standalone: true,
+  imports: [FormsModule, MzFormsModule, JsonPipe, NavbarComponent],
   templateUrl: './string.component.html',
   styleUrls: ['./string.component.scss']
 })
-export class StringComponent implements AfterViewInit {
+export class StringComponent {
 
-  model:TicketModel;
-  modelState!: NgFormModelState<TicketModel>;
+  model:StringExampleModel;
+  schema: ModelValidator<StringExampleModel>;
   @ViewChild('checkoutForm', {static: true}) checkoutForm!: NgForm;
 
-  constructor(private factory: ModelSchemaFactory, private modelStateFactory: NgFormModelStateFactory) {
-    this.model = new TicketModel();
-  }
-  ngAfterViewInit(): void {
-    this.modelState = this.modelStateFactory.create(this.checkoutForm, this.model, { onValidate: (errors) => this.onValidate(errors, this.model) });
+  constructor(private factory: ModelSchemaFactory) {
+    this.model = new StringExampleModel();
+    this.schema = factory.build(this.model);
   }
 
   usePresetValues() {
     this.model.firstName = 'Tuxedo';
-    this.model.lastName = 'Mask'
     this.model.code = 'AWRDFX';
     this.model.email = 'tuxedo.mask@moon.com';
   }
 
-  async checkout() {
-    console.log('checking out');
-    await this.modelState.validate();
+  async submitForm() {
+    
   }
 
-  onValidate(modelErrors: FieldError[], model: TicketModel): Promise<FieldError[]> {
+  onValidate(modelErrors: FieldError[], model: StringExampleModel): Promise<FieldError[]> {
     const errors: FieldError[] = [];
 
     if (this.model.code && this.model.code === 'ABCDE') {
@@ -47,14 +47,18 @@ export class StringComponent implements AfterViewInit {
 }
 
 
-export class TicketModel {
+export class StringExampleModel {
+
+  @StringType()
+  optionalString?: string;
+
+  @StringType(required())
+  requiredString? : string;
+
   @StringType(required('Please enter first name'), maxLength(9, 'Name cannot be more than 9 characters'))
   firstName?: string;
 
-  @StringType(required('Please enter last name'))
-  lastName?: string;
-
-  @StringType(required('Please enter first name'), length(5, 'Please enter ticket verification code'))
+  @StringType(required('Please enter code'), length(5, 'Please enter ticket verification code'))
   code?: string;
 
   @StringType(required('Please enter email'), pattern(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/, 'Please enter a valid email address'))
