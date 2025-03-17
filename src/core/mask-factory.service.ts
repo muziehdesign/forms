@@ -19,9 +19,10 @@ export class MaskFactoryService extends IMaskFactory {
       return IMask(el, finalOptions);
     }
 
-    if (opts.mask === 'MM/dd/yyyy') {
-      const finalOptions = Object.assign({}, dateMaskOptions, opts, { mask: dateMaskOptions.mask });
-      return IMask(el, finalOptions);
+    if (opts.mask === 'date') {
+      /*const finalOptions = Object.assign({}, dateMaskOptions, opts, { mask: dateMaskOptions.mask });
+      return IMask(el, finalOptions);*/
+      return IMask(el, Object.assign({}, opts, { mask: '00/00/0000' }));
     }
 
     if (opts.mask === 'ssn') {

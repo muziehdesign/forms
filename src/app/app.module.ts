@@ -18,6 +18,8 @@ import { BooleanComponent } from './examples/boolean/boolean.component';
 import { ObjectComponent } from './examples/object/object.component';
 import { SharedModule } from './shared/shared.module';
 import { FileComponent } from './examples/file/file.component';
+import { DateValueAccessorDirective } from './date-value-accessor.directive';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -30,10 +32,12 @@ import { FileComponent } from './examples/file/file.component';
     DateComponent,
     BooleanComponent,
     ObjectComponent,
-    FileComponent
+    FileComponent,
+    DateValueAccessorDirective
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     AppRoutingModule,
     FormsModule,
     IMaskModule,

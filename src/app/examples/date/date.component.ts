@@ -1,4 +1,5 @@
 
+import { JsonPipe } from '@angular/common';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { NgFormModelState, ModelSchemaFactory, NgFormModelStateFactory, FieldError, DateType, min, required, StringType, test } from '@muziehdesign/forms';
@@ -14,6 +15,8 @@ export class DateComponent implements AfterViewInit {
   modelState!: NgFormModelState<CalendarModel>;
   @ViewChild('checkoutForm', {static: true}) checkoutForm!: NgForm;
 
+  dateModel?: Date;
+
   constructor(private factory: ModelSchemaFactory, private modelStateFactory: NgFormModelStateFactory) {
     this.model = new CalendarModel();
   }
@@ -27,6 +30,7 @@ export class DateComponent implements AfterViewInit {
 
   async checkout() {
     console.log('checking out');
+    console.log(this.dateModel?.toISOString());
     await this.modelState.validate();
   }
 
