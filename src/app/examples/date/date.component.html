@@ -12,12 +12,9 @@
 
         <label class="field">
           <span class="field-label">Birth date</span>
-          <!--<input type="text" [(ngModel)]="model.birthDate" name="date" #birthDateField="ngModel" [imask]="{ mask: 'MM/dd/yyyy' }"
-            [unmask]="'typed'"
-            class="field-control" />-->
-            <input type="text" [(ngModel)]="model.birthDate" name="date" #birthDateField="ngModel" mzDate
+            <input type="text" [(ngModel)]="model.birthDate" name="birthDate" #birthDateField="ngModel" mzDate
             class="field-control" />
-          <mz-field-errors [field]="birthDateField" *ngIf="birthDateField.touched && birthDateField.invalid"></mz-field-errors>
+          <mz-field-errors [field]="birthDateField"></mz-field-errors>
           <div>
             {{model.birthDate | json}}
           </div>

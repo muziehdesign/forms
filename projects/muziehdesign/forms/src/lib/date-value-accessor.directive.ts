@@ -4,16 +4,17 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Directive({
   selector: '[mzDate]',
+  standalone: true,
   host: { '(input)': 'onChange($event.target.value)', '(blur)': 'onTouched()' },
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => DateValueAccessorDirective),
+      useExisting: forwardRef(() => DateValueAccessor),
       multi: true,
     },
   ],
 })
-export class DateValueAccessorDirective implements ControlValueAccessor {
+export class DateValueAccessor implements ControlValueAccessor {
   onChange = (_: any) => {};
   onTouched = () => {};
 
