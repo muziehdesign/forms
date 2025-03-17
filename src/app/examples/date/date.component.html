@@ -6,13 +6,17 @@
   <div class="grid grid-cols-2 gap-4">
     <div>
       <form #checkoutForm="ngForm" (ngSubmit)="checkout()" class="form">
+
+        <input type="date" mzDate [(ngModel)]="dateModel" name="date1" #birthDateField1="ngModel" class="field-control" />
+        {{birthDateField1.value}}, {{dateModel | json}}
+
         <label class="field">
           <span class="field-label">Birth date</span>
-          <input type="text" [(ngModel)]="model.birthDate" name="birthDate" #birthDateField="ngModel" [imask]="{ mask: 'MM/dd/yyyy' }"
-            [unmask]="'typed'" class="field-control" />
-          <mz-field-errors [field]="birthDateField" *ngIf="birthDateField.touched && birthDateField.invalid"></mz-field-errors>
+            <input type="text" [(ngModel)]="model.birthDate" name="birthDate" #birthDateField="ngModel" mzDate
+            class="field-control" />
+          <mz-field-errors [field]="birthDateField"></mz-field-errors>
           <div>
-            {{model.birthDate}}
+            {{model.birthDate | json}}
           </div>
         </label>
 

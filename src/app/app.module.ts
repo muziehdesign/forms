@@ -19,6 +19,8 @@ import { ObjectComponent } from './examples/object/object.component';
 import { SharedModule } from './shared/shared.module';
 import { FileComponent } from './examples/file/file.component';
 import { MzCheckboxGroup } from '../../projects/muziehdesign/forms/src/lib/checkbox-group/checkbox-group.component';
+import { CommonModule } from '@angular/common';
+import { NavbarComponent } from './shared/navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -28,18 +30,21 @@ import { MzCheckboxGroup } from '../../projects/muziehdesign/forms/src/lib/check
     StringComponent,
     HomeComponent,
     NumberComponent,
-    DateComponent,
     BooleanComponent,
     ObjectComponent,
     FileComponent
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     AppRoutingModule,
     FormsModule,
     IMaskModule,
     MuziehFormsModule,
-    SharedModule
+    SharedModule,
+
+    DateComponent,
+    NavbarComponent
   ],
   providers: [
     {

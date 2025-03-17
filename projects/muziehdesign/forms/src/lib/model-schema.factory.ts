@@ -61,6 +61,7 @@ export class ModelSchemaFactory {
   }
 
   private buildStringSchema(original: StringSchema) {
+    console.log('building string', options);
     let schema = Yup.string();
     if(original.label) {
       schema.label(original.label);
