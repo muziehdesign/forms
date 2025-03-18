@@ -7,7 +7,6 @@ import { FormsModule as MuziehFormsModule, MzFormsModule } from '@muziehdesign/f
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { MailingAddressComponent } from './mailing-address/mailing-address.component';
 import { MaskFactoryService } from 'src/core/mask-factory.service';
 import { ApplicantComponent } from './examples/applicant/applicant.component';
 import { StringComponent } from './examples/string/string.component';
@@ -25,11 +24,8 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
   declarations: [
     AppComponent,
     ApplicantComponent,
-    MailingAddressComponent,
-    HomeComponent,
     NumberComponent,
     BooleanComponent,
-    ObjectComponent,
     FileComponent
   ],
   imports: [
@@ -42,9 +38,11 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
     SharedModule,
 
     StringComponent,
+    ObjectComponent,
     DateComponent,
     NavbarComponent,
-    MzFormsModule
+    MzFormsModule,
+    HomeComponent
   ],
   providers: [
     {

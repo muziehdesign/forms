@@ -1,12 +1,17 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { FieldError, ModelSchemaFactory, NgFormModelState, NgFormModelStateFactory } from '@muziehdesign/forms';
+import { FormsModule, NgForm } from '@angular/forms';
+import { FieldError, ModelSchemaFactory, NgFormModelState, NgFormModelStateFactory, FormsModule as MuziehFormsModule } from '@muziehdesign/forms';
 import { AddressModel, CheckoutModel } from '../models';
+import { MailingAddressComponent } from '../mailing-address/mailing-address.component';
+import { IMaskModule } from 'angular-imask';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
+  standalone: true,
+  imports: [MailingAddressComponent, FormsModule, MuziehFormsModule, IMaskModule, JsonPipe]
 })
 export class HomeComponent implements AfterViewInit {
   model: CheckoutModel;
@@ -21,7 +26,7 @@ export class HomeComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.modelState = this.modelStateFactory.create(this.checkoutForm, this.model, { onValidate: (errors) => this.onValidate(errors, this.model) });
   }
-
+  
   usePresetValues() {
     this.model.instructions = 'instructions';
     this.model.date = new Date(1975, 7, 7);

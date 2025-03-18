@@ -1,10 +1,14 @@
+import { JsonPipe } from '@angular/common';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { NgFormModelState, ModelSchemaFactory, NgFormModelStateFactory, ObjectType, FieldError, max, min, NumberType, required, StringType, BooleanType, ModelStateResult, test } from '@muziehdesign/forms';
-import { bool } from 'yup';
+import { FormsModule, NgForm } from '@angular/forms';
+import { NgFormModelState, ModelSchemaFactory, NgFormModelStateFactory, ObjectType, FieldError, max, min, NumberType, required, StringType, BooleanType, ModelStateResult, test, MzFormsModule, ModelValidator } from '@muziehdesign/forms';
+import { MailingAddressComponent } from 'src/app/mailing-address/mailing-address.component';
+import { NavbarComponent } from 'src/app/shared/navbar/navbar.component';
 
 @Component({
     selector: 'app-object',
+    standalone: true,
+    imports: [FormsModule, MzFormsModule, JsonPipe, NavbarComponent, MailingAddressComponent],
     templateUrl: './object.component.html',
     styleUrls: ['./object.component.scss'],
 })
@@ -12,12 +16,16 @@ export class ObjectComponent implements AfterViewInit {
     model: OrderModel;
     modelState!: NgFormModelState<OrderModel>;
     result: ModelStateResult<OrderModel> | undefined;
+    schema: ModelValidator<OrderModel>;
     @ViewChild('form', { static: true }) form!: NgForm;
 
     constructor(private factory: ModelSchemaFactory, private modelStateFactory: NgFormModelStateFactory) {
         this.model = new OrderModel();
         this.model.address = new AddressModel();
         this.model.address.street1 = 'dd';
+        this.model.giftOptions = new GiftOptionsModel();
+        this.model.mailingAddress = new AddressModel();
+        this.schema = this.factory.build(this.model);
     }
     ngAfterViewInit(): void {
         this.modelState = this.modelStateFactory.create(this.form, this.model, { onValidate: (errors) => this.onValidate(errors, this.model) });
@@ -41,10 +49,6 @@ export class ObjectComponent implements AfterViewInit {
 
         return Promise.resolve([...modelErrors, ...errors]);
     }
-
-    onToggleGift() {
-        this.model.giftOptions = this.model.isGift === true ? new GiftOptionsModel() : undefined;
-    }
 }
 
 export class AddressModel {
@@ -62,6 +66,9 @@ export class AddressModel {
 export class GiftOptionsModel {
     @StringType(required('Gift message is required'))
     giftMessage?: string;
+
+    @BooleanType()
+    isGift = false;
 }
 
 export class OrderModel {
@@ -70,8 +77,8 @@ export class OrderModel {
     @ObjectType(AddressModel, required())
     address?: AddressModel;
 
-    @BooleanType()
-    isGift?: boolean;
+    @ObjectType(AddressModel)
+    mailingAddress?: AddressModel;
 
     // nested object example which is not required, but has required properties if user chooses it
     @ObjectType(GiftOptionsModel)

@@ -6,7 +6,7 @@
 
   <div class="grid grid-cols-2 gap-4">
     <div>
-      <form #checkoutForm="ngForm" (ngSubmit)="submitForm()" class="form" mzForm [schema]="schema">
+      <form #checkoutForm="ngForm" (ngSubmit)="submitForm()" class="form" mzForm [schema]="schema" [ngFormOptions]="{updateOn: 'blur'}">
         <mz-field label="First name">
           <input type="text" [(ngModel)]="model.firstName" name="firstName" class="form-input" />
         </mz-field>
