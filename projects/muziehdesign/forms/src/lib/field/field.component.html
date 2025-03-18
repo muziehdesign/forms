@@ -1,12 +1,8 @@
-<label class="field">
+<label class="field" [class.required]="fieldMetadata?.required === true">
     @if(label && !checkbox) {
-    <span class="field-label">
-        {{ label }} 
-        @if(fieldMetadata?.required) {
-            **
-        }
-        {{ ngModel?.path }}
-    </span>
+        <span class="field-label">
+            {{ label }} 
+        </span>
     }
     <ng-content></ng-content>
 

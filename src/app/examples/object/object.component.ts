@@ -40,8 +40,10 @@ export class ObjectComponent implements AfterViewInit {
     }
 
     async submitForm() {
-        console.log('submitting form');
         this.result = await this.modelState.validate();
+        if(!this.result.valid) {
+            console.log('invalid');
+        }
     }
 
     onValidate(modelErrors: FieldError[], model: OrderModel): Promise<FieldError[]> {
