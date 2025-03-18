@@ -7,27 +7,27 @@
         <div>
             <form #form="ngForm" (ngSubmit)="submitForm()" class="form" mzForm [schema]="schema">
                 <mz-field label="Order number">
-                    <input type="text" [(ngModel)]="model.orderNumber" name="orderNumber" class="field-control" (ngModelChange)="onOrderNumberChange($event)" />
+                    <input type="text" [(ngModel)]="model.orderNumber" name="orderNumber" class="form-input" (ngModelChange)="onOrderNumberChange($event)" />
                 </mz-field>
 
                 <mz-field label="Address 1">
-                    <input type="text" [(ngModel)]="model.address!.street1" name="address.street1" maxlength="100" />
+                    <input type="text" [(ngModel)]="model.address!.street1" name="address.street1" maxlength="100" class="form-input" />
                 </mz-field>
 
                 <mz-field label="Address 2">
-                    <input type="text" [(ngModel)]="model.address!.street2" name="street2" maxlength="100" />
+                    <input type="text" [(ngModel)]="model.address!.street2" name="street2" maxlength="100" class="form-input" />
                 </mz-field>
 
                 <mz-field label="City">
-                    <input type="text" [(ngModel)]="model.address!.city" name="address.city" maxlength="100" />
+                    <input type="text" [(ngModel)]="model.address!.city" name="address.city" maxlength="100" class="form-input" />
                 </mz-field>
 
                 <mz-field label="State">
-                    <input type="text" [(ngModel)]="model.address!.state" name="state" maxlength="100" />
+                    <input type="text" [(ngModel)]="model.address!.state" name="state" maxlength="100" class="form-input" />
                 </mz-field>
 
                 <mz-field label="Zip code">
-                    <input type="text" [(ngModel)]="model.address!.zipCode" name="zipCode" maxlength="100" />
+                    <input type="text" [(ngModel)]="model.address!.zipCode" name="zipCode" maxlength="100" class="form-input" />
                 </mz-field>
 
                 <fieldset ngModelGroup="mailingAddress">
@@ -39,12 +39,12 @@
                     <legend>Gift options</legend>
 
                     <mz-field label="Gift option" [checkbox]="true">
-                        <input type="checkbox" [(ngModel)]="model.giftOptions!.isGift" name="isGift" />
+                        <input type="checkbox" [(ngModel)]="model.giftOptions!.isGift" name="isGift" class="form-input" />
                     </mz-field>
 
                     @if(model.giftOptions?.isGift) {
                     <mz-field label="Gift message">
-                        <input type="text" [(ngModel)]="model.giftOptions!.giftMessage" name="giftMessage" maxlength="100" />
+                        <input type="text" [(ngModel)]="model.giftOptions!.giftMessage" name="giftMessage" maxlength="100" class="form-input" />
                     </mz-field>
                     }
                 </fieldset>
