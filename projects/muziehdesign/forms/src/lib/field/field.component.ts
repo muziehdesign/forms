@@ -21,8 +21,6 @@ export class MzField implements AfterContentInit {
     constructor(private elementRef: ElementRef, private form: MzForm) {}
 
     ngAfterContentInit(): void {
-        console.log('after init: ', this.elementRef.nativeElement.querySelector('input'));
-        this.elementRef.nativeElement.querySelector('input').name = this.ngModel?.path;
         this.fieldMetadata = this.form.schema.getMetadata(this.ngModel?.path || []);
     }
 
