@@ -18,10 +18,10 @@ export class MzField implements AfterContentInit {
     @ContentChild(NgModel) ngModel?: NgModel;
 
     fieldMetadata?: FieldMetadata;
-    constructor(private elementRef: ElementRef, private form: MzForm) {}
+    constructor(private elementRef: ElementRef) {}
 
     ngAfterContentInit(): void {
-        this.fieldMetadata = this.form.schema.getMetadata(this.ngModel?.path || []);
+        //this.fieldMetadata = this.form.schema.getMetadata(this.ngModel?.path || []);
     }
 
     getErrorMessage(): string | undefined {

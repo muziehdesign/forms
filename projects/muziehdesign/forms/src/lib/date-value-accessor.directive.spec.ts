@@ -14,7 +14,7 @@ class TestComponent {
   textDate?: Date;
 }
 
-fdescribe('DateValueAccessor', () => {
+describe('DateValueAccessor', () => {
   let fixture: ComponentFixture<TestComponent>;
   let component: TestComponent;
   let dateInput: HTMLInputElement;

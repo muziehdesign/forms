@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { ModelSchemaFactory as ModelSchemaFactory } from './model-schema.factory';
 import { ArrayTestModel, BooleanTestModel, DateTestModel, FileTestModel, NestedObjectModel, NumberTestModel, StringTestModel } from './test-files/annotation-test-models';
-import { ModelSchema } from './model-validator';
+import { ModelSchema } from './model-schema';
 
 describe('ModelSchemaFactory validates string', () => {
   let service: ModelSchemaFactory;

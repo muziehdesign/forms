@@ -5,12 +5,12 @@ export class ModelSchema<T> {
     // TODO: need to keep track of internal and external
     //private definitions?:  {[K in keyof T]: FieldSchema<any>};
     constructor(private metadata: FieldSchema<any>[], private schema: AnyObjectSchema) {
-        console.log('schema is', schema);
+
     }
     
     getMetadata(paths: string[]) {
-        console.log('fetching metadata for path: ', paths);
-        console.log(this.schema.describe());
+        //console.log('fetching metadata for path: ', paths);
+        //console.log(this.schema.describe());
         for(var i = 0; i < paths.length; i++) {
             const field = this.metadata.find(f=>f.name === paths[i]);
             if(!field?.constraints.required || field.constraints.required.required === false) {
