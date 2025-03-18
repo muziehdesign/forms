@@ -24,18 +24,16 @@ evaluates the 3 rules in this order
 export class ModelSchemaFactory {
   constructor() {}
 
-  /**
-   * @deprecated Use buildSchema() instead
-   */
   build<T extends object>(model: T): ModelSchema<T> {
     const metadata: Map<string, FieldSchema<any>> = Reflect.getMetadata(SCHEMA_METADATA_NAMESPACE, model);
-    const schema = this.buildYupSchema([...metadata.values()]);
-    return new ModelSchema(schema);
+    const schemaData = [...metadata.values()];
+    const schema = this.buildYupSchema(schemaData);
+    return new ModelSchema(schemaData, schema);
   }
 
   buildUntyped(raw: FieldSchema<any>[]) : ModelSchema<{[key: string]: string}> {
     const schema = this.buildYupSchema(raw);
-    return new ModelSchema(schema);
+    return new ModelSchema(raw, schema);
   }
 
   private buildYupSchema(fields: FieldSchema<any>[]) : Yup.AnyObjectSchema {

@@ -1,6 +1,12 @@
 <label class="field">
     @if(label && !checkbox) {
-    <span class="field-label">{{ label }} {{ ngModel?.path }}</span>
+    <span class="field-label">
+        {{ label }} 
+        @if(fieldMetadata?.required) {
+            **
+        }
+        {{ ngModel?.path }}
+    </span>
     }
     <ng-content></ng-content>
 

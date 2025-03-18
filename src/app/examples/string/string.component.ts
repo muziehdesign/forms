@@ -3,6 +3,7 @@ import { Component, ViewChild } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ModelSchemaFactory, FieldError, StringType, required, maxLength, length, pattern, ModelSchema, MzFormsModule } from '@muziehdesign/forms';
 import { NavbarComponent } from 'src/app/shared/navbar/navbar.component';
+import * as Yup from 'yup';
 
 @Component({
   selector: 'app-string',

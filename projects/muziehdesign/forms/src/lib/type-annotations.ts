@@ -7,6 +7,17 @@ export interface ConstraintAnnotations {
 
 }
 
+export interface StringTypeConstraints {
+  required?: true;
+  requiredMessage?: string;
+
+  pattern?: RegExp;
+  patternMessage?: string;
+
+  length?: number;
+  lengthMessage?: string;
+}
+
 export interface StringTypeAnnotations extends ConstraintAnnotations {
   required?: RequiredAnnotation;
   length?: LengthAnnotation;
@@ -148,6 +159,7 @@ export function NumberType(...annotations: { [key: string]: ValidationAnnotation
 
 export function ObjectType<T>(type: { new (): T }, ...annotations: { [key: string]: ValidationAnnotation }[]) {
   return function (target: Object, propertyKey: string) {
+
     const schema = {
       name: propertyKey,
       type: FieldSchemaType.object,

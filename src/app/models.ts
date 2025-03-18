@@ -21,6 +21,7 @@ export class ApplicantModel {
 export class AddressModel {
   @StringType(required())
   street1?: string;
+  @StringType()
   street2?: string;
   @StringType(required())
   city?: string;

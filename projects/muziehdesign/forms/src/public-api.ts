@@ -4,7 +4,7 @@
 export * from './lib/field-error';
 export * from './lib/model-state-result';
 export * from './lib/model-schema.factory';
-export { ModelSchema } from './lib/model-schema';
+export { ModelSchema, SchemaDefinition } from './lib/model-schema';
 export * from './lib/type-annotations';
 export * from './lib/ng-form-model-state.service';
 export * from './lib/ngform-model-state';
