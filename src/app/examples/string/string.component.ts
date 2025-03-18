@@ -1,7 +1,7 @@
 import { JsonPipe } from '@angular/common';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { NgFormModelState, ModelSchemaFactory, NgFormModelStateFactory, FieldError, StringType, required, maxLength, length, pattern, ModelValidator, MzFormsModule } from '@muziehdesign/forms';
+import { ModelSchemaFactory, FieldError, StringType, required, maxLength, length, pattern, ModelSchema, MzFormsModule } from '@muziehdesign/forms';
 import { NavbarComponent } from 'src/app/shared/navbar/navbar.component';
 
 @Component({
@@ -14,7 +14,7 @@ import { NavbarComponent } from 'src/app/shared/navbar/navbar.component';
 export class StringComponent {
 
   model:StringExampleModel;
-  schema: ModelValidator<StringExampleModel>;
+  schema: ModelSchema<StringExampleModel>;
   @ViewChild('checkoutForm', {static: true}) checkoutForm!: NgForm;
 
   constructor(private factory: ModelSchemaFactory) {

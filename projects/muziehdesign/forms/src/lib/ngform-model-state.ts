@@ -3,13 +3,13 @@ import { BehaviorSubject, from, switchMap } from 'rxjs';
 import { FieldError } from './field-error';
 import { ModelStateOptions } from './model-state-options';
 import { ModelStateResult } from './model-state-result';
-import { ModelValidator } from './model-validator';
+import { ModelSchema } from './model-schema';
 
 export class NgFormModelState<T> {
   private changesSubject = new BehaviorSubject<ModelStateResult<T> | undefined>(undefined);
   public readonly changes = this.changesSubject.asObservable();
 
-  constructor(private form: NgForm, private modelValidator: ModelValidator<T>, private options?: ModelStateOptions) {
+  constructor(private form: NgForm, private modelValidator: ModelSchema<T>, private options?: ModelStateOptions) {
     this.form.form.valueChanges
       .pipe(
         switchMap(async (x) => {

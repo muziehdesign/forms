@@ -1,6 +1,6 @@
 import { AfterViewInit, Directive, HostListener, Input, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ModelValidator } from '../model-validator';
+import { ModelSchema } from '../model-schema';
 import { NgFormModelState } from '../ngform-model-state';
 
 @Directive({
@@ -8,7 +8,7 @@ import { NgFormModelState } from '../ngform-model-state';
     standalone: true,
 })
 export class MzForm implements AfterViewInit {
-    @Input({ required: true }) schema!: ModelValidator<unknown>;
+    @Input({ required: true }) schema!: ModelSchema<unknown>;
 
     private modelState!: NgFormModelState<unknown>;
 

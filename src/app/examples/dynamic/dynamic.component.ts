@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ModelSchemaFactory, ModelValidator, MzFormsModule } from '@muziehdesign/forms';
+import { ModelSchemaFactory, ModelSchema, MzFormsModule } from '@muziehdesign/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { DYNAMIC_FIELDS } from './form-data';
 import { JsonPipe } from '@angular/common';
@@ -16,7 +16,7 @@ import { NavbarComponent } from 'src/app/shared/navbar/navbar.component';
 export class DynamicComponent {
 
     fields = DYNAMIC_FIELDS;
-    schema: ModelValidator<unknown>;
+    schema: ModelSchema<unknown>;
     model: {[key: string]: any } = {'Boolean': 'false'};
 
     constructor(private schemaFactory: ModelSchemaFactory) {

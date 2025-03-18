@@ -68,3 +68,8 @@ export class CheckoutModel {
   <button type="submit">Check out</button>
 </form>
 ```
+
+
+## Next version
+### Breaking changes
+- ModelValidator is being renamed to ModelSchema

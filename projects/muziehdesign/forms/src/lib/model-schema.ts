@@ -1,19 +1,14 @@
 import { AnyObjectSchema, SchemaOf, ValidationError } from 'yup';
 import { FieldError } from './field-error';
-import { ConstraintAnnotations } from './type-annotations';
 
-export class ModelValidator<T> {
-    constructor(private schema: AnyObjectSchema) {}
 
-    get paths() {
-        //return Array.from(this.metadata, ([key, value]) => ({ key, value }));
-        return [];
+export class ModelSchema<T> {
+    // TODO: need to keep track of internal and external
+    private definitions:  {[K in keyof T]: string};
+    constructor(private schema: AnyObjectSchema) {
+        this.definitions = schema.fields;
     }
-
-    keyValue(key: string) {
-        return this.schema.fields[key];
-    }
-
+    
     validate<T>(model: T): Promise<FieldError[]> {
         return this.schema
             .validate(model, { abortEarly: false })

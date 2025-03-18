@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { object, SchemaOf } from 'yup';
-import { ModelValidator } from './model-validator';
+import { ModelSchema } from './model-schema';
 import { SCHEMA_METADATA_NAMESPACE } from './constants';
 import { ObjectShape } from 'yup/lib/object';
 import * as Yup from 'yup';
@@ -24,15 +24,18 @@ evaluates the 3 rules in this order
 export class ModelSchemaFactory {
   constructor() {}
 
-  build<T extends object>(model: T): ModelValidator<T> {
+  /**
+   * @deprecated Use buildSchema() instead
+   */
+  build<T extends object>(model: T): ModelSchema<T> {
     const metadata: Map<string, FieldSchema<any>> = Reflect.getMetadata(SCHEMA_METADATA_NAMESPACE, model);
     const schema = this.buildYupSchema([...metadata.values()]);
-    return new ModelValidator(schema);
+    return new ModelSchema(schema);
   }
 
-  buildUntyped(raw: FieldSchema<any>[]) : ModelValidator<{[key: string]: string}> {
+  buildUntyped(raw: FieldSchema<any>[]) : ModelSchema<{[key: string]: string}> {
     const schema = this.buildYupSchema(raw);
-    return new ModelValidator(schema);
+    return new ModelSchema(schema);
   }
 
   private buildYupSchema(fields: FieldSchema<any>[]) : Yup.AnyObjectSchema {

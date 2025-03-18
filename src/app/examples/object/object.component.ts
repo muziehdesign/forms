@@ -1,7 +1,7 @@
 import { JsonPipe } from '@angular/common';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { NgFormModelState, ModelSchemaFactory, NgFormModelStateFactory, ObjectType, FieldError, max, min, NumberType, required, StringType, BooleanType, ModelStateResult, test, MzFormsModule, ModelValidator } from '@muziehdesign/forms';
+import { NgFormModelState, ModelSchemaFactory, NgFormModelStateFactory, ObjectType, FieldError, max, min, NumberType, required, StringType, BooleanType, ModelStateResult, MzFormsModule, ModelSchema } from '@muziehdesign/forms';
 import { MailingAddressComponent } from 'src/app/mailing-address/mailing-address.component';
 import { NavbarComponent } from 'src/app/shared/navbar/navbar.component';
 
@@ -16,7 +16,8 @@ export class ObjectComponent implements AfterViewInit {
     model: OrderModel;
     modelState!: NgFormModelState<OrderModel>;
     result: ModelStateResult<OrderModel> | undefined;
-    schema: ModelValidator<OrderModel>;
+    schema: ModelSchema<OrderModel>;
+    definition: GenericSchema<OrderModel> = {};
     @ViewChild('form', { static: true }) form!: NgForm;
 
     constructor(private factory: ModelSchemaFactory, private modelStateFactory: NgFormModelStateFactory) {
@@ -84,3 +85,8 @@ export class OrderModel {
     @ObjectType(GiftOptionsModel)
     giftOptions?: GiftOptionsModel;
 }
+
+
+export type GenericSchema<T> = {
+    [k in keyof T]: string;
+};
