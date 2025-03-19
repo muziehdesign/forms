@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { ModelSchemaFactory as ModelSchemaFactory } from './model-schema.factory';
 import { ArrayTestModel, BooleanTestModel, DateTestModel, FileTestModel, NestedObjectModel, NumberTestModel, StringTestModel } from './test-files/annotation-test-models';
-import { ModelValidator } from './model-validator';
+import { ModelSchema } from './model-schema';
 
 describe('ModelSchemaFactory validates string', () => {
   let service: ModelSchemaFactory;
   const validModel = new StringTestModel();
-  let schema: ModelValidator<any>;
+  let schema: ModelSchema<any>;
 
   beforeEach(async () => {
     TestBed.configureTestingModule({});
@@ -76,7 +76,7 @@ describe('ModelSchemaFactory validates string', () => {
 describe('ModelSchemaFactory validates number', () => {
   let service: ModelSchemaFactory;
   const validModel = new NumberTestModel();
-  let schema: ModelValidator<any>;
+  let schema: ModelSchema<any>;
 
   beforeEach(async () => {
     TestBed.configureTestingModule({});
@@ -134,7 +134,7 @@ describe('ModelSchemaFactory validates number', () => {
 describe('ModelSchemaFactory validates array', () => {
   let service: ModelSchemaFactory;
   const validModel = new ArrayTestModel();
-  let schema: ModelValidator<any>;
+  let schema: ModelSchema<any>;
 
   beforeEach(async () => {
     TestBed.configureTestingModule({});
@@ -173,7 +173,7 @@ describe('ModelSchemaFactory validates array', () => {
 describe('ModelSchemaFactory validates number', () => {
   let service: ModelSchemaFactory;
   const validModel = new NumberTestModel();
-  let schema: ModelValidator<any>;
+  let schema: ModelSchema<any>;
 
   beforeEach(async () => {
     TestBed.configureTestingModule({});
@@ -231,7 +231,7 @@ describe('ModelSchemaFactory validates number', () => {
 describe('ModelSchemaFactory validates date', () => {
   let service: ModelSchemaFactory;
   const validModel = new DateTestModel();
-  let schema: ModelValidator<any>;
+  let schema: ModelSchema<any>;
 
   beforeEach(async () => {
     TestBed.configureTestingModule({});
@@ -289,7 +289,7 @@ describe('ModelSchemaFactory validates date', () => {
 describe('ModelSchemaFactory validates boolean', () => {
   let service: ModelSchemaFactory;
   const validModel = new BooleanTestModel();
-  let schema: ModelValidator<any>;
+  let schema: ModelSchema<any>;
 
   beforeEach(async () => {
     TestBed.configureTestingModule({});
@@ -335,7 +335,7 @@ describe('ModelSchemaFactory validates boolean', () => {
 describe('ModelSchemaFactory validates file', () => {
   let service: ModelSchemaFactory;
   const validModel = new FileTestModel();
-  let schema: ModelValidator<any>;
+  let schema: ModelSchema<any>;
 
   beforeEach(async () => {
     TestBed.configureTestingModule({});
@@ -363,7 +363,7 @@ describe('ModelSchemaFactory validates file', () => {
 describe('ModelSchemaFactory validates nested object', () => {
   let service: ModelSchemaFactory;
   const validModel = new NestedObjectModel();
-  let schema: ModelValidator<any>;
+  let schema: ModelSchema<any>;
 
   beforeEach(async () => {
     TestBed.configureTestingModule({});

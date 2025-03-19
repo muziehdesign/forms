@@ -1,4 +1,4 @@
-import { DateType, maxLength, min, ObjectType, NumberType, pattern, required, StringType, test, length, max, BooleanType, equals } from '@muziehdesign/forms';
+import { DateType, maxLength, min, ObjectType, NumberType, pattern, required, StringType, test } from '@muziehdesign/forms';
 
 export class PhoneNumberModel {
   @StringType(required())
@@ -21,6 +21,7 @@ export class ApplicantModel {
 export class AddressModel {
   @StringType(required())
   street1?: string;
+  @StringType()
   street2?: string;
   @StringType(required())
   city?: string;

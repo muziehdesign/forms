@@ -6,28 +6,22 @@
 
   <div class="grid grid-cols-2 gap-4">
     <div>
-      <form #checkoutForm="ngForm" (ngSubmit)="checkout()" class="form">
-        <label class="field">
-          <span class="field-label">First name</span>
-          <input type="text" [(ngModel)]="model.firstName" name="firstName" #firstNameField="ngModel"
-            class="field-control" />
-          <mz-field-errors [field]="firstNameField" *ngIf="firstNameField.touched && firstNameField.invalid"></mz-field-errors>
-        </label>
-        <label class="field">
-          <span class="field-label">Last name</span>
-          <input type="text" [(ngModel)]="model.lastName" name="lastName" #lastNameField="ngModel" class="field-control" />
-          <mz-field-errors [field]="lastNameField" *ngIf="lastNameField.touched && lastNameField.invalid"></mz-field-errors>
-        </label>
-        <label class="field">
-          <span class="field-label">Email</span>
-          <input type="text" [(ngModel)]="model.email" name="email" #emailField="ngModel" class="field-control" />
-          <mz-field-errors [field]="emailField" *ngIf="emailField.touched && emailField.invalid"></mz-field-errors>
-        </label>
-        <label class="field">
-          <span class="field-label">Verification ticket code</span>
-          <input type="text" [(ngModel)]="model.code" name="code" #codeField="ngModel" class="field-control" />
-          <mz-field-errors [field]="codeField" *ngIf="codeField.touched && codeField.invalid"></mz-field-errors>
-        </label>
+      <form #checkoutForm="ngForm" (ngSubmit)="submitForm()" class="form" mzForm [schema]="schema" [ngFormOptions]="{updateOn: 'blur'}">
+        <mz-field label="First name">
+          <input type="text" [(ngModel)]="model.firstName" name="firstName" class="form-input" />
+        </mz-field>
+
+        <mz-field label="Required string">
+          <input type="text" [(ngModel)]="model.requiredString" name="requiredString" class="form-input" />
+        </mz-field>
+
+        <mz-field label="Email">
+          <input type="text" [(ngModel)]="model.email" name="email" class="form-input" />
+        </mz-field>
+
+        <mz-field label="Code">
+          <input type="text" [(ngModel)]="model.code" name="code" class="form-input" />
+        </mz-field>
 
         <button type="submit">Verify</button>
 
@@ -46,6 +40,7 @@
       <div class="p-8 my-1 bg-slate-50">
         <span>// checkoutForm.value</span>
         <pre>{{checkoutForm.value | json}}</pre>
+        <pre>{{checkoutForm.errors | json}}</pre>
       </div>
     </div>
 

@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { IMaskFactory } from 'angular-imask';
 import IMask from 'imask';
-import { currencyOptions, dateMaskOptions, phoneNumberOptions } from '@muziehdesign/forms';
-import { ssnOptions } from 'projects/muziehdesign/forms/src/public-api';
+import { currencyOptions, phoneNumberOptions, ssnOptions } from '@muziehdesign/forms';
 
 @Injectable({
   providedIn: 'root',
@@ -17,12 +16,6 @@ export class MaskFactoryService extends IMaskFactory {
     if (opts.mask === 'currency') {
       const finalOptions = Object.assign({}, currencyOptions, opts, { mask: currencyOptions.mask });
       return IMask(el, finalOptions);
-    }
-
-    if (opts.mask === 'date') {
-      /*const finalOptions = Object.assign({}, dateMaskOptions, opts, { mask: dateMaskOptions.mask });
-      return IMask(el, finalOptions);*/
-      return IMask(el, Object.assign({}, opts, { mask: '00/00/0000' }));
     }
 
     if (opts.mask === 'ssn') {

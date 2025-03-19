@@ -1,0 +1,17 @@
+<label class="field">
+    @if(label && !checkbox) {
+        <span class="field-label">
+            {{ label }} 
+        </span>
+    }
+    <ng-content></ng-content>
+
+    @if(checkbox && label) {
+    <span class="checkbox-label">{{ label }}</span>
+    } 
+    @if(ngModel?.touched && ngModel?.invalid) {
+    <div class="field-error">
+        {{ getErrorMessage() }}
+    </div>
+    }
+</label>

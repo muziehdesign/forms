@@ -1,23 +1,15 @@
-<label class="field">
-  <span class="field-label">Street 1</span>
-  <input type="text" class="field-control" [(ngModel)]="model.street1" name="street1" #street1Field="ngModel" />
-  <mz-field-errors [field]="street1Field" *ngIf="street1Field.dirty && street1Field.invalid"></mz-field-errors>
-</label>
+<mz-field label="Street 1">
+  <input type="text" class="form-input" [(ngModel)]="model.street1" name="street12" />
+</mz-field>
 
-<label class="field">
-  <span class="field-label">Street 2</span>
-  <input type="text" class="field-control" [(ngModel)]="model.street2" name="street2" #street2Field="ngModel" />
-  <mz-field-errors [field]="street2Field" *ngIf="street2Field.dirty && street2Field.invalid"></mz-field-errors>
-</label>
+<mz-field label="Street 2">
+  <input type="text" class="form-input" [(ngModel)]="model.street2" name="street23" />
+</mz-field>
 
-<label class="field">
-  <span class="field-label">City</span>
-  <input type="text" class="field-control" [(ngModel)]="model.city" name="city" #cityField="ngModel" />
-  <mz-field-errors [field]="cityField" *ngIf="cityField.dirty && cityField.invalid"></mz-field-errors>
-</label>
+<mz-field label="City">
+  <input type="text" class="form-input" [(ngModel)]="model.city" name="city" />
+</mz-field>
 
-<label class="field">
-  <span class="field-label">State</span>
-  <input type="text" class="field-control" [(ngModel)]="model.state" name="state" #stateField="ngModel" />
-  <mz-field-errors [field]="stateField" *ngIf="stateField.dirty && stateField.invalid"></mz-field-errors>
-</label>
+<mz-field label="State">
+  <input type="text" class="form-input" [(ngModel)]="model.state" name="state" />
+</mz-field>
