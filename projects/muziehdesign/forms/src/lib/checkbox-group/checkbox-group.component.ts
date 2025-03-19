@@ -1,7 +1,7 @@
 import { Component, Input, forwardRef } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-export interface FieldOption {
+export type FieldOption = {
     label: string;
     value: any;
 }
