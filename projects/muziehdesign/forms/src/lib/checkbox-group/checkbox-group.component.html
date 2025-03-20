@@ -1,6 +1,6 @@
 @for(option of options; track $index) {
 <label class="field">
-    <input type="checkbox" [value]="option.value" [checked]="isChecked(option)" (change)="onCheckboxChange($event, option)" />
+    <input type="checkbox" class="form-checkbox" [disabled]="disabled" [value]="option.value" [checked]="isChecked(option)" (change)="onCheckboxChange($event, option)" />
     <span class="checkbox-label">{{option.label}}</span>
 </label>
 }
