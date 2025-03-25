@@ -25,7 +25,6 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
     AppComponent,
     ApplicantComponent,
     NumberComponent,
-    BooleanComponent,
     FileComponent
   ],
   imports: [
@@ -40,6 +39,7 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
     StringComponent,
     ObjectComponent,
     DateComponent,
+    BooleanComponent,
     NavbarComponent,
     MzFormsModule,
     HomeComponent

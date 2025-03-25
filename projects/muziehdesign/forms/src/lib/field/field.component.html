@@ -1,35 +1,17 @@
-@if(controlType === 'checkbox') {
-    <label class="field">
-        <ng-content></ng-content>
-        <span class="checkbox-label">{{ label }}</span>
-        @if(ngModel?.touched && ngModel?.invalid) {
-            <div class="field-error">
-                {{ getErrorMessage() }}
-            </div>
-        }
-    </label>    
-} @else if(controlType === 'checkboxgroup') {
-    <div class="field">
+<label class="field">
+    @if(label && controlType !== 'checkbox') {
         <span class="field-label">
             {{ label }} 
         </span>
-        <ng-content></ng-content>
-        @if(ngModel?.touched && ngModel?.invalid) {
-        <div class="field-error">
-            {{ getErrorMessage() }}
-        </div>
-        }
+    }
+    <ng-content></ng-content>
+
+    @if(controlType === 'checkbox' && label) {
+    <span class="checkbox-label">{{ label }}</span>
+    } 
+    @if(ngModel?.touched && ngModel?.invalid) {
+    <div class="field-error">
+        {{ getErrorMessage() }}
     </div>
-} @else {
-    <label class="field">
-        <span class="field-label">
-            {{ label }} 
-        </span>
-        <ng-content></ng-content>
-        @if(ngModel?.touched && ngModel?.invalid) {
-        <div class="field-error">
-            {{ getErrorMessage() }}
-        </div>
-        }
-    </label>
-}
+    }
+</label>

@@ -7,11 +7,14 @@
   <div class="grid grid-cols-2 gap-4">
     <div>
       <form #checkoutForm="ngForm" (ngSubmit)="checkout()" class="form">
-        <label class="field">
-          <span class="field-label">Activate</span>
-          <input type="checkbox" class="field-control" [(ngModel)]="model.active" name="active" #activeField="ngModel" />
-          <mz-field-errors *ngIf="(activeField.touched && activeField.invalid)" [field]="activeField"></mz-field-errors>
-        </label>
+
+        <mz-field label="Activate" controlType="checkbox">
+          <input type="checkbox" class="form-checkbox" [(ngModel)]="model.active" name="active" /> 
+        </mz-field>
+
+        <mz-field label="another checkbox" controlType="checkbox">
+          custom custom content
+        </mz-field>
 
         <button type="submit">Activate</button>
 
