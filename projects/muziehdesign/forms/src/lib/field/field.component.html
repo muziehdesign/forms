@@ -1,12 +1,12 @@
 <label class="field">
-    @if(label && !checkbox) {
+    @if(label && controlType !== 'checkbox') {
         <span class="field-label">
             {{ label }} 
         </span>
     }
     <ng-content></ng-content>
 
-    @if(checkbox && label) {
+    @if(controlType === 'checkbox' && label) {
     <span class="checkbox-label">{{ label }}</span>
     } 
     @if(ngModel?.touched && ngModel?.invalid) {

@@ -8,12 +8,11 @@ import { FieldMetadata } from '../model-schema';
     selector: 'mz-field',
     standalone: true,
     imports: [],
-    templateUrl: './field.component.html',
-    encapsulation: ViewEncapsulation.None,
+    templateUrl: './field.component.html'
 })
 export class MzField implements AfterContentInit {
     @Input() label?: string;
-    @Input() checkbox: boolean = false;
+    @Input() controlType: 'checkbox' | 'checkboxgroup' | 'other' = 'other';
     @Input() schema?: FieldSchema<any>;
     @ContentChild(NgModel) ngModel?: NgModel;
 

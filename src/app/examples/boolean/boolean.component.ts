@@ -1,11 +1,15 @@
+import { JsonPipe } from '@angular/common';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { NgFormModelState, ModelSchemaFactory, NgFormModelStateFactory, FieldError, BooleanType, equals, required, StringType } from '@muziehdesign/forms';
+import { FormsModule, NgForm } from '@angular/forms';
+import { NgFormModelState, ModelSchemaFactory, NgFormModelStateFactory, FieldError, BooleanType, equals, required, StringType, MzFormsModule } from '@muziehdesign/forms';
+import { NavbarComponent } from 'src/app/shared/navbar/navbar.component';
 
 @Component({
   selector: 'app-boolean',
   templateUrl: './boolean.component.html',
-  styleUrls: ['./boolean.component.scss']
+  styleUrls: ['./boolean.component.scss'],
+  standalone: true,
+  imports: [MzFormsModule, FormsModule, JsonPipe, NavbarComponent]
 })
 export class BooleanComponent implements AfterViewInit {
 

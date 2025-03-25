@@ -1,7 +1,11 @@
-<!--<label field="field">
-    <span class="field-label">Numbers</span>
+<div class="option-list">
     <mz-checkbox-group [options]="numberOptions" [(ngModel)]="model.numbers" (ngModelChange)="onNumbersChanged($event)" />
-</label>-->
+</div>
+
+<mz-field label="Checkbox group">
+    <mz-checkbox-group [options]="numberOptions" [(ngModel)]="model.numbers" (ngModelChange)="onNumbersChanged($event)" />
+</mz-field>
+
 
 <select multiple [(ngModel)]="model.numbers" (ngModelChange)="onNumbersChanged($event)">
     @for(option of numberOptions; track option.value) {

@@ -1,10 +1,10 @@
 import { Component, Input, forwardRef } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-export interface FieldOption {
+export type FieldOption = {
     label: string;
     value: any;
-}
+};
 
 @Component({
     selector: 'mz-checkbox-group',
@@ -13,14 +13,16 @@ export interface FieldOption {
     templateUrl: './checkbox-group.component.html',
     providers: [
         {
-          provide: NG_VALUE_ACCESSOR,
-          useExisting: forwardRef(() => MzCheckboxGroup),
-          multi: true
-        }
-      ]
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => MzCheckboxGroup),
+            multi: true,
+        },
+    ],
 })
 export class MzCheckboxGroup implements ControlValueAccessor {
     @Input({ required: true }) options!: FieldOption[];
+    @Input({ required: false }) disabled = false;
+
     selections: any[] = [];
 
     onChange: (value: string[]) => void = () => {};
@@ -41,7 +43,7 @@ export class MzCheckboxGroup implements ControlValueAccessor {
         this.onTouched = fn;
     }
     setDisabledState?(isDisabled: boolean): void {
-        
+        this.disabled = isDisabled;
     }
 
     // Checks if a checkbox is selected
@@ -63,4 +65,3 @@ export class MzCheckboxGroup implements ControlValueAccessor {
         this.onTouched();
     }
 }
-
