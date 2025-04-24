@@ -1,14 +1,28 @@
-import { AfterContentInit, Component, ContentChild, ElementRef, Input, ViewEncapsulation } from '@angular/core';
-import { NgModel } from '@angular/forms';
+import { AfterContentInit, Component, ContentChild, ElementRef, Input, Optional, SkipSelf } from '@angular/core';
+import { ControlContainer, NgForm, NgModel, NgModelGroup } from '@angular/forms';
 import { FieldSchema } from '../field-schema';
-import { MzForm } from '../form/form.directive';
 import { FieldMetadata } from '../model-schema';
+
+function getControlContainer(
+    group: NgModelGroup | null,
+    form: NgForm | null
+  ): ControlContainer {
+    console.log('getControlContainer', group, form);
+    return group ?? form!;
+  }
 
 @Component({
     selector: 'mz-field',
     standalone: true,
     imports: [],
-    templateUrl: './field.component.html'
+    templateUrl: './field.component.html',
+    providers: [
+        {
+          provide: ControlContainer,
+          useFactory: getControlContainer,
+          deps: [[new Optional(), new SkipSelf(), NgModelGroup], [new Optional(), new SkipSelf(), NgForm]]
+        }
+      ]
 })
 export class MzField implements AfterContentInit {
     @Input() label?: string;
@@ -17,7 +31,9 @@ export class MzField implements AfterContentInit {
     @ContentChild(NgModel) ngModel?: NgModel;
 
     fieldMetadata?: FieldMetadata;
-    constructor(private elementRef: ElementRef) {}
+    constructor(private elementRef: ElementRef, private container: ControlContainer) {
+        console.log('container in field', container);
+    }
 
     ngAfterContentInit(): void {
         //this.fieldMetadata = this.form.schema.getMetadata(this.ngModel?.path || []);

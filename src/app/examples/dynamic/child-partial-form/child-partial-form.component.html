@@ -1,0 +1,10 @@
+@for(field of fields; track $index) { @if(field.type === 'boolean') {
+    <mz-field [label]="field.name" controlType="checkbox">
+        <input type="checkbox" [(ngModel)]="model[field.name]" name="{{ field.name }}" />
+    </mz-field>
+    } @else {
+    <mz-field [label]="field.name" controlType="checkbox">
+        <input type="text" [(ngModel)]="model[field.name]" name="{{ field.name }}" />
+    </mz-field>
+    } }
+    

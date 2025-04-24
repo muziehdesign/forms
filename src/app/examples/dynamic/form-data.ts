@@ -19,6 +19,18 @@ export const DYNAMIC_FIELDS = [
         constraints: {
             
         }
-    } satisfies BooleanSchema
+    } satisfies BooleanSchema,
+    {
+        name: 'AnotherString',
+        type: FieldSchemaType.string,
+        constraints: {
+            required: {
+                required: true
+            },
+            minLength: {
+                minLength: 5
+            }
+        } satisfies StringTypeAnnotations
+    } satisfies StringSchema, 
 
 ] satisfies FieldSchema<ConstraintAnnotations>[];
