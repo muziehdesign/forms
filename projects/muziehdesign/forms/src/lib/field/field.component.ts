@@ -31,8 +31,7 @@ export class MzField implements AfterContentInit {
     @ContentChild(NgModel) ngModel?: NgModel;
 
     fieldMetadata?: FieldMetadata;
-    constructor(private elementRef: ElementRef, private container: ControlContainer) {
-        console.log('container in field', container);
+    constructor(private elementRef: ElementRef) {
     }
 
     ngAfterContentInit(): void {
