@@ -1,14 +1,14 @@
 import { AfterContentInit, Component, ContentChild, ElementRef, Input, ViewEncapsulation } from '@angular/core';
-import { NgModel } from '@angular/forms';
+import { ControlContainer, NgForm, NgModel } from '@angular/forms';
 import { FieldSchema } from '../field-schema';
-import { MzForm } from '../form/form.directive';
 import { FieldMetadata } from '../model-schema';
 
 @Component({
     selector: 'mz-field',
     standalone: true,
     imports: [],
-    templateUrl: './field.component.html'
+    templateUrl: './field.component.html',
+    providers: [{ provide: ControlContainer, useExisting: NgForm }], // TODO: need to support NgModelGroup
 })
 export class MzField implements AfterContentInit {
     @Input() label?: string;
@@ -17,7 +17,9 @@ export class MzField implements AfterContentInit {
     @ContentChild(NgModel) ngModel?: NgModel;
 
     fieldMetadata?: FieldMetadata;
-    constructor(private elementRef: ElementRef) {}
+    constructor(private elementRef: ElementRef, private container: ControlContainer) {
+        console.log('container in field', container);
+    }
 
     ngAfterContentInit(): void {
         //this.fieldMetadata = this.form.schema.getMetadata(this.ngModel?.path || []);
