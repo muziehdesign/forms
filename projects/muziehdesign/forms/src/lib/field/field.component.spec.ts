@@ -22,7 +22,7 @@ interface TestHostModel {
   textField?: string;
 }
 
-fdescribe('MzField', () => {
+describe('MzField', () => {
   let component: TestHostComponent;
   let fixture: ComponentFixture<TestHostComponent>;
 
