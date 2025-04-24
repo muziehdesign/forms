@@ -7,10 +7,10 @@
             <input type="checkbox" [(ngModel)]="model[field.name]" name="{{ field.name }}" />
         </mz-field>
         } @else {
-        <mz-field [label]="field.name" controlType="checkbox">
+        <mz-field [label]="field.name">
             <input type="text" [(ngModel)]="model[field.name]" name="{{ field.name }}" />
         </mz-field>
-        } }
+        } } 
 
         <app-child-partial-form [model]="model" [schema]="schema"></app-child-partial-form>
 
@@ -32,7 +32,7 @@
         </pre>
         <pre>
             status:
-            {{ dynamicForm.status }}, {{ dynamicForm.dirty }}
+            {{ dynamicForm.status }}, {{dynamicForm.dirty}}
         </pre>
         <pre>
             errors:

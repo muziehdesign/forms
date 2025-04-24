@@ -1,9 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MzField } from './field.component';
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { MzForm } from '../form/form.directive';
+import { Component, ViewChild } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms';
 
 @Component({
   template: `
@@ -16,15 +15,16 @@ import { MzForm } from '../form/form.directive';
 })
 class TestHostComponent {
   model = {} satisfies TestHostModel;
+  @ViewChild('testForm') form!: NgForm;
 }
 
 interface TestHostModel {
   textField?: string;
 }
 
-describe('MzField', () => {
-  let component: MzField;
-  let fixture: ComponentFixture<MzField>;
+fdescribe('MzField', () => {
+  let component: TestHostComponent;
+  let fixture: ComponentFixture<TestHostComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -33,12 +33,14 @@ describe('MzField', () => {
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(MzField);
+    fixture = TestBed.createComponent(TestHostComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
+    expect(component.form).toBeTruthy();
+    expect(Object.keys(component.form.controls).length).toBe(1);
   });
 });
