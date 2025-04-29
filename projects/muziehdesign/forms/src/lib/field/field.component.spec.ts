@@ -5,13 +5,14 @@ import { Component, ViewChild } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 
 @Component({
-  template: `
+    template: `
       <form #testForm="ngForm">
           <mz-field label="My label">
             <input type="text" [(ngModel)]="model.textField" name="textField" />
           </mz-field>
       </form>
   `,
+    standalone: false
 })
 class TestHostComponent {
   model = {} satisfies TestHostModel;

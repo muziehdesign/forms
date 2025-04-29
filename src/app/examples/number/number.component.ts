@@ -7,6 +7,7 @@ import { NumberExampleModel } from './number-example.model';
     selector: 'app-number',
     templateUrl: './number.component.html',
     styleUrls: ['./number.component.scss'],
+    standalone: false
 })
 export class NumberComponent implements AfterViewInit {
 

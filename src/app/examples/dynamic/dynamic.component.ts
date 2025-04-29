@@ -9,10 +9,9 @@ import { ChildPartialFormComponent } from './child-partial-form/child-partial-fo
 
 @Component({
     selector: 'app-dynamic',
-    standalone: true,
     imports: [SharedModule, FormsModule, MzFormsModule, JsonPipe, NavbarComponent, ChildPartialFormComponent],
     templateUrl: './dynamic.component.html',
-    styleUrl: './dynamic.component.scss',
+    styleUrl: './dynamic.component.scss'
 })
 export class DynamicComponent {
 

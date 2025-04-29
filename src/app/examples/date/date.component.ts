@@ -7,11 +7,10 @@ import { NavbarComponent } from 'src/app/shared/navbar/navbar.component';
 import { FormsModule as MuziehFormsModule } from '@muziehdesign/forms';
 
 @Component({
-  selector: 'app-date',
-  standalone: true,
-  imports: [DateValueAccessor, NavbarComponent, FormsModule, JsonPipe, MuziehFormsModule, CommonModule],
-  templateUrl: './date.component.html',
-  styleUrls: ['./date.component.scss']
+    selector: 'app-date',
+    imports: [DateValueAccessor, NavbarComponent, FormsModule, JsonPipe, MuziehFormsModule, CommonModule],
+    templateUrl: './date.component.html',
+    styleUrls: ['./date.component.scss']
 })
 export class DateComponent implements AfterViewInit {
 

@@ -7,11 +7,10 @@ import { IMaskModule } from 'angular-imask';
 import { JsonPipe } from '@angular/common';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
-  standalone: true,
-  imports: [MailingAddressComponent, FormsModule, MuziehFormsModule, IMaskModule, JsonPipe]
+    selector: 'app-home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.scss'],
+    imports: [MailingAddressComponent, FormsModule, MuziehFormsModule, IMaskModule, JsonPipe]
 })
 export class HomeComponent implements AfterViewInit {
   model: CheckoutModel;

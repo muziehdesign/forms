@@ -5,11 +5,10 @@ import { NgFormModelState, ModelSchemaFactory, NgFormModelStateFactory, FieldErr
 import { NavbarComponent } from 'src/app/shared/navbar/navbar.component';
 
 @Component({
-  selector: 'app-boolean',
-  templateUrl: './boolean.component.html',
-  styleUrls: ['./boolean.component.scss'],
-  standalone: true,
-  imports: [MzFormsModule, FormsModule, JsonPipe, NavbarComponent]
+    selector: 'app-boolean',
+    templateUrl: './boolean.component.html',
+    styleUrls: ['./boolean.component.scss'],
+    imports: [MzFormsModule, FormsModule, JsonPipe, NavbarComponent]
 })
 export class BooleanComponent implements AfterViewInit {
 

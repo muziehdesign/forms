@@ -8,7 +8,6 @@ export type FieldOption = {
 
 @Component({
     selector: 'mz-checkbox-group',
-    standalone: true,
     imports: [FormsModule],
     templateUrl: './checkbox-group.component.html',
     providers: [
@@ -17,7 +16,7 @@ export type FieldOption = {
             useExisting: forwardRef(() => MzCheckboxGroup),
             multi: true,
         },
-    ],
+    ]
 })
 export class MzCheckboxGroup implements ControlValueAccessor {
     @Input({ required: true }) options!: FieldOption[];

@@ -7,10 +7,9 @@ import { NavbarComponent } from 'src/app/shared/navbar/navbar.component';
 
 @Component({
     selector: 'app-object',
-    standalone: true,
     imports: [FormsModule, MzFormsModule, JsonPipe, NavbarComponent, MailingAddressComponent],
     templateUrl: './object.component.html',
-    styleUrls: ['./object.component.scss'],
+    styleUrls: ['./object.component.scss']
 })
 export class ObjectComponent implements AfterViewInit {
     model: OrderModel;

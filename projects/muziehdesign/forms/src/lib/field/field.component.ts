@@ -13,16 +13,15 @@ function getControlContainer(
 
 @Component({
     selector: 'mz-field',
-    standalone: true,
     imports: [],
     templateUrl: './field.component.html',
     providers: [
         {
-          provide: ControlContainer,
-          useFactory: getControlContainer,
-          deps: [[new Optional(), new SkipSelf(), NgModelGroup], [new Optional(), new SkipSelf(), NgForm]]
+            provide: ControlContainer,
+            useFactory: getControlContainer,
+            deps: [[new Optional(), new SkipSelf(), NgModelGroup], [new Optional(), new SkipSelf(), NgForm]]
         }
-      ]
+    ]
 })
 export class MzField implements AfterContentInit {
     @Input() label?: string;

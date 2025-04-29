@@ -7,9 +7,8 @@ import { MzFormsModule } from '@muziehdesign/forms';
     selector: 'app-mailing-address',
     templateUrl: './mailing-address.component.html',
     styleUrls: ['./mailing-address.component.scss'],
-    standalone: true,
     imports: [MzFormsModule, FormsModule],
-    viewProviders: [{ provide: ControlContainer, useExisting: NgModelGroup }],
+    viewProviders: [{ provide: ControlContainer, useExisting: NgModelGroup }]
 })
 export class MailingAddressComponent {
     @Input({ required: true }) model!: AddressModel;
