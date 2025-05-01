@@ -4,10 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { DateValueAccessor } from './date-value-accessor.directive';
 
 @Component({
-  template: `
+    template: `
     <input type="date" [(ngModel)]="date" mzDate name="date" />
     <input type="text" [(ngModel)]="textDate" mzDate name="textDate" />
   `,
+    standalone: false
 })
 class TestComponent {
   date?: Date;

@@ -1,10 +1,10 @@
 {
   "name": "@muziehdesign/forms",
-  "version": "18.2.0",
+  "version": "19.2.8",
   "peerDependencies": {
-    "@angular/common": "^18.2.13",
-    "@angular/core": "^18.2.13",
-    "@angular/forms": "^18.2.13",
+    "@angular/common": "^19.2.8",
+    "@angular/core": "^19.2.8",
+    "@angular/forms": "^19.2.8",
     "date-fns": "^4.1.0",
     "angular-imask": "^6.4.0",
     "reflect-metadata": "^0.1.13",

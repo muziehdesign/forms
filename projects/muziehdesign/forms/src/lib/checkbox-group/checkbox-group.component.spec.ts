@@ -95,6 +95,7 @@ describe('MzCheckboxGroupComponent', () => {
         </form>
         <p data-testid="selected-items">{{ selectedItems | json }}</p>
     `,
+    standalone: false
 })
 class TestHostComponent {
     selectedItems: string[] = [];

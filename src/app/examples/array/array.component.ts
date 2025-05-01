@@ -6,10 +6,9 @@ import { FieldOption, MzCheckboxGroup, MzField } from '@muziehdesign/forms';
 
 @Component({
     selector: 'app-array',
-    standalone: true,
     imports: [MzCheckboxGroup, FormsModule, JsonPipe, MzField],
     templateUrl: './array.component.html',
-    styleUrl: './array.component.scss',
+    styleUrl: './array.component.scss'
 })
 export class ArrayComponent {
     numberOptions: FieldOption[] = [

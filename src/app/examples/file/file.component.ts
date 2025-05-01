@@ -3,9 +3,10 @@ import { NgForm } from '@angular/forms';
 import { FieldError, ModelSchemaFactory, NgFormModelState, NgFormModelStateFactory, FileType, required } from '@muziehdesign/forms';
 
 @Component({
-  selector: 'app-file',
-  templateUrl: './file.component.html',
-  styleUrls: ['./file.component.scss']
+    selector: 'app-file',
+    templateUrl: './file.component.html',
+    styleUrls: ['./file.component.scss'],
+    standalone: false
 })
 export class FileComponent implements AfterViewInit {
   model: FileModel;

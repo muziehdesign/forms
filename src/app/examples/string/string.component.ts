@@ -6,11 +6,10 @@ import { NavbarComponent } from 'src/app/shared/navbar/navbar.component';
 import * as Yup from 'yup';
 
 @Component({
-  selector: 'app-string',
-  standalone: true,
-  imports: [FormsModule, MzFormsModule, JsonPipe, NavbarComponent],
-  templateUrl: './string.component.html',
-  styleUrls: ['./string.component.scss']
+    selector: 'app-string',
+    imports: [FormsModule, MzFormsModule, JsonPipe, NavbarComponent],
+    templateUrl: './string.component.html',
+    styleUrls: ['./string.component.scss']
 })
 export class StringComponent {
 
