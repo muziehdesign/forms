@@ -3,7 +3,7 @@ import { Directive, ElementRef, Renderer2, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Directive({
-  selector: '[mzDate]',
+  selector: '[mzDateInput]',
   standalone: true,
   host: { '(input)': 'onChange($event.target.value)', '(blur)': 'onTouched()' },
   providers: [

@@ -2,13 +2,13 @@
 import { CommonModule, JsonPipe } from '@angular/common';
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { NgFormModelState, ModelSchemaFactory, NgFormModelStateFactory, FieldError, DateType, min, required, StringType, test, DateValueAccessor, FieldErrorsComponent } from '@muziehdesign/forms';
+import { NgFormModelState, ModelSchemaFactory, NgFormModelStateFactory, FieldError, DateType, min, required, test } from '@muziehdesign/forms';
 import { NavbarComponent } from 'src/app/shared/navbar/navbar.component';
 import { FormsModule as MuziehFormsModule } from '@muziehdesign/forms';
 
 @Component({
     selector: 'app-date',
-    imports: [DateValueAccessor, NavbarComponent, FormsModule, JsonPipe, MuziehFormsModule, CommonModule],
+    imports: [NavbarComponent, FormsModule, JsonPipe, MuziehFormsModule, CommonModule],
     templateUrl: './date.component.html',
     styleUrls: ['./date.component.scss']
 })

@@ -7,12 +7,12 @@
     <div>
       <form #checkoutForm="ngForm" (ngSubmit)="checkout()" class="form">
 
-        <input type="date" mzDate [(ngModel)]="dateModel" name="date1" #birthDateField1="ngModel" class="field-control" />
+        <input type="date" mzDateInput [(ngModel)]="dateModel" name="date1" #birthDateField1="ngModel" class="field-control" />
         {{birthDateField1.value}}, {{dateModel | json}}
 
         <label class="field">
           <span class="field-label">Birth date</span>
-            <input type="text" [(ngModel)]="model.birthDate" name="birthDate" #birthDateField="ngModel" mzDate
+            <input type="text" [(ngModel)]="model.birthDate" name="birthDate" #birthDateField="ngModel" mzDateInput
             class="field-control" />
           <mz-field-errors [field]="birthDateField"></mz-field-errors>
           <div>
