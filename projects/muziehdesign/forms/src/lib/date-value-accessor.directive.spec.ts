@@ -5,8 +5,8 @@ import { DateValueAccessor } from './date-value-accessor.directive';
 
 @Component({
     template: `
-    <input type="date" [(ngModel)]="date" mzDate name="date" />
-    <input type="text" [(ngModel)]="textDate" mzDate name="textDate" />
+    <input type="date" [(ngModel)]="date" mzDateInput name="date" />
+    <input type="text" [(ngModel)]="textDate" mzDateInput name="textDate" />
   `,
     standalone: false
 })
