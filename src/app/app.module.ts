@@ -1,13 +1,9 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-
-import {IMaskFactory, IMaskModule} from 'angular-imask';
 import { FormsModule as MuziehFormsModule, MzFormsModule } from '@muziehdesign/forms';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { MaskFactoryService } from 'src/core/mask-factory.service';
 import { ApplicantComponent } from './examples/applicant/applicant.component';
 import { StringComponent } from './examples/string/string.component';
 import { HomeComponent } from './home/home.component';
@@ -32,7 +28,6 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
     CommonModule,
     AppRoutingModule,
     FormsModule,
-    IMaskModule,
     MuziehFormsModule,
     SharedModule,
 
@@ -43,12 +38,6 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
     NavbarComponent,
     MzFormsModule,
     HomeComponent
-  ],
-  providers: [
-    {
-      provide: IMaskFactory,
-      useClass: MaskFactoryService,
-    },
   ],
   bootstrap: [AppComponent]
 })
