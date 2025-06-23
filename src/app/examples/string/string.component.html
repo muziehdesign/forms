@@ -8,7 +8,7 @@
     <div>
       <form #checkoutForm="ngForm" (ngSubmit)="submitForm()" class="form" mzForm [schema]="schema" [ngFormOptions]="{updateOn: 'blur'}">
         <mz-field label="First name">
-          <input type="text" [(ngModel)]="model.firstName" name="firstName" class="form-input" />
+          <input type="text" [(ngModel)]="model.firstName" name="firstName" class="form-input" [mzMask]="'phone'"/>
         </mz-field>
 
         <mz-field label="Required string">
@@ -17,6 +17,10 @@
 
         <mz-field label="Email">
           <input type="text" [(ngModel)]="model.email" name="email" class="form-input" />
+        </mz-field>
+
+         <mz-field label="Phone number">
+          <input type="text" [(ngModel)]="model.phoneNumber" name="phoneNumber" class="form-input" [mzMask]="'phone'"/>
         </mz-field>
 
         <mz-field label="Code">

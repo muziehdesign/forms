@@ -2,12 +2,13 @@ import { JsonPipe } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ModelSchemaFactory, FieldError, StringType, required, maxLength, length, pattern, ModelSchema, MzFormsModule } from '@muziehdesign/forms';
+import { MaskDirective } from 'projects/muziehdesign/forms/src/public-api';
 import { NavbarComponent } from 'src/app/shared/navbar/navbar.component';
 import * as Yup from 'yup';
 
 @Component({
     selector: 'app-string',
-    imports: [FormsModule, MzFormsModule, JsonPipe, NavbarComponent],
+    imports: [FormsModule, MzFormsModule, JsonPipe, NavbarComponent, MaskDirective],
     templateUrl: './string.component.html',
     styleUrls: ['./string.component.scss']
 })
@@ -63,4 +64,7 @@ export class StringExampleModel {
 
   @StringType(required('Please enter email'), pattern(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/, 'Please enter a valid email address'))
   email?: string;
+
+  @StringType()
+  phoneNumber?: string;
 }
