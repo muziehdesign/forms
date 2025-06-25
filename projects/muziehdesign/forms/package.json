@@ -6,7 +6,7 @@
     "@angular/core": "^19.2.8",
     "@angular/forms": "^19.2.8",
     "date-fns": "^4.1.0",
-    "angular-imask": "^6.4.0",
+    "angular-imask": "^7.6.1",
     "reflect-metadata": "^0.1.13",
     "yup": "^0.32.11"
   },
