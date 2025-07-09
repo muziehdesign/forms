@@ -3,14 +3,14 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { FieldError, ModelSchemaFactory, NgFormModelState, NgFormModelStateFactory, FormsModule as MuziehFormsModule } from '@muziehdesign/forms';
 import { AddressModel, CheckoutModel } from '../models';
 import { MailingAddressComponent } from '../mailing-address/mailing-address.component';
-import { IMaskModule } from 'angular-imask';
 import { JsonPipe } from '@angular/common';
+import { IMaskDirective } from 'angular-imask';
 
 @Component({
     selector: 'app-home',
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss'],
-    imports: [MailingAddressComponent, FormsModule, MuziehFormsModule, IMaskModule, JsonPipe]
+    imports: [MailingAddressComponent, FormsModule, MuziehFormsModule, IMaskDirective, JsonPipe]
 })
 export class HomeComponent implements AfterViewInit {
   model: CheckoutModel;
