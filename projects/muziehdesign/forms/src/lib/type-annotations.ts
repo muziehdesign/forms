@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { ArraySchema, BooleanSchema, DateSchema, FieldSchema, FieldSchemaType, FileSchema, NumberSchema, ObjectSchema, StringSchema } from './field-schema';
 
-const METADATA_KEY = 'custom:muziehdesign:annotations';
+export const METADATA_KEY = 'custom:muziehdesign:annotations';
 
 export interface ConstraintAnnotations {
 
@@ -179,7 +179,6 @@ export function ArrayType(...annotations: { [key: string]: ValidationAnnotation 
     } satisfies ArraySchema;
 
     registerMetadata(target, propertyKey, schema);
-    Reflect.defineMetadata(Symbol('ArrayType'), true, target, propertyKey);
   };
 }
 
