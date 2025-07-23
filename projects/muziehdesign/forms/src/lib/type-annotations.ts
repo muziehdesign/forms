@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { ArraySchema, BooleanSchema, DateSchema, FieldSchema, FieldSchemaType, FileSchema, NumberSchema, ObjectSchema, StringSchema } from './field-schema';
 
-export const METADATA_KEY = 'custom:muziehdesign:annotations';
+const METADATA_KEY = 'custom:muziehdesign:annotations';
 
 export interface ConstraintAnnotations {
 
