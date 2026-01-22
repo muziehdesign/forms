@@ -122,7 +122,7 @@ When displaying an error, the library searches for messages in this order: `[mod
 
 **Example:**
 ```typescript
-@Model('CheckoutForm')
+@Model('CheckoutModel')
 export class CheckoutModel {
   @StringType(required(), maxLength(50))
   instructions?: string;
@@ -131,7 +131,7 @@ export class CheckoutModel {
 
 For a `max` error on the `instructions` field:
 1. If custom message if provided, it would be used
-1. Otherwise, first tries: `CheckoutForm.instructions.string.max`
+1. Otherwise, first tries: `CheckoutModel.instructions.string.max`
 1. Then tries: `string.max`
 1. Fallback: `'string.max'`
 
