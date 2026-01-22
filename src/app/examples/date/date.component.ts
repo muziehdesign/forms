@@ -1,30 +1,27 @@
 
 import { CommonModule, JsonPipe } from '@angular/common';
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { NgFormModelState, ModelSchemaFactory, NgFormModelStateFactory, FieldError, DateType, min, required, test } from '@muziehdesign/forms';
+import { ModelSchemaFactory, NgFormModelStateFactory, FieldError, DateType, min, required, test, MzField, Model, ModelSchema, MzFormsModule } from '@muziehdesign/forms';
 import { NavbarComponent } from 'src/app/shared/navbar/navbar.component';
-import { FormsModule as MuziehFormsModule } from '@muziehdesign/forms';
 
 @Component({
     selector: 'app-date',
-    imports: [NavbarComponent, FormsModule, JsonPipe, MuziehFormsModule, CommonModule],
+    imports: [NavbarComponent, FormsModule, JsonPipe, CommonModule, MzField, MzFormsModule],
     templateUrl: './date.component.html',
     styleUrls: ['./date.component.scss']
 })
-export class DateComponent implements AfterViewInit {
+export class DateComponent {
 
   model: CalendarModel;
-  modelState!: NgFormModelState<CalendarModel>;
+  schema: ModelSchema<CalendarModel>;
   @ViewChild('checkoutForm', {static: true}) checkoutForm!: NgForm;
 
   dateModel?: Date;
 
   constructor(private factory: ModelSchemaFactory, private modelStateFactory: NgFormModelStateFactory) {
     this.model = new CalendarModel();
-  }
-  ngAfterViewInit(): void {
-    this.modelState = this.modelStateFactory.create(this.checkoutForm, this.model, { onValidate: (errors) => this.onValidate(errors, this.model) });
+    this.schema = this.factory.build(this.model);
   }
 
   usePresetValues() {
@@ -34,9 +31,7 @@ export class DateComponent implements AfterViewInit {
 
   async checkout() {
     this.checkoutForm.form.markAllAsTouched();
-    console.log('checking out');
-    console.log(this.dateModel?.toISOString());
-    await this.modelState.validate();
+    await this.schema.validate(this.model);
   }
 
   onValidate(modelErrors: FieldError[], model: CalendarModel): Promise<FieldError[]> {
@@ -46,7 +41,10 @@ export class DateComponent implements AfterViewInit {
   }
 }
 
+@Model('CalendarModel')
 export class CalendarModel {
-  @DateType(required(), test('minimumAge', (d: Date) => {return Number(+new Date().getFullYear() - +d?.getFullYear()) >= 18;}, 'You must be over 18'), min(new Date(1900, 0, 1), 'Minimum date is 01/01/1900'))
+  @DateType(required(),
+    test('minimumAge', (d: Date) => {return Number(+new Date().getFullYear() - +d?.getFullYear()) >= 18;}),
+    min(new Date(1900, 0, 1), 'Minimum date is 01/01/1900'))
   birthDate?: Date;
 }

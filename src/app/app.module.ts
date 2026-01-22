@@ -1,14 +1,14 @@
-import { NgModule } from '@angular/core';
+import { inject, NgModule, provideAppInitializer } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule as MuziehFormsModule, MzFormsModule } from '@muziehdesign/forms';
+import { FormMessageService, FormsModule as MuziehFormsModule, MzFormsModule } from '@muziehdesign/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ApplicantComponent } from './examples/applicant/applicant.component';
 import { StringComponent } from './examples/string/string.component';
 import { HomeComponent } from './home/home.component';
 import { NumberComponent } from './examples/number/number.component';
-import { DateComponent } from './examples/date/date.component';
+import { CalendarModel, DateComponent } from './examples/date/date.component';
 import { BooleanComponent } from './examples/boolean/boolean.component';
 import { ObjectComponent } from './examples/object/object.component';
 import { SharedModule } from './shared/shared.module';
@@ -39,6 +39,21 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
     MzFormsModule,
     HomeComponent
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers: [
+    provideAppInitializer(()=>{
+        const message = inject(FormMessageService);
+        message.registerFormMessages({
+            mixed: {
+                required: 'Required',
+            },
+            CalendarModel: {
+                birthDate: {
+                    minimumAge: 'You must be at least 18 years old'
+                }
+            }
+        }, 'en');
+    })
+  ]
 })
 export class AppModule { }

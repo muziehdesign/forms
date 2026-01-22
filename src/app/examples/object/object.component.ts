@@ -53,15 +53,15 @@ export class ObjectComponent implements AfterViewInit {
 }
 
 export class AddressModel {
-    @StringType(required('Street is required'))
+    @StringType(required())
     street1?: string;
     @StringType()
     street2?: string;
-    @StringType(required('City is required'))
+    @StringType(required())
     city?: string;
-    @StringType(required('State is required'))
+    @StringType(required())
     state?: string;
-    @StringType(required('Zipcode is required'))
+    @StringType(required())
     zipCode?: string;
 }
 
@@ -79,7 +79,7 @@ export class OrderModel {
     @ObjectType(AddressModel, required())
     address?: AddressModel;
 
-    @ObjectType(AddressModel)
+    @ObjectType(AddressModel, required())
     mailingAddress?: AddressModel;
 
     // nested object example which is not required, but has required properties if user chooses it
