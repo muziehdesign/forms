@@ -40,6 +40,7 @@ export class FormMessageService {
     }
 
     private getLocaleData(keyParts: string[]): string | undefined {
+        console.log('locating message for', keyParts);
         const messages = this.localeData[this.localeId] || this.localeData['en'];
         return keyParts.reduce((obj, part) => {
             if (obj?.[part] === undefined) {
