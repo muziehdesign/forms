@@ -10,7 +10,7 @@
         "min": "Too short",
         "max": "Too long",
         "length": "Must be exactly {length} characters",
-        "matches": "Must match pattern",
+        "matches": "Invalid format",
         "email": "Invalid email address",
         "url": "Invalid URL"
     },
@@ -19,9 +19,9 @@
         "max": "Must be no more than {max}",
         "lessThan": "Must be less than {less}",
         "moreThan": "Must be greater than {more}",
-        "positive": "Must be a positive number",
-        "negative": "Must be a negative number",
-        "integer": "Must be an integer"
+        "positive": "Invalid number",
+        "negative": "Invalid number",
+        "integer": "Invalid number"
     },
     "date": {
         "min": "Date must be after {min}",

@@ -8,20 +8,19 @@ import { ApplicantComponent } from './examples/applicant/applicant.component';
 import { StringComponent } from './examples/string/string.component';
 import { HomeComponent } from './home/home.component';
 import { NumberComponent } from './examples/number/number.component';
-import { CalendarModel, DateComponent } from './examples/date/date.component';
+import { DateComponent } from './examples/date/date.component';
 import { BooleanComponent } from './examples/boolean/boolean.component';
 import { ObjectComponent } from './examples/object/object.component';
 import { SharedModule } from './shared/shared.module';
 import { FileComponent } from './examples/file/file.component';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from './shared/navbar/navbar.component';
-import * as validations from './../i18n/validations.json';
+import * as validations from './../i18n/validation-messages.json';
 
 @NgModule({
   declarations: [
     AppComponent,
     ApplicantComponent,
-    NumberComponent,
     FileComponent
   ],
   imports: [
@@ -33,6 +32,7 @@ import * as validations from './../i18n/validations.json';
     SharedModule,
 
     StringComponent,
+    NumberComponent,
     ObjectComponent,
     DateComponent,
     BooleanComponent,

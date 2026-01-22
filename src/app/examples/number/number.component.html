@@ -1,50 +1,37 @@
 <app-navbar></app-navbar>
 
 <div class="m-10">
-  <h1>Number example form</h1>
+    <h1>Number example form</h1>
 
-  <div class="grid grid-cols-2 gap-4">
-    <div>
-      <form #exampleForm="ngForm" (ngSubmit)="submitForm()" class="form">
-        <label class="field">
-          <span class="field-label">Required number (1-1000)</span>
-          <input type="number" [(ngModel)]="model.requiredNumber" name="requiredNumber" #requiredNumberField="ngModel"
-            class="field-control" />
-            @if (requiredNumberField.touched && requiredNumberField.invalid) {
-              <mz-field-errors [field]="requiredNumberField"
-              ></mz-field-errors>
-            }
-          </label>
+    <div class="grid grid-cols-2 gap-4">
+        <div>
+            <form #exampleForm="ngForm" (ngSubmit)="submitForm()" class="form" mzForm [schema]="schema">
+                <mz-field label="Required number (1-1000)">
+                    <input type="number" [(ngModel)]="model.requiredNumber" name="requiredNumber" #requiredNumberField="ngModel" class="field-control" />
+                </mz-field>
 
-          <label class="field">
-            <span class="field-label">Optional number (1-1000)</span>
-            <input type="number" [(ngModel)]="model.optionalNumber" name="optionalNumber" #optionalNumberField="ngModel"
-              class="field-control" />
-              @if (optionalNumberField.touched && optionalNumberField.invalid) {
-                <mz-field-errors [field]="optionalNumberField"
-                ></mz-field-errors>
-              }
-            </label>
+                <mz-field label="Optional number (1-1000)">
+                    <input type="number" [(ngModel)]="model.optionalNumber" name="optionalNumber" #optionalNumberField="ngModel" class="field-control" />
+                </mz-field>
 
-            <button type="submit">Validate</button>
+                <button type="submit">Validate</button>
 
-            <div class="mt-4">
-              <button type="reset" class="mr-4">Reset</button>
-              <button type="button" (click)="usePresetValues()">Use preset values</button>
-            </div>
-          </form>
+                <div class="mt-4">
+                    <button type="reset" class="mr-4">Reset</button>
+                    <button type="button" (click)="usePresetValues()">Use preset values</button>
+                </div>
+            </form>
         </div>
 
         <div class="text-slate-600">
-          <div class="p-8 my-1 bg-slate-50">
-            <span>// model</span>
-            <pre>{{model | json}}</pre>
-          </div>
-          <div class="p-8 my-1 bg-slate-50">
-            <span>// exampleForm.value</span>
-            <pre>{{exampleForm.value | json}}</pre>
-          </div>
+            <div class="p-8 my-1 bg-slate-50">
+                <span>// model</span>
+                <pre>{{ model | json }}</pre>
+            </div>
+            <div class="p-8 my-1 bg-slate-50">
+                <span>// exampleForm.value</span>
+                <pre>{{ exampleForm.value | json }}</pre>
+            </div>
         </div>
-
-      </div>
     </div>
+</div>

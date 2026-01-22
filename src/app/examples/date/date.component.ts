@@ -45,6 +45,6 @@ export class DateComponent {
 export class CalendarModel {
   @DateType(required(),
     test('minimumAge', (d: Date) => {return Number(+new Date().getFullYear() - +d?.getFullYear()) >= 18;}),
-    min(new Date(1900, 0, 1), 'Minimum date is 01/01/1900'))
+    min(new Date(1900, 0, 1)))
   birthDate?: Date;
 }

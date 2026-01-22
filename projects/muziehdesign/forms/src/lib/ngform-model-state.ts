@@ -60,12 +60,9 @@ export class NgFormModelState<T> {
       let validationErrors = <ValidationErrors>{};
       value.forEach((v) => (validationErrors[v.type] = v.message));
 
-      //console.log('setting errors for path:', path, validationErrors);
-
       const control = this.form.form.get(path);
       if (!control) {
         // TODO: use actual logging service
-        console.log('control not found for path:', path);
       } else {
         control.setErrors(validationErrors);
       }
