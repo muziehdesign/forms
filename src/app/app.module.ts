@@ -15,6 +15,7 @@ import { SharedModule } from './shared/shared.module';
 import { FileComponent } from './examples/file/file.component';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from './shared/navbar/navbar.component';
+import * as validations from './../i18n/validations.json';
 
 @NgModule({
   declarations: [
@@ -43,16 +44,7 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
   providers: [
     provideAppInitializer(()=>{
         const message = inject(FormMessageService);
-        message.registerFormMessages({
-            mixed: {
-                required: 'Required',
-            },
-            CalendarModel: {
-                birthDate: {
-                    minimumAge: 'You must be at least 18 years old'
-                }
-            }
-        }, 'en');
+        message.registerFormMessages(validations, 'en');
     })
   ]
 })

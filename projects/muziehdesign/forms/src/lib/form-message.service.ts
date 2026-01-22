@@ -35,7 +35,7 @@ export class FormMessageService {
         }
     }
 
-    registerFormMessages(data: any, localeId: string) {
+    registerLocaleMessages(data: any, localeId: string) {
         this.localeData[localeId] = data;
     }
 

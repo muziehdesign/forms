@@ -1,0 +1,43 @@
+{
+    "mixed": {
+        "required": "Required",
+        "notType": "Required",
+        "oneOf": "Invalid value",
+        "notOneOf": "Invalid value",
+        "defined": "Required"
+    },
+    "string": {
+        "min": "Too short",
+        "max": "Too long",
+        "length": "Must be exactly {length} characters",
+        "matches": "Must match pattern",
+        "email": "Invalid email address",
+        "url": "Invalid URL"
+    },
+    "number": {
+        "min": "Must be at least {min}",
+        "max": "Must be no more than {max}",
+        "lessThan": "Must be less than {less}",
+        "moreThan": "Must be greater than {more}",
+        "positive": "Must be a positive number",
+        "negative": "Must be a negative number",
+        "integer": "Must be an integer"
+    },
+    "date": {
+        "min": "Date must be after {min}",
+        "max": "Date must be before {max}"
+    },
+    "array": {
+        "min": "Must have at least {min} items",
+        "max": "Must have no more than {max} items",
+        "length": "Must have exactly {length} items"
+    },
+    "boolean": {
+        "isValue": "Required"
+    },
+    "CalendarModel": {
+        "birthDate": {
+            "minimumAge": "You must be at least 18 years old"
+        }
+    }
+}
