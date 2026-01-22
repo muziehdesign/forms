@@ -7,7 +7,7 @@ export class FormMessageService {
     private localeData: { [localeId: string]: any } = {};
     constructor(@Inject(LOCALE_ID) private localeId: string) {}
 
-    getMessage(messageProps: string | { key: string; path?: string; message?: string; min?: number; max?: number; less?: number; more?: number, length?: number }, namespace?: string): string | undefined {
+    getMessage(messageProps: string | { key: string; path?: string; message?: string; min?: number | Date; max?: number | Date; less?: number; more?: number, length?: number }, namespace?: string): string | undefined {
         if (typeof messageProps === 'string') {
             return messageProps;
         }
@@ -29,31 +29,47 @@ export class FormMessageService {
                 return messageProps.key;
             }
 
-            // format message
-            if (messageProps.min) {
-                return message.replace('{min}', messageProps.min.toString());
-            }
-
-            if (messageProps.max) {
-                return message.replace('{max}', messageProps.max.toString());
-            }
-
-            if (messageProps.less) {
-                return message.replace('{less}', messageProps.less.toString());
-            }
-
-            if (messageProps.more) {
-                return message.replace('{more}', messageProps.more.toString());
-            }
-
-            if (messageProps.length) {
-                return message.replace('{length}', messageProps.length.toString());
-            }
-
-            return message;
+            return this.formatMessage(message, messageProps);
         } catch {
             return messageProps.key;
         }
+    }
+
+    private formatMessage(message: string, params: { min?: number | Date; max?: number | Date; less?: number; more?: number; length?: number }): string {
+        let formatted = message;
+
+        // Format min parameter
+        if (params.min !== undefined) {
+            const formattedMin = params.min instanceof Date
+                ? params.min.toLocaleDateString(this.localeId)
+                : params.min.toString();
+            formatted = formatted.replace('{min}', formattedMin);
+        }
+
+        // Format max parameter
+        if (params.max !== undefined) {
+            const formattedMax = params.max instanceof Date
+                ? params.max.toLocaleDateString(this.localeId)
+                : params.max.toString();
+            formatted = formatted.replace('{max}', formattedMax);
+        }
+
+        // Format less parameter
+        if (params.less !== undefined) {
+            formatted = formatted.replace('{less}', params.less.toString());
+        }
+
+        // Format more parameter
+        if (params.more !== undefined) {
+            formatted = formatted.replace('{more}', params.more.toString());
+        }
+
+        // Format length parameter
+        if (params.length !== undefined) {
+            formatted = formatted.replace('{length}', params.length.toString());
+        }
+
+        return formatted;
     }
 
     registerLocaleMessages(data: any, localeId: string) {
