@@ -12,7 +12,6 @@ export class FieldErrorsComponent {
 
   get errorMessage(): string {
     const errorKeys = Object.keys(this.field?.errors || {});
-    console.log((this.field?.errors as ValidationErrors)[errorKeys[0]]);
     return errorKeys.length > 0 ? (this.field?.errors as ValidationErrors)[errorKeys[0]] : '';
   }
 }
