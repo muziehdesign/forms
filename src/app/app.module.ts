@@ -44,7 +44,7 @@ import * as validations from './../i18n/validations.json';
   providers: [
     provideAppInitializer(()=>{
         const message = inject(FormMessageService);
-        message.registerFormMessages(validations, 'en');
+        message.registerLocaleMessages(validations, 'en');
     })
   ]
 })
