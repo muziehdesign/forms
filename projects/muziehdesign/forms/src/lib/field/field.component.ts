@@ -1,10 +1,16 @@
-import { Component, ContentChild, Input, Optional, SkipSelf } from '@angular/core';
+import { Component, ContentChild, inject, Input, Optional, SkipSelf } from '@angular/core';
 import { ControlContainer, NgForm, NgModel, NgModelGroup } from '@angular/forms';
 import { FormMessageService } from '../form-message.service';
 import { MzForm } from '../../public-api';
 
-function getControlContainer(group: NgModelGroup | null, form: NgForm | null): ControlContainer {
-    return group ?? form!;
+function getControlContainer(): ControlContainer | null {
+    const group = inject(NgModelGroup, { optional: true, skipSelf: true });
+    if (group) return group;
+
+    const form = inject(NgForm, { optional: true, skipSelf: true });
+    if (form) return form;
+
+    return null;
 }
 
 @Component({
@@ -15,10 +21,6 @@ function getControlContainer(group: NgModelGroup | null, form: NgForm | null): C
         {
             provide: ControlContainer,
             useFactory: getControlContainer,
-            deps: [
-                [new Optional(), new SkipSelf(), NgModelGroup],
-                [new Optional(), new SkipSelf(), NgForm],
-            ],
         },
     ],
 })
@@ -27,7 +29,10 @@ export class MzField {
     @Input() controlType: 'checkbox' | 'checkboxgroup' | 'other' = 'other';
     @ContentChild(NgModel) ngModel?: NgModel;
 
-    constructor(private message: FormMessageService, @Optional() private form?: MzForm) {}
+    constructor(
+        private message: FormMessageService,
+        @Optional() private form?: MzForm
+    ) {}
 
     getErrorMessage(): string | undefined {
         try {
