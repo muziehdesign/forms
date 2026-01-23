@@ -244,9 +244,9 @@ describe('ModelSchemaFactory validates date', () => {
   });
 
   it('should validate required date', async () => {
-    for (const invalidValue of [undefined]) {
+    for (const invalidValue of [undefined, '']) {
       const target = Object.assign({}, validModel) as DateTestModel;
-      target.requiredEntry = invalidValue;
+      target.requiredEntry = invalidValue as Date | undefined;
 
       const validation = await schema.validate(target);
       expect(validation).toEqual([{ path: 'requiredEntry', type: 'required', message: 'requiredEntry is a required field' }]);

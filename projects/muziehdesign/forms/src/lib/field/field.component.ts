@@ -1,15 +1,11 @@
-import { AfterContentInit, Component, ContentChild, ElementRef, Input, Optional, SkipSelf } from '@angular/core';
+import { Component, ContentChild, Input, Optional, SkipSelf } from '@angular/core';
 import { ControlContainer, NgForm, NgModel, NgModelGroup } from '@angular/forms';
-import { FieldSchema } from '../field-schema';
-import { FieldMetadata } from '../model-schema';
+import { FormMessageService } from '../form-message.service';
+import { MzForm } from '../../public-api';
 
-function getControlContainer(
-    group: NgModelGroup | null,
-    form: NgForm | null
-  ): ControlContainer {
-    console.log('getControlContainer', group, form);
+function getControlContainer(group: NgModelGroup | null, form: NgForm | null): ControlContainer {
     return group ?? form!;
-  }
+}
 
 @Component({
     selector: 'mz-field',
@@ -19,28 +15,24 @@ function getControlContainer(
         {
             provide: ControlContainer,
             useFactory: getControlContainer,
-            deps: [[new Optional(), new SkipSelf(), NgModelGroup], [new Optional(), new SkipSelf(), NgForm]]
-        }
-    ]
+            deps: [
+                [new Optional(), new SkipSelf(), NgModelGroup],
+                [new Optional(), new SkipSelf(), NgForm],
+            ],
+        },
+    ],
 })
-export class MzField implements AfterContentInit {
+export class MzField {
     @Input() label?: string;
     @Input() controlType: 'checkbox' | 'checkboxgroup' | 'other' = 'other';
-    @Input() schema?: FieldSchema<any>;
     @ContentChild(NgModel) ngModel?: NgModel;
 
-    fieldMetadata?: FieldMetadata;
-    constructor(private elementRef: ElementRef) {
-    }
-
-    ngAfterContentInit(): void {
-        //this.fieldMetadata = this.form.schema.getMetadata(this.ngModel?.path || []);
-    }
+    constructor(private message: FormMessageService, @Optional() private form?: MzForm) {}
 
     getErrorMessage(): string | undefined {
         try {
             const list = Object.values(this.ngModel!.errors!);
-            return list[0];
+            return this.message.getMessage(list[0], this.form?.schema.name);
         } catch {
             return undefined;
         }

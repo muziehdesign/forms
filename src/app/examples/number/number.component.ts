@@ -1,25 +1,25 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { NgFormModelState, ModelSchemaFactory, NgFormModelStateFactory, FieldError, max, min, NumberType, required, StringType } from '@muziehdesign/forms';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ModelSchemaFactory, MzFormsModule, ModelSchema } from '@muziehdesign/forms';
 import { NumberExampleModel } from './number-example.model';
+import { JsonPipe } from '@angular/common';
+import { NavbarComponent } from 'src/app/shared/navbar/navbar.component';
 
 @Component({
     selector: 'app-number',
     templateUrl: './number.component.html',
     styleUrls: ['./number.component.scss'],
-    standalone: false
+    imports: [MzFormsModule, FormsModule, JsonPipe, NavbarComponent],
+    standalone: true
 })
-export class NumberComponent implements AfterViewInit {
+export class NumberComponent {
 
     model: NumberExampleModel;
-    modelState!: NgFormModelState<NumberExampleModel>;
-    @ViewChild('exampleForm', { static: true }) exampleForm!: NgForm;
+    schema: ModelSchema<NumberExampleModel>;
 
-    constructor(private factory: ModelSchemaFactory, private modelStateFactory: NgFormModelStateFactory) {
+    constructor(private factory: ModelSchemaFactory, private schemaFactory: ModelSchemaFactory) {
         this.model = new NumberExampleModel();
-    }
-    ngAfterViewInit(): void {
-        this.modelState = this.modelStateFactory.create(this.exampleForm, this.model);
+        this.schema = this.schemaFactory.build(this.model);
     }
 
     usePresetValues() {
@@ -28,6 +28,6 @@ export class NumberComponent implements AfterViewInit {
     }
 
     async submitForm() {
-        await this.modelState.validate();
+        await this.schema.validate(this.model);
     }
 }

@@ -4,10 +4,10 @@ import { FieldSchema } from './field-schema';
 export class ModelSchema<T> {
     // TODO: need to keep track of internal and external
     //private definitions?:  {[K in keyof T]: FieldSchema<any>};
-    constructor(private metadata: FieldSchema<any>[], private schema: AnyObjectSchema) {
+    constructor(private metadata: FieldSchema<any>[], private schema: AnyObjectSchema, public readonly name?: string) {
 
     }
-    
+
     getMetadata(paths: string[]) {
         //console.log('fetching metadata for path: ', paths);
         //console.log(this.schema.describe());

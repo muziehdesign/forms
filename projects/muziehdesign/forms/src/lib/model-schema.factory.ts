@@ -5,6 +5,7 @@ import { SCHEMA_METADATA_NAMESPACE } from './constants';
 import { ObjectShape } from 'yup/lib/object';
 import * as Yup from 'yup';
 import { ArraySchema, BooleanSchema, DateSchema, FieldSchema, FieldSchemaType, FileSchema, NumberSchema, ObjectSchema, StringSchema } from './field-schema';
+import { ModelMetadata } from './type-annotations';
 
 /*
 Schema rules need to be built in the order they need to be evaluated in.
@@ -25,10 +26,10 @@ export class ModelSchemaFactory {
   constructor() {}
 
   build<T extends object>(model: T): ModelSchema<T> {
-    const metadata: Map<string, FieldSchema<any>> = Reflect.getMetadata(SCHEMA_METADATA_NAMESPACE, model);
-    const schemaData = [...metadata.values()];
+    const metadata: ModelMetadata = Reflect.getMetadata(SCHEMA_METADATA_NAMESPACE, model);
+    const schemaData = [...metadata.schemas.values()];
     const schema = this.buildYupSchema(schemaData);
-    return new ModelSchema(schemaData, schema);
+    return new ModelSchema(schemaData, schema, metadata.name);
   }
 
   buildUntyped(raw: FieldSchema<any>[]) : ModelSchema<{[key: string]: string}> {
@@ -67,7 +68,7 @@ export class ModelSchemaFactory {
       schema.label(original.label);
     }
 
-    const options = original.constraints;    
+    const options = original.constraints;
 
     if (options.required) {
       schema = schema.required(options.required.message);
@@ -97,7 +98,7 @@ export class ModelSchemaFactory {
       schema.label(original.label);
     }
 
-    const options = original.constraints;  
+    const options = original.constraints;
     if (options.required) {
       schema = schema.required(options.required.message);
     }
@@ -118,7 +119,15 @@ export class ModelSchemaFactory {
       schema.label(original.label);
     }
 
-    const options = original.constraints;  
+    schema = schema.transform(function(value, originalValue) {
+        if(originalValue === '') {
+            return undefined;
+        }
+
+        return value;
+    });
+
+    const options = original.constraints;
     if (options.required) {
       schema = schema.required(options.required.message);
     }
@@ -129,12 +138,17 @@ export class ModelSchemaFactory {
       schema = schema.max(options.max.max, options.max.message);
     }
     if (options.test) {
-      schema = schema.test({
-        name: options.test.name,
-        message: options.test.message,
-        test: (d?: Date, context?: any) => {
-          return options.test!.test(d!);
-        },
+      schema = schema.test(options.test.name, function(v, context){
+        if(v && options.test?.test(v) !== true) {
+            return context.createError({
+                message: options.test?.message,
+                path: context.path,
+                params: {
+                    key: options.test?.name
+                }
+            });
+        }
+        return true;
       });
     }
 
@@ -147,7 +161,7 @@ export class ModelSchemaFactory {
       schema.label(original.label);
     }
 
-    const options = original.constraints;  
+    const options = original.constraints;
     if (options.required) {
       schema = schema.required(options.required.message);
     }
@@ -167,7 +181,7 @@ export class ModelSchemaFactory {
       schema.label(original.label);
     }
 
-    const options = original.constraints;  
+    const options = original.constraints;
 
     if (options.min) {
       schema = schema.min(options.min.min, options.min.message);
@@ -180,14 +194,14 @@ export class ModelSchemaFactory {
   }
 
   private buildNestedObjectSchema(original: ObjectSchema) {
-    const metadata: Map<string, FieldSchema<any>> = Reflect.getMetadata(SCHEMA_METADATA_NAMESPACE, original.constraints.getInstance());
+    const metadata: ModelMetadata = Reflect.getMetadata(SCHEMA_METADATA_NAMESPACE, original.constraints.getInstance());
 
-    let nestedSchema = this.buildYupSchema([...metadata.values()]);
+    let nestedSchema = this.buildYupSchema([...metadata.schemas.values()]);
     if(original.label) {
       nestedSchema.label(original.label);
     }
 
-    const options = original.constraints;  
+    const options = original.constraints;
     if (options.required) {
       nestedSchema = nestedSchema.required();
     } else {
@@ -203,7 +217,7 @@ export class ModelSchemaFactory {
       schema.label(original.label);
     }
 
-    const options = original.constraints;  
+    const options = original.constraints;
     if (options.required) {
       schema = schema.required(options.required.message);
     }

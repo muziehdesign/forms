@@ -1,44 +1,33 @@
 <app-navbar></app-navbar>
 
 <div class="m-10">
-  <h1>Date example form</h1>
+    <h1>Date example form</h1>
 
-  <div class="grid grid-cols-2 gap-4">
-    <div>
-      <form #checkoutForm="ngForm" (ngSubmit)="checkout()" class="form">
+    <div class="grid grid-cols-2 gap-4">
+        <div>
+            <form #checkoutForm="ngForm" (ngSubmit)="checkout()" class="form" mzForm [schema]="schema">
+                <mz-field label="Birth date">
+                    <input type="text" [(ngModel)]="model.birthDate" name="birthDate" mzDateInput class="field-control" />
+                </mz-field>
 
-        <input type="date" mzDateInput [(ngModel)]="dateModel" name="date1" #birthDateField1="ngModel" class="field-control" />
-        {{birthDateField1.value}}, {{dateModel | json}}
+                <button type="submit">Save</button>
 
-        <label class="field">
-          <span class="field-label">Birth date</span>
-            <input type="text" [(ngModel)]="model.birthDate" name="birthDate" #birthDateField="ngModel" mzDateInput
-            class="field-control" />
-          <mz-field-errors [field]="birthDateField"></mz-field-errors>
-          <div>
-            {{model.birthDate | json}}
-          </div>
-        </label>
-
-        <button type="submit">Save</button>
-
-        <div class="mt-4">
-          <button type="reset" class="mr-4">Reset</button>
-          <button type="button" (click)="usePresetValues()">Use preset values</button>
+                <div class="mt-4">
+                    <button type="reset" class="mr-4">Reset</button>
+                    <button type="button" (click)="usePresetValues()">Use preset values</button>
+                </div>
+            </form>
         </div>
-      </form>
-    </div>
 
-    <div class="text-slate-600">
-      <div class="p-8 my-1 bg-slate-50">
-        <span>// model</span>
-        <pre>{{model | json}}</pre>
-      </div>
-      <div class="p-8 my-1 bg-slate-50">
-        <span>// checkoutForm.value</span>
-        <pre>{{checkoutForm.value | json}}</pre>
-      </div>
+        <div class="text-slate-600">
+            <div class="p-8 my-1 bg-slate-50">
+                <span>// model</span>
+                <pre>{{ model | json }}</pre>
+            </div>
+            <div class="p-8 my-1 bg-slate-50">
+                <span>// checkoutForm.value</span>
+                <pre>{{ checkoutForm.value | json }}</pre>
+            </div>
+        </div>
     </div>
-
-  </div>
 </div>

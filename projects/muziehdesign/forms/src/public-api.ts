@@ -8,6 +8,7 @@ export { ModelSchema, SchemaDefinition } from './lib/model-schema';
 export * from './lib/type-annotations';
 export * from './lib/ng-form-model-state.service';
 export * from './lib/ngform-model-state';
+export * from './lib/form-message.service';
 export * from './lib/field-errors/field-errors.component';
 export * from './lib/masks';
 
@@ -18,3 +19,5 @@ export { MzCheckboxGroup, FieldOption } from './lib/checkbox-group/checkbox-grou
 export { FormsModule, MzFormsModule } from './lib/forms.module';
 export { MzForm } from './lib/form/form.directive';
 export { MzField } from './lib/field/field.component';
+
+export * from './lib/yup-locales';
