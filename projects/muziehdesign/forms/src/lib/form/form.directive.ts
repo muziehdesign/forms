@@ -10,12 +10,12 @@ import { NgFormModelState } from '../ngform-model-state';
 export class MzForm implements AfterViewInit {
     @Input({ required: true }) schema!: ModelSchema<unknown>;
 
-    private modelState!: NgFormModelState<unknown>;
+    public modelState!: NgFormModelState<unknown>;
 
     constructor(private ngForm: NgForm) {
 
     }
-    
+
     ngAfterViewInit(): void {
         this.modelState = new NgFormModelState(this.ngForm, this.schema);
     }
